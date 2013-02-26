@@ -71,14 +71,14 @@ class SimpleAB {
      * @return array
      */
     public function getUserData() {
-        $data = array();
-
         if (isset($_SESSION['_simpleab'])) {
             $data = $_SESSION['_simpleab'];
-        } else {
-            $_SESSION['_simpleab'] = array();
         }
-
+        else {
+            $data = $_SESSION['_simpleab'] = array(
+                '_picked' => array(),
+            );
+        }
         return $data;
     }
 
@@ -89,7 +89,11 @@ class SimpleAB {
      * @return array
      */
     public function getHistoricData($key) {
-        return array();
+        $array = array(
+            '_count' => 0,
+            'results' => array(),
+        );
+        return $array;
     }
 
 
@@ -134,19 +138,12 @@ class SimpleAB {
         if (!$theOne) {
             // Check if we can pick it randomly, by matching the total historic conversions
             // to the threshold.
-            $random = $historicData['total'] <= $this->config['randomThreshold'];
-            if (!$random) {
-                // If we're past the threshold, we see if we need to do it randomly
-                // anyway, as part of the randomPercentage "sanity check".
-                $randomChance = rand(0,100);
-                if ($randomChance < $this->config['randomPercentage']) {
-                    $random = true;
-                }
-            }
+            $random = $this->pickOneRandomly($this->config['randomThreshold'], $historicData['_count'], $this->config['randomPercentage']);
 
             // Yay, we can do it randomly!
             if ($random) {
-                $theOne = array_rand($options);
+                shuffle($options);
+                $theOne = reset($options);
                 $this->lastPickDetails = array(
                     'mode' => 'random',
                     'key' => $key,
@@ -155,13 +152,31 @@ class SimpleAB {
                 );
             }
 
-            // No randomness involved - perform some statistical stuff and pick the best option.
+            // No randomness involved - perform some smart stuff and pick the best option.
             else {
                 // @todo implement this
                 $theOne = null;
             }
         }
         return $theOne;
+    }
+
+    /**
+     * @param $threshold
+     * @param $conversions
+     * @param $randomizePercentage
+     *
+     * @return bool
+     */
+    public function pickOneRandomly($threshold, $conversions, $randomizePercentage) {
+        $random = ($conversions <= $threshold);
+        if (!$random) {
+            $randomChance = rand(0,100);
+            if ($randomChance < $randomizePercentage) {
+                $random = true;
+            }
+        }
+        return $random;
     }
 }
 

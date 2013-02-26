@@ -69,4 +69,60 @@ class SimpleABTest extends PHPUnit_Framework_TestCase {
             array('dog', 'uniquekey', array('bar','foo','dog'),array('_picked' => array('uniquekey' => 'dog') ) ),
         );
     }
+
+    public function testPickOneUseRandom () {
+        $this->SimpleAB->config['randomThreshold'] = 50;
+        $this->SimpleAB->config['randomPercentage'] = 100;
+        $userData = $this->SimpleAB->getUserData();
+        $historicData = array(
+            '_count' => 0
+        );
+        $options = array('foo', 'bar', 'dog');
+
+        $pick = $this->SimpleAB->pickOne('foo', $options, $userData, $historicData);
+        $this->assertEquals('random', $this->SimpleAB->lastPickDetails['mode']);
+        $this->assertEquals('foo', $this->SimpleAB->lastPickDetails['key']);
+        $this->assertNull($this->SimpleAB->lastPickDetails['data']);
+        $this->assertContains($pick, $options);
+    }
+
+    /**
+     * @dataProvider providerPickOneRandomly
+     *
+     * @param $expected
+     * @param $threshold
+     * @param $conversions
+     * @param $randomizePercentage
+     */
+    public function testPickOneRandomly($expected, $threshold, $conversions, $randomizePercentage) {
+        $this->assertEquals($expected,
+            $this->SimpleAB->pickOneRandomly($threshold, $conversions, $randomizePercentage));
+    }
+
+    /**
+     * @return array
+     */
+    public function providerPickOneRandomly() {
+        return array(
+            array(true, 100, 50, 50),
+            array(false, 50, 100, 0),
+            array(true, 100, 50, 0),
+            array(true, 50, 100, 100),
+        );
+    }
+
+    public function testGetUserData() {
+        $uData = $this->SimpleAB->getUserData();
+        $this->assertInternalType('array', $uData);
+        $this->assertArrayHasKey('_picked', $uData);
+    }
+
+    public function testGetHistoricData() {
+        $historicData = $this->SimpleAB->getHistoricData('key');
+        $this->assertInternalType('array', $historicData);
+        $this->assertArrayHasKey('_count', $historicData);
+        $this->assertInternalType('integer', $historicData['_count']);
+        $this->assertArrayHasKey('results', $historicData);
+        $this->assertInternalType('array', $historicData['results']);
+    }
 }
