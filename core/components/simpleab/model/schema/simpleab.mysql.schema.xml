@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * SimpleAB
+ *
+ * Copyright 2011-2013 by Mark Hamstra <mark@modx.com>
+ *
+ * This file is part of SimpleAB, a versioning addon for MODX Revolution
+ *
+ * SimpleAB is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation; either version 2 of the License, or (at your option) any later
+ * version.
+ *
+ * SimpleAB is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * SimpleAB; if not, write to the Free Software Foundation, Inc., 59 Temple Place,
+ * Suite 330, Boston, MA 02111-1307 USA
+-->
+<model package="simpleab" baseClass="xPDOSimpleObject" platform="mysql" defaultEngine="MyISAM" version="1.1">
+    <object class="sabTest" table="simpleab_test">
+        <field key="name" dbtype="varchar" precision="75" phptype="string" null="false" />
+        <field key="description" dbtype="varchar" precision="500" phptype="string" null="false" />
+        <field key="type" dbtype="varchar" precision="75" phptype="string" null="false" default="modTemplate" />
+        <field key="active" dbtype="tinyint" precision="1" phptype="bool" null="false" default="0" />
+
+        <composite alias="Variations" class="sabVariation" cardinality="many" foreign="test" local="id" owner="local" />
+        <composite alias="Conversions" class="sabConversion" cardinality="many" foreign="test" local="id" owner="local" />
+    </object>
+
+    <object class="sabVariation" table="simpleab_variation">
+        <field key="test" dbtype="int" precision="11" phptype="integer" null="false" attributes="unsigned" />
+        <field key="name" dbtype="varchar" precision="75" phptype="string" null="false" />
+        <field key="description" dbtype="varchar" precision="500" phptype="string" null="false" />
+        <field key="active" dbtype="tinyint" precision="1" phptype="bool" null="false" default="0" />
+
+        <field key="element" dbtype="int" precision="11" phptype="integer" null="false" />
+
+        <index alias="test" name="test" primary="false" unique="false" type="BTREE">
+            <column key="test" length="" collation="A" null="false" />
+        </index>
+        <index alias="active" name="active" primary="false" unique="false" type="BTREE">
+            <column key="active" length="" collation="A" null="false" />
+        </index>
+
+        <aggregate alias="Test" class="sabTest" cardinality="one" foreign="id" local="test" owner="foreign" />
+    </object>
+
+    <object class="sabConversion" table="simpleab_conversions">
+        <field key="test" dbtype="int" precision="11" phptype="integer" null="false" attributes="unsigned" />
+        <field key="variation" dbtype="int" precision="11" phptype="integer" null="false" attributes="unsigned" />
+
+        <field key="value" dbtype="int" precision="11" phptype="integer" null="false" attributes="unsigned" />
+
+        <aggregate alias="Test" class="sabTest" cardinality="one" foreign="id" local="test" owner="foreign" />
+        <aggregate alias="Variation" class="sabVariation" cardinality="one" foreign="id" local="variation" owner="foreign" />
+    </object>
+</model>
+

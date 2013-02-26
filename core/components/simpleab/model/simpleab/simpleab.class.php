@@ -32,6 +32,10 @@ class SimpleAB {
 
     public $lastPickDetails = array();
 
+    public $cacheOptions = array(
+        xPDO::OPT_CACHE_KEY => 'simpleab',
+    );
+
 
     /**
      * @param \modX $modx
@@ -60,10 +64,15 @@ class SimpleAB {
             'randomPercentage' => $this->modx->getOption('simpleab.random_percentage', null, 25),
         ),$config);
 
-        $modelpath = $this->config['model_path'];
-        $this->modx->addPackage('simpleab',$modelpath);
         $this->modx->lexicon->load('simpleab:default');
-        
+
+        $modelPath = $this->config['modelPath'];
+        $this->modx->addPackage('simpleab',$modelPath);
+
+        $this->modx->loadClass('sabConversion', $modelPath);
+        $this->modx->loadClass('sabTest', $modelPath);
+        $this->modx->loadClass('sabVariation', $modelPath);
+
         $this->debug = $this->modx->getOption('simpleab.debug',null,false);
     }
 
