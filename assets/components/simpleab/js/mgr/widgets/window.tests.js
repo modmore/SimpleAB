@@ -2,14 +2,21 @@ SimpleAB.window.Test = function(config) {
     config = config || {};
     config.id = config.id || Ext.id(),
     Ext.applyIf(config,{
-        title: _('simpleab.add_test'),
+        title: (config.isUpdate) ? _('simpleab.update_test') : _('simpleab.add_test'),
         autoHeight: true,
         url: SimpleAB.config.connectorUrl,
         baseParams: {
-            action: 'mgr/tests/create'
+            action: 'mgr/tests/' + ((config.isUpdate) ? 'update' : 'create')
         },
         width: 400,
         fields: [{
+            xtype: 'panel',
+            html: '<p>'+_('simpleab.update_test.description')+'</p>',
+            hidden: !config.isUpdate
+        },{
+            xtype: 'hidden',
+            name: 'id'
+        },{
             xtype: 'textfield',
             name: 'name',
             fieldLabel: _('simpleab.name') + '*',
@@ -24,10 +31,11 @@ SimpleAB.window.Test = function(config) {
             maxLength: 500,
             allowBlank: true
         },{
-            xtype: 'textfield',
+            xtype: (config.isUpdate) ? 'statictextfield' : 'textfield',
             name: 'type',
             fieldLabel: _('simpleab.type'),
-            anchor: '100%'
+            anchor: '100%',
+            submitValue: true
         },{
             xtype: 'checkbox',
             name: 'active',

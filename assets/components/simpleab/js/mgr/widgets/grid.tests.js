@@ -76,8 +76,24 @@ Ext.extend(SimpleAB.grid.Tests,MODx.grid.Grid,{
         });
         win.show();
     },
+
     updateTest: function() {
-        MODx.loadPage(MODx.request.a,'action=test/update&id='+this.menu.record.id);
+        var win = MODx.load({
+            xtype: 'simpleab-window-test',
+            isUpdate: true,
+            record: this.menu.record,
+            listeners: {
+                success: {fn: function(r) {
+                    this.refresh();
+                },scope: this},
+                scope: this
+            }
+        });
+        win.show();
+    },
+
+    manageTest: function() {
+        MODx.loadPage(MODx.request.a,'action=test&id='+this.menu.record.id);
     },
     getMenu: function() {
         var m = [];
@@ -85,6 +101,10 @@ Ext.extend(SimpleAB.grid.Tests,MODx.grid.Grid,{
         m.push({
             text: _('simpleab.update_test'),
             handler: this.updateTest,
+            scope: this
+        },{
+            text: _('simpleab.manage_test'),
+            handler: this.manageTest,
             scope: this
         });
         return m;
