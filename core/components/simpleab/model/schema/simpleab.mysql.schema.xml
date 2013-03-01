@@ -26,6 +26,9 @@
         <field key="type" dbtype="varchar" precision="75" phptype="string" null="false" default="modTemplate" />
         <field key="active" dbtype="tinyint" precision="1" phptype="bool" null="false" default="0" />
 
+        <field key="threshold" dbtype="int" precision="10" phptype="integer" null="false" default="100" />
+        <field key="randomize" dbtype="int" precision="3" phptype="integer" null="false" default="25" />
+
         <composite alias="Variations" class="sabVariation" cardinality="many" foreign="test" local="id" owner="local" />
         <composite alias="Conversions" class="sabConversion" cardinality="many" foreign="test" local="id" owner="local" />
     </object>
@@ -51,8 +54,17 @@
     <object class="sabConversion" table="simpleab_conversions">
         <field key="test" dbtype="int" precision="11" phptype="integer" null="false" attributes="unsigned" />
         <field key="variation" dbtype="int" precision="11" phptype="integer" null="false" attributes="unsigned" />
-
+        <field key="date" dbtype="int" precision="8" phptype="integer" null="false" attributes="unsigned" />
         <field key="value" dbtype="int" precision="11" phptype="integer" null="false" attributes="unsigned" />
+
+        <aggregate alias="Test" class="sabTest" cardinality="one" foreign="id" local="test" owner="foreign" />
+        <aggregate alias="Variation" class="sabVariation" cardinality="one" foreign="id" local="variation" owner="foreign" />
+    </object>
+
+    <object class="sabPick" table="simpleab_picks">
+        <field key="test" dbtype="int" precision="11" phptype="integer" null="false" attributes="unsigned" />
+        <field key="variation" dbtype="int" precision="11" phptype="integer" null="false" attributes="unsigned" />
+        <field key="date" dbtype="int" precision="8" phptype="integer" null="false" attributes="unsigned" />
 
         <aggregate alias="Test" class="sabTest" cardinality="one" foreign="id" local="test" owner="foreign" />
         <aggregate alias="Variation" class="sabVariation" cardinality="one" foreign="id" local="variation" owner="foreign" />

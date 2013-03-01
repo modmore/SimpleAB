@@ -31,6 +31,8 @@ $xpdo_meta_map['sabTest']= array (
     'description' => NULL,
     'type' => 'modTemplate',
     'active' => 0,
+    'threshold' => 100,
+    'randomize' => 25,
   ),
   'fieldMeta' => 
   array (
@@ -63,6 +65,22 @@ $xpdo_meta_map['sabTest']= array (
       'phptype' => 'bool',
       'null' => false,
       'default' => 0,
+    ),
+    'threshold' => 
+    array (
+      'dbtype' => 'int',
+      'precision' => '10',
+      'phptype' => 'integer',
+      'null' => false,
+      'default' => 100,
+    ),
+    'randomize' => 
+    array (
+      'dbtype' => 'int',
+      'precision' => '3',
+      'phptype' => 'integer',
+      'null' => false,
+      'default' => 25,
     ),
   ),
   'composites' => 

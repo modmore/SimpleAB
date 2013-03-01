@@ -149,6 +149,7 @@ $objects = array(
     'sabTest',
     'sabVariation',
     'sabConversion',
+    'sabPick',
 );
 
 foreach ($objects as $object) {
@@ -157,5 +158,9 @@ foreach ($objects as $object) {
     }
     $manager->createObjectContainer($object);
 }
+
+$manager->addField('sabTest', 'threshold');
+$manager->addField('sabTest', 'randomize');
+$manager->addField('sabConversion', 'date');
 
 exit ();

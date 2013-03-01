@@ -6,5 +6,6 @@ $xpdo_meta_map = array (
     0 => 'sabTest',
     1 => 'sabVariation',
     2 => 'sabConversion',
+    3 => 'sabPick',
   ),
 );

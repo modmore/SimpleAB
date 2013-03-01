@@ -36,6 +36,10 @@ class SimpleAB {
         xPDO::OPT_CACHE_KEY => 'simpleab',
     );
 
+    protected $_defaultSession = array(
+        '_picked' => array(),
+    );
+
 
     /**
      * @param \modX $modx
@@ -59,19 +63,16 @@ class SimpleAB {
             'jsUrl' => $assetsUrl.'js/',
             'cssUrl' => $assetsUrl.'css/',
             'connectorUrl' => $assetsUrl.'connector.php',
-            
-            'randomThreshold' => $this->modx->getOption('simpleab.random_threshold', null, 100),
-            'randomPercentage' => $this->modx->getOption('simpleab.random_percentage', null, 25),
         ),$config);
 
         $this->modx->lexicon->load('simpleab:default');
 
         $modelPath = $this->config['modelPath'];
         $this->modx->addPackage('simpleab',$modelPath);
-
-        $this->modx->loadClass('sabConversion', $modelPath);
-        $this->modx->loadClass('sabTest', $modelPath);
-        $this->modx->loadClass('sabVariation', $modelPath);
+        $this->modx->loadClass('sabConversion', $modelPath.'simpleab/');
+        $this->modx->loadClass('sabTest', $modelPath.'simpleab/');
+        $this->modx->loadClass('sabVariation', $modelPath.'simpleab/');
+        $this->modx->loadClass('sabPick', $modelPath.'simpleab/');
 
         $this->debug = $this->modx->getOption('simpleab.debug',null,false);
     }
@@ -84,60 +85,44 @@ class SimpleAB {
             $data = $_SESSION['_simpleab'];
         }
         else {
-            $data = $_SESSION['_simpleab'] = array(
-                '_picked' => array(),
-            );
+            $data = $_SESSION['_simpleab'] = $this->_defaultSession;
         }
         return $data;
     }
 
     /**
-     * @todo Implement this method.
-     * @param $key
-     *
-     * @return array
-     */
-    public function getHistoricData($key) {
-        $array = array(
-            '_count' => 0,
-            'results' => array(),
-        );
-        return $array;
-    }
-
-
-    /**
      * Picks one of the supplied array of options to display.
      *
      * Makes sure that if the user has previously been shown an option for this key before, it will show the same.
+     * Otherwise it will either pick randomly or with a bit of logic.
      *
-     * @see self._pickOneHistorically
-     * @see self._pickOneRandomly
-     *
-     * @param $key
-     * @param array $options
+     * @param sabTest $test
+     * @param array $variations
      * @param array $userData
-     * @param array $historicData
      *
      * @return mixed
      */
-    public function pickOne ($key, array $options = array(), array $userData = array(), array $historicData = array()) {
+    public function pickOne (sabTest $test, array $variations = array(), array $userData = array()) {
+        $testId = $test->get('id');
+        $options = array_keys($variations);
+
         $theOne = false;
+        $mode = '';
+
+        $totalPicks = 0;
+        foreach ($variations as $variation) {
+            $totalPicks += $variation['picks'];
+        }
         /**
          * Check if we have picked something for this element already for this user. If we did, we'll want to
          * show them the same one.
          */
-        if (array_key_exists('_picked', $userData) && array_key_exists($key, $userData['_picked'])) {
-            $previous = $userData['_picked'][$key];
+        if (array_key_exists('_picked', $userData) && array_key_exists($testId, $userData['_picked'])) {
+            $previous = $userData['_picked'][$testId];
             // Make sure the previously chosen one is still an option..
             if (in_array($previous, $options)) {
                 $theOne = $previous;
-                $this->lastPickDetails = array(
-                    'mode' => 'previous',
-                    'key' => $key,
-                    'data' => $userData['_picked'],
-                    'result' => $theOne,
-                );
+                $mode = 'previous';
             }
         }
 
@@ -147,27 +132,35 @@ class SimpleAB {
         if (!$theOne) {
             // Check if we can pick it randomly, by matching the total historic conversions
             // to the threshold.
-            $random = $this->pickOneRandomly($this->config['randomThreshold'], $historicData['_count'], $this->config['randomPercentage']);
+            $random = $this->pickOneRandomly($test->get('threshold'), $totalPicks, $test->get('randomize'));
 
             // Yay, we can do it randomly!
             if ($random) {
                 shuffle($options);
                 $theOne = reset($options);
-                $this->lastPickDetails = array(
-                    'mode' => 'random',
-                    'key' => $key,
-                    'data' => null,
-                    'result' => $theOne,
-                );
+                $mode = 'random';
+                $this->registerPick($testId, $theOne);
             }
 
             // No randomness involved - perform some smart stuff and pick the best option.
             else {
                 // @todo implement this
+                $mode = 'bestpick';
                 $theOne = null;
+                if (isset($this->modx->phpconsole)) $this->modx->phpconsole->send('Logical pick is not yet implemented for test ' . $testId);
             }
         }
-        return $theOne;
+
+        $this->lastPickDetails = array(
+            'test' => $testId,
+            'mode' => $mode,
+            'options' => $options,
+            'pick' => $theOne,
+        );
+        if (isset($variations[$theOne])) {
+            return $variations[$theOne];
+        }
+        return null;
     }
 
     /**
@@ -186,6 +179,28 @@ class SimpleAB {
             }
         }
         return $random;
+    }
+
+    /**
+     * @param $key
+     * @param $theOne
+     */
+    public function registerPick($key, $theOne) {
+        /** Set the session */
+        if (!isset($_SESSION['_simpleab'])) {
+            $_SESSION['_simpleab'] = $this->_defaultSession;
+        }
+        $data =& $_SESSION['_simpleab'];
+        $data['_picked'][$key] = $theOne;
+
+        /** Log the pick in the database for stats. */
+        $pick = $this->modx->newObject('sabPick');
+        $pick->fromArray(array(
+            'test' => $key,
+            'variation' => $theOne,
+            'date' => date('Ymd'),
+        ));
+        $pick->save();
     }
 }
 
