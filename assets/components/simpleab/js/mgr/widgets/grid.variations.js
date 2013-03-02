@@ -45,12 +45,12 @@ SimpleAB.grid.Variations = function(config) {
 			header: _('simpleab.picks'),
 			dataIndex: 'picks',
 		    sortable: false,
-			width: .1
+			width: .15
 		},{
 			header: _('simpleab.conversions'),
 			dataIndex: 'conversions',
 		    sortable: false,
-			width: .1
+			width: .15
 		}],
         tbar: [{
             text: _('simpleab.add_variation'),

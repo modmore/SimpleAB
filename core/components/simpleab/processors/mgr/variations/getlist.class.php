@@ -15,8 +15,8 @@ class sabVariationGetListProcessor extends modObjectGetListProcessor {
      */
     public function prepareRow(xPDOObject $object) {
         $row = $object->toArray('', false, true);
-        //$row['picks'] = $this->modx->getCount('sabPick', array('variation' => $row['id']));
-        $row['conversions'] = $this->modx->getCount('sabConversion', array('varation' => $row['id']));
+        $row['picks'] = $this->modx->getCount('sabPick', array('variation' => $row['id']));
+        $row['conversions'] = $this->modx->getCount('sabConversion', array('variation' => $row['id']));
         return $row;
     }
 }
