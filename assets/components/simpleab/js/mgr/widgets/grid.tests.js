@@ -12,6 +12,8 @@ SimpleAB.grid.Tests = function(config) {
             {name: 'name', type: 'string'},
             {name: 'description', type: 'string'},
             {name: 'type', type: 'string'},
+            {name: 'threshold', type: 'int'},
+            {name: 'randomize', type: 'int'},
             {name: 'active', type: 'bool'},
             {name: 'variations', type: 'int'},
             {name: 'conversions', type: 'int'}

@@ -37,6 +37,23 @@ SimpleAB.window.Test = function(config) {
             anchor: '100%',
             submitValue: true
         },{
+            xtype: 'numberfield',
+            name: 'threshold',
+            fieldLabel: _('simpleab.threshold'),
+            description: _('simpleab.threshold.desc'),
+            value: 100,
+            allowBlank: false,
+            minValue: 0
+        },{
+            xtype: 'numberfield',
+            name: 'randomize',
+            fieldLabel: _('simpleab.randomize'),
+            description: _('simpleab.randomize.desc'),
+            value: 25,
+            allowBlank: false,
+            minValue: 0,
+            maxValue: 100
+        },{
             xtype: 'checkbox',
             name: 'active',
             boxLabel: _('simpleab.active')
