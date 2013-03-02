@@ -147,11 +147,17 @@ SimpleAB.page.Test = function(config) {
                     xtype: 'simpleab-grid-variations'
                 }]
             }]
+        }],
+        buttons: [{
+            text: _('simpleab.to_home'),
+            handler: this.toHome
         }]
     });
     SimpleAB.page.Test.superclass.constructor.call(this,config);
 };
 Ext.extend(SimpleAB.page.Test,MODx.Component,{
-
+    toHome: function() {
+        MODx.loadPage(MODx.request.a);
+    }
 });
 Ext.reg('simpleab-page-test',SimpleAB.page.Test);

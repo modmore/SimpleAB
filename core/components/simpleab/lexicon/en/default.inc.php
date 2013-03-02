@@ -5,6 +5,7 @@ $_lang['simpleab.menu_desc'] = 'Manage your SimpleAB tests and variations.';
 
 $_lang['simpleab.home'] = 'Manage A/B Tests';
 $_lang['simpleab.tests'] = 'Tests';
+$_lang['simpleab.to_home'] = 'Back to Tests';
 
 $_lang['simpleab.id'] = 'ID';
 $_lang['simpleab.name'] = 'Name';
