@@ -13,10 +13,13 @@ $_lang['simpleab.element'] = 'Element';
 $_lang['simpleab.type'] = 'Type';
 $_lang['simpleab.active'] = 'Active';
 $_lang['simpleab.variations'] = 'Variations';
-$_lang['simpleab.conversions'] = 'Conversions';
 $_lang['simpleab.statistics'] = 'Statistics';
+$_lang['simpleab.conversions'] = 'Conversions';
+$_lang['simpleab.conversions.desc'] = 'A conversion is when a desired action (such as submitting a form, or viewing a certain page) was completed, and this test had a value assigned to it for completing the action.';
 $_lang['simpleab.picks'] = 'Picks';
+$_lang['simpleab.picks.desc'] = 'A "pick" represents a view of each variation. Which variation is shown depends the previous pick, normalized conversion rates or simply a random selection. Repeated visits to the same test does not count as a new pick.';
 $_lang['simpleab.normalized'] = 'Normalized Conversions';
+$_lang['simpleab.normalized.desc'] = 'Normalized conversions are the actual conversion rate (in percentage) of each variation. It is calculated by dividing the amount of picks by the amount of conversions per variation.';
 
 $_lang['simpleab.add_test'] = 'Add Test';
 $_lang['simpleab.update_test'] = 'Update Test';

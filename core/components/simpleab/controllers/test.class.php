@@ -17,19 +17,25 @@ class SimpleABTestManagerController extends SimpleABManagerController {
 
         /** @var sabTest $test */
         $series = array();
+        $fields = array('period');
+
         $vars = $test->getMany('Variations');
         foreach ($vars as $variation) {
             /** @var sabVariation $variation */
             $series[] = array(
                 'type' => 'line',
                 'displayName' => $variation->get('name'),
-                'yField' => 'var_' . $variation->get('id')
+                'yField' => 'var_' . $variation->get('id'),
+                'xField' => 'period',
             );
+
+            $fields[] = 'var_' . $variation->get('id');
         }
 
         $this->addHtml('<script type="text/javascript">
             SimpleAB.record = ' . $test->toJSON() . ';
             SimpleAB.chartSeries = '. $this->modx->toJSON($series) .';
+            SimpleAB.chartFields = '. $this->modx->toJSON($fields) .';
             Ext.chart.Chart.CHART_URL = "' . $this->simpleab->config['assetsUrl'] . 'swf/charts.swf";
         </script>');
     }

@@ -30,6 +30,8 @@ class SimpleAB {
 
     public $debug = false;
 
+    public $considerPreviousPicks = true;
+
     public $lastPickDetails = array();
 
     public $cacheOptions = array(
@@ -117,7 +119,7 @@ class SimpleAB {
          * Check if we have picked something for this element already for this user. If we did, we'll want to
          * show them the same one.
          */
-        if (array_key_exists('_picked', $userData) && array_key_exists($testId, $userData['_picked'])) {
+        if ($this->considerPreviousPicks && array_key_exists('_picked', $userData) && array_key_exists($testId, $userData['_picked'])) {
             $previous = $userData['_picked'][$testId];
             // Make sure the previously chosen one is still an option..
             if (in_array($previous, $options)) {
