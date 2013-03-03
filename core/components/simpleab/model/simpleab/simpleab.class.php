@@ -206,6 +206,59 @@ class SimpleAB {
     }
 
     /**
+     * @param $tests
+     */
+    public function registerConversion($tests) {
+        $userData = $this->getUserData();
+        $visitedTests = $userData['_picked'];
+
+        /** Allow tests to be passed as "*" to indicate all visited tests. */
+        if (!is_array($tests) && ($tests == '*')) {
+            $tests = array_keys($visitedTests);
+        }
+
+        /** Make test ID string into array. */
+        if (!is_array($tests)) {
+            $tests = explode(',', $tests);
+        }
+
+        foreach ($tests as $testId) {
+            /**
+             * Verify if test exists.
+             */
+            $test = $this->modx->call('sabTest','getTest', array(&$this->modx, $testId));
+            if (!($test instanceof sabTest)) continue;
+
+            /**
+             * We'll need the shown variation from the users' data.
+             */
+            $variationId = 0;
+            if (array_key_exists($testId, $visitedTests)) {
+                $variationId = (int)$visitedTests[$testId];
+            }
+            if (!$variationId || ($variationId < 1)) continue;
+
+            /**
+             * Verify if variation exists.
+             */
+            $variationExists = (bool)$this->modx->getCount('sabVariation', array('id' => $variationId, 'test' => $testId));
+            if (!$variationExists) continue;
+
+            /** @var sabConversion $conversion */
+            $conversion = $this->modx->newObject('sabConversion');
+            $conversion->fromArray(array(
+                'test' => $testId,
+                'variation' => $variationId,
+                'date' => date('Ymd'),
+                'value' => 1,
+            ));
+            if (!$conversion->save()) {
+                $this->modx->log(modX::LOG_LEVEL_ERROR,'[SimpleAB.sabConversionHook] Error occurred trying to save new sabConversion object.');
+            }
+        }
+    }
+
+    /**
      * @param modResource $resource
      *
      * @return array
