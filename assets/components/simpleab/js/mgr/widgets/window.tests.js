@@ -8,12 +8,8 @@ SimpleAB.window.Test = function(config) {
         baseParams: {
             action: 'mgr/tests/' + ((config.isUpdate) ? 'update' : 'create')
         },
-        width: 400,
+        width: 550,
         fields: [{
-            xtype: 'panel',
-            html: '<p>'+_('simpleab.update_test.description')+'</p>',
-            hidden: !config.isUpdate
-        },{
             xtype: 'hidden',
             name: 'id'
         },{
@@ -38,7 +34,8 @@ SimpleAB.window.Test = function(config) {
                     description: _('simpleab.threshold.desc'),
                     value: 100,
                     allowBlank: false,
-                    minValue: 0
+                    minValue: 0,
+                    anchor: '100%'
                 },{
                     xtype: 'numberfield',
                     name: 'randomize',
@@ -47,13 +44,15 @@ SimpleAB.window.Test = function(config) {
                     value: 25,
                     allowBlank: false,
                     minValue: 0,
-                    maxValue: 100
+                    maxValue: 100,
+                    anchor: '100%'
                 }]
             },{
                 columnWidth:.5,
                 border: false,
                 items: [{
-                    xtype: 'statictextfield',
+                    xtype: 'textfield',
+                    disabled: true,
                     name: 'type',
                     fieldLabel: _('simpleab.type'),
                     anchor: '100%',

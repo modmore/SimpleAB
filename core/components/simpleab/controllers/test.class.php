@@ -55,6 +55,7 @@ class SimpleABTestManagerController extends SimpleABManagerController {
     public function loadCustomCssJs() {
         $this->addJavascript($this->simpleab->config['jsUrl'].'mgr/widgets/grid.variations.js');
         $this->addJavascript($this->simpleab->config['jsUrl'].'mgr/widgets/window.variations.js');
+        $this->addJavascript($this->simpleab->config['jsUrl'].'mgr/widgets/window.tests.js');
 
         $this->addLastJavascript($this->simpleab->config['jsUrl'].'mgr/sections/test.js');
     }

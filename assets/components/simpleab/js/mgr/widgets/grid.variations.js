@@ -67,6 +67,10 @@ Ext.extend(SimpleAB.grid.Variations,MODx.grid.Grid,{
             listeners: {
                 success: {fn: function(r) {
                     this.refresh();
+                    var refreshPanel = Ext.getCmp('simpleab-panel-refresh');
+                    if (refreshPanel) {
+                        refreshPanel.show();
+                    }
                 },scope: this},
                 scope: this
             }
@@ -82,6 +86,10 @@ Ext.extend(SimpleAB.grid.Variations,MODx.grid.Grid,{
             listeners: {
                 success: {fn: function(r) {
                     this.refresh();
+                    var refreshPanel = Ext.getCmp('simpleab-panel-refresh');
+                    if (refreshPanel) {
+                        refreshPanel.show();
+                    }
                 },scope: this},
                 scope: this
             }

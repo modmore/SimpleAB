@@ -66,7 +66,7 @@ class getNormalizedStatsGetListProcessor extends modProcessor {
                 if (in_array($key, array('id','period'))) continue;
 
                 if ($pickCount > 0 && isset($values['conversions'][$key])) {
-                    $values[$key] = round($values['conversions'][$key] / $pickCount * 100, 3) ;
+                    $values[$key] = number_format($values['conversions'][$key] / $pickCount * 100, 2) ;
                 }
             }
         }

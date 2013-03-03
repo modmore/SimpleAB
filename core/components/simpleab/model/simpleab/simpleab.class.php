@@ -30,7 +30,7 @@ class SimpleAB {
 
     public $debug = false;
 
-    public $considerPreviousPicks = false;
+    public $considerPreviousPicks = true;
 
     public $lastPickDetails = array();
 
@@ -229,8 +229,6 @@ class SimpleAB {
         }
 
         $tests = array_unique($tests);
-
-        $this->modx->phpconsole->send($tests, 'mark');
         return $tests;
     }
 

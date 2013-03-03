@@ -144,11 +144,19 @@ SimpleAB.page.Test = function(config) {
             },{
                 title: _('simpleab.variations'),
                 items: [{
+                    xtype: 'panel',
+                    id: 'simpleab-panel-refresh',
+                    hidden: true,
+                    html: '<p style="border: 1px solid red; padding: 5px; background-color: #ff9d00;">'+_('simpleab.refresh_to_update')+'</p>'
+                },{
                     xtype: 'simpleab-grid-variations'
                 }]
             }]
         }],
         buttons: [{
+            text: _('simpleab.update_test'),
+            handler: this.updateTest
+        },'-',{
             text: _('simpleab.to_home'),
             handler: this.toHome
         }]
@@ -158,6 +166,23 @@ SimpleAB.page.Test = function(config) {
 Ext.extend(SimpleAB.page.Test,MODx.Component,{
     toHome: function() {
         MODx.loadPage(MODx.request.a);
+    },
+
+    updateTest: function() {
+        var record = SimpleAB.record;
+        var win = MODx.load({
+            xtype: 'simpleab-window-test',
+            isUpdate: true,
+            record: record,
+            listeners: {
+                success: {fn: function() {
+                    location.href = location.href;
+                },scope: this},
+                scope: this
+            }
+        });
+        win.setValues(record);
+        win.show();
     }
 });
 Ext.reg('simpleab-page-test',SimpleAB.page.Test);
