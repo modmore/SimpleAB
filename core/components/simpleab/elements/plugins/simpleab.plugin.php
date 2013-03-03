@@ -21,9 +21,6 @@ foreach ($tests as $testId) {
         $variations = $test->getVariations();
 
         $picked = $simpleAB->pickOne($test, $variations, $simpleAB->getUserData());
-        if ($modx->phpconsole) {
-            $modx->phpconsole->send($simpleAB->lastPickDetails, 'mark');
-        }
 
         /** Make sure the element (template) exists. */
         $tpl = $picked['element'];
