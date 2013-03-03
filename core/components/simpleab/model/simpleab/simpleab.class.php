@@ -76,7 +76,8 @@ class SimpleAB {
         $this->modx->loadClass('sabVariation', $modelPath.'simpleab/');
         $this->modx->loadClass('sabPick', $modelPath.'simpleab/');
 
-        $this->debug = $this->modx->getOption('simpleab.debug',null,false);
+        $this->debug = $this->modx->getOption('simpleab.debug', null, false);
+        $this->considerPreviousPicks = (bool)$this->modx->getOption('simpleab.use_previous_picks', null, true);
     }
 
     /**
