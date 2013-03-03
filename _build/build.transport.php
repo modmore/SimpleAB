@@ -23,7 +23,7 @@ set_time_limit(0);
 define('PKG_NAME','SimpleAB');
 define('PKG_NAME_LOWER',strtolower(PKG_NAME));
 define('PKG_VERSION','0.2.0');
-define('PKG_RELEASE','dev1');
+define('PKG_RELEASE','dev2');
 
 $root = dirname(dirname(__FILE__)).'/';
 $sources= array (
@@ -106,7 +106,7 @@ $attr = array(
     xPDOTransport::UNIQUE_KEY => 'category',
     xPDOTransport::PRESERVE_KEYS => false,
     xPDOTransport::UPDATE_OBJECT => true,
-    xPDOTransport::RELATED_OBJECTS => false,
+    xPDOTransport::RELATED_OBJECTS => true,
     xPDOTransport::RELATED_OBJECT_ATTRIBUTES => array (
         'Snippets' => array(
             xPDOTransport::PRESERVE_KEYS => false,
