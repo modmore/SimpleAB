@@ -3,4 +3,8 @@
 ++   Released on 2013-03-03   ++
 ++++++++++++++++++++++++++++++++
 
-Initial build.
+- Add simpleab.test_{ID}.pick placeholder with the SimpleAB::lastPickDetails as JSON.
+- Add ability to disable looking at previous picks.
+- Fix several caching bugs.
+- Implement conversion-rate picking of best variation.
+- Initial build.

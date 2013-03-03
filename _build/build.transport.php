@@ -22,7 +22,7 @@ set_time_limit(0);
 /* define package */
 define('PKG_NAME','SimpleAB');
 define('PKG_NAME_LOWER',strtolower(PKG_NAME));
-define('PKG_VERSION','0.1.0');
+define('PKG_VERSION','0.2.0');
 define('PKG_RELEASE','dev1');
 
 $root = dirname(dirname(__FILE__)).'/';
