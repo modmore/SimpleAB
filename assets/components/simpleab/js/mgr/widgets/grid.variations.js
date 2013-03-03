@@ -16,7 +16,8 @@ SimpleAB.grid.Variations = function(config) {
             {name: 'active', type: 'bool'},
             {name: 'element', type: 'int'},
             {name: 'picks', type: 'int'},
-            {name: 'conversions', type: 'int'}
+            {name: 'conversions', type: 'int'},
+            {name: 'conversionrate', type: 'float'}
         ],
         paging: true,
 		remoteSort: true,
@@ -49,6 +50,11 @@ SimpleAB.grid.Variations = function(config) {
 		},{
 			header: _('simpleab.conversions'),
 			dataIndex: 'conversions',
+		    sortable: false,
+			width: .15
+		},{
+			header: _('simpleab.conversionrate'),
+			dataIndex: 'conversionrate',
 		    sortable: false,
 			width: .15
 		}],

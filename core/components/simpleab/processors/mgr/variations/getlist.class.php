@@ -17,6 +17,7 @@ class sabVariationGetListProcessor extends modObjectGetListProcessor {
         $row = $object->toArray('', false, true);
         $row['picks'] = $this->modx->getCount('sabPick', array('variation' => $row['id']));
         $row['conversions'] = $this->modx->getCount('sabConversion', array('variation' => $row['id']));
+        $row['conversionrate'] = ($row['picks'] > 0) ? number_format($row['conversions'] / $row['picks'], 2) : 0.00;
         return $row;
     }
 }
