@@ -104,4 +104,38 @@ class sabTest extends xPDOSimpleObject {
 
         return $this->_variations;
     }
+
+    public function clearCache() {
+        $cacheOptions = $this->xpdo->simpleab->cacheOptions;
+        $id = $this->get('id');
+
+        $this->xpdo->cacheManager->delete("tests/{$id}", $cacheOptions);
+        $this->xpdo->cacheManager->delete("registry", $cacheOptions);
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @param null $cacheFlag
+     *
+     * @return bool
+     */
+    public function save($cacheFlag= null) {
+        $return = parent::save($cacheFlag);
+        $this->clearCache();
+        return $return;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @param null $cacheFlag
+     *
+     * @return bool
+     */
+    public function remove (array $ancestors = array()) {
+        $return = parent::remove($ancestors);
+        $this->clearCache();
+        return $return;
+    }
 }

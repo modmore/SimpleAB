@@ -91,6 +91,7 @@ Ext.extend(SimpleAB.grid.Tests,MODx.grid.Grid,{
                 scope: this
             }
         });
+        win.setValues(this.menu.record);
         win.show();
     },
 

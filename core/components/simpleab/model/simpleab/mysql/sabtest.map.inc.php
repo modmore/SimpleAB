@@ -33,6 +33,8 @@ $xpdo_meta_map['sabTest']= array (
     'active' => 0,
     'threshold' => 100,
     'randomize' => 25,
+    'resources' => NULL,
+    'templates' => NULL,
   ),
   'fieldMeta' => 
   array (
@@ -81,6 +83,20 @@ $xpdo_meta_map['sabTest']= array (
       'phptype' => 'integer',
       'null' => false,
       'default' => 25,
+    ),
+    'resources' => 
+    array (
+      'dbtype' => 'varchar',
+      'precision' => '250',
+      'phptype' => 'string',
+      'null' => true,
+    ),
+    'templates' => 
+    array (
+      'dbtype' => 'varchar',
+      'precision' => '250',
+      'phptype' => 'string',
+      'null' => true,
     ),
   ),
   'composites' => 

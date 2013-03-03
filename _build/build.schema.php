@@ -162,5 +162,7 @@ foreach ($objects as $object) {
 $manager->addField('sabTest', 'threshold');
 $manager->addField('sabTest', 'randomize');
 $manager->addField('sabConversion', 'date');
+$manager->addField('sabTest', 'resources');
+$manager->addField('sabTest', 'templates');
 
 exit ();

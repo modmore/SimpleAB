@@ -21,5 +21,38 @@
  *
 */
 class sabVariation extends xPDOSimpleObject {
+    public function clearCache() {
+        $cacheOptions = $this->xpdo->simpleab->cacheOptions;
+        $id = $this->get('id');
+        $testId = $this->get('test');
 
+        $this->xpdo->cacheManager->delete("tests/{$testId}/stats", $cacheOptions);
+        $this->xpdo->cacheManager->delete("tests/{$testId}/variations", $cacheOptions);
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @param null $cacheFlag
+     *
+     * @return bool
+     */
+    public function save($cacheFlag= null) {
+        $return = parent::save($cacheFlag);
+        $this->clearCache();
+        return $return;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @param null $cacheFlag
+     *
+     * @return bool
+     */
+    public function remove (array $ancestors = array()) {
+        $return = parent::remove($ancestors);
+        $this->clearCache();
+        return $return;
+    }
 }

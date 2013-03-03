@@ -17,12 +17,64 @@ SimpleAB.window.Test = function(config) {
             xtype: 'hidden',
             name: 'id'
         },{
-            xtype: 'textfield',
-            name: 'name',
-            fieldLabel: _('simpleab.name') + '*',
-            allowBlank: false,
-            maxLength: 75,
-            anchor: '100%'
+            layout: 'column',
+            border: false,
+            defaults: {
+                layout: 'form'
+            },
+            items: [{
+                columnWidth:.5,
+                items: [{
+                    xtype: 'textfield',
+                    name: 'name',
+                    fieldLabel: _('simpleab.name') + '*',
+                    allowBlank: false,
+                    maxLength: 75,
+                    anchor: '100%'
+                },{
+                    xtype: 'numberfield',
+                    name: 'threshold',
+                    fieldLabel: _('simpleab.threshold'),
+                    description: _('simpleab.threshold.desc'),
+                    value: 100,
+                    allowBlank: false,
+                    minValue: 0
+                },{
+                    xtype: 'numberfield',
+                    name: 'randomize',
+                    fieldLabel: _('simpleab.randomize'),
+                    description: _('simpleab.randomize.desc'),
+                    value: 25,
+                    allowBlank: false,
+                    minValue: 0,
+                    maxValue: 100
+                }]
+            },{
+                columnWidth:.5,
+                border: false,
+                items: [{
+                    xtype: 'statictextfield',
+                    name: 'type',
+                    fieldLabel: _('simpleab.type'),
+                    anchor: '100%',
+                    submitValue: true,
+                    value: 'modTemplate'
+                },{
+                    xtype: 'textfield',
+                    name: 'resources',
+                    fieldLabel: _('simpleab.apply_to_resources'),
+                    description: _('simpleab.apply_to_resources.desc'),
+                    anchor: '100%',
+                    allowBlank: true
+                },{
+                    xtype: 'textfield',
+                    name: 'templates',
+                    fieldLabel: _('simpleab.apply_to_templates'),
+                    description: _('simpleab.apply_to_templates.desc'),
+                    anchor: '100%',
+                    allowBlank: true
+                }]
+            }]
         },{
             xtype: 'textarea',
             name: 'description',
@@ -30,29 +82,6 @@ SimpleAB.window.Test = function(config) {
             anchor: '100%',
             maxLength: 500,
             allowBlank: true
-        },{
-            xtype: (config.isUpdate) ? 'statictextfield' : 'textfield',
-            name: 'type',
-            fieldLabel: _('simpleab.type'),
-            anchor: '100%',
-            submitValue: true
-        },{
-            xtype: 'numberfield',
-            name: 'threshold',
-            fieldLabel: _('simpleab.threshold'),
-            description: _('simpleab.threshold.desc'),
-            value: 100,
-            allowBlank: false,
-            minValue: 0
-        },{
-            xtype: 'numberfield',
-            name: 'randomize',
-            fieldLabel: _('simpleab.randomize'),
-            description: _('simpleab.randomize.desc'),
-            value: 25,
-            allowBlank: false,
-            minValue: 0,
-            maxValue: 100
         },{
             xtype: 'checkbox',
             name: 'active',

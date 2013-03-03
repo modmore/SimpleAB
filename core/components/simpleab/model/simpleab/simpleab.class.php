@@ -30,7 +30,7 @@ class SimpleAB {
 
     public $debug = false;
 
-    public $considerPreviousPicks = true;
+    public $considerPreviousPicks = false;
 
     public $lastPickDetails = array();
 
@@ -203,6 +203,74 @@ class SimpleAB {
             'date' => date('Ymd'),
         ));
         $pick->save();
+    }
+
+    /**
+     * @param modResource $resource
+     *
+     * @return array
+     */
+    public function getTestsForResource(modResource $resource) {
+        $registry = $this->modx->cacheManager->get('registry', $this->cacheOptions);
+        if (!$registry || empty($registry)) {
+            $registry = $this->createTestRegistry();
+        }
+
+        $template = $resource->get('template');
+        $resource = $resource->get('id');
+
+        $tests = array();
+
+        if (array_key_exists($template, $registry['templates'])) {
+            $tests = array_merge($tests, $registry['templates'][$template]);
+        }
+        if (array_key_exists($resource, $registry['resources'])) {
+            $tests = array_merge($tests, $registry['resources'][$resource]);
+        }
+
+        $tests = array_unique($tests);
+
+        $this->modx->phpconsole->send($tests, 'mark');
+        return $tests;
+    }
+
+    /**
+     * @return array
+     */
+    public function createTestRegistry() {
+        $registry = array(
+            'resources' => array(),
+            'templates' => array(),
+        );
+        $tests = $this->modx->getCollection('sabTest', array('active' => true));
+
+        /** @var sabTest $test */
+        foreach ($tests as $test) {
+            $testId = $test->get('id');
+            $resources = (string)$test->get('resources');
+            $templates = (string)$test->get('templates');
+
+            if (!empty($resources)) {
+                $resources = explode(',', $resources);
+                foreach ($resources as $resourceId) {
+                    if (!isset($registry['resources'][$resourceId])) {
+                        $registry['resources'][$resourceId] = array();
+                    }
+                    $registry['resources'][$resourceId][] = $testId;
+                }
+            }
+            if (!empty($templates)) {
+                $templates = explode(',', $templates);
+                foreach ($templates as $templateId) {
+                    if (!isset($registry['templates'][$templateId])) {
+                        $registry['templates'][$templateId] = array();
+                    }
+                    $registry['templates'][$templateId][] = $testId;
+                }
+            }
+        }
+        $this->modx->cacheManager->set('registry', $registry, 0, $this->cacheOptions);
+        return $registry;
     }
 }
 
