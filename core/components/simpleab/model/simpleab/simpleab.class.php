@@ -166,7 +166,7 @@ class SimpleAB {
             'variations' => $variations,
             'pick' => $theOne,
         );
-        $this->modx->setPlaceholder('simplab.test_'.$test->get('id').'.pick', $this->modx->toJSON($this->lastPickDetails));
+        $this->modx->setPlaceholder('simpleab.test_' . $testId . '.pick', $this->modx->toJSON($this->lastPickDetails));
         if (isset($variations[$theOne])) {
             return $variations[$theOne];
         }
