@@ -111,9 +111,9 @@ class SimpleAB {
         $theOne = false;
         $mode = '';
 
-        $totalPicks = 0;
+        $totalConversions = 0;
         foreach ($variations as $variation) {
-            $totalPicks += $variation['picks'];
+            $totalConversions = $variation['conversions'] + $totalConversions;
         }
         /**
          * Check if we have picked something for this element already for this user. If we did, we'll want to
@@ -123,8 +123,8 @@ class SimpleAB {
             $previous = $userData['_picked'][$testId];
             // Make sure the previously chosen one is still an option..
             if (in_array($previous, $options)) {
-                $theOne = $previous;
                 $mode = 'previous';
+                $theOne = $previous;
             }
         }
 
@@ -134,29 +134,35 @@ class SimpleAB {
         if (!$theOne) {
             // Check if we can pick it randomly, by matching the total historic conversions
             // to the threshold.
-            $random = $this->pickOneRandomly($test->get('threshold'), $totalPicks, $test->get('randomize'));
+            $random = $this->pickOneRandomly($test->get('threshold'), $totalConversions, $test->get('randomize'));
 
             // Yay, we can do it randomly!
             if ($random) {
+                $mode = 'random';
                 shuffle($options);
                 $theOne = reset($options);
-                $mode = 'random';
                 $this->registerPick($testId, $theOne);
             }
 
             // No randomness involved - perform some smart stuff and pick the best option.
             else {
-                // @todo implement this
                 $mode = 'bestpick';
-                $theOne = null;
-                if (isset($this->modx->phpconsole)) $this->modx->phpconsole->send('Logical pick is not yet implemented for test ' . $testId);
+                $highestRate = 0;
+                $highestVariation = 0;
+                foreach ($variations as $variationId => $variation) {
+                    if ($variation['conversionrate'] > $highestRate) {
+                        $highestRate = $variation['conversionrate'];
+                        $highestVariation = $variationId;
+                    }
+                }
+                $theOne = $highestVariation;
             }
         }
 
         $this->lastPickDetails = array(
             'test' => $testId,
             'mode' => $mode,
-            'options' => $options,
+            'variations' => $variations,
             'pick' => $theOne,
         );
         if (isset($variations[$theOne])) {

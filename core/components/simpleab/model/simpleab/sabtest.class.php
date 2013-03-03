@@ -30,7 +30,7 @@ class sabTest extends xPDOSimpleObject {
      * @return array
      */
     public static function getTest(modX &$modx, $id) {
-        $cacheKey = "tests/{$id}";
+        $cacheKey = "tests/{$id}/details";
 
         $data = $modx->cacheManager->get($cacheKey, $modx->simpleab->cacheOptions);
         if (empty($data)) {
@@ -86,8 +86,8 @@ class sabTest extends xPDOSimpleObject {
 
             foreach ($variations as $id => $values) {
                 $stats[$id] = array(
-                    'picks' => $this->xpdo->getCount('sabPick', array('test' => $this->get('id'), 'varation' => $id)),
-                    'conversions' => $this->xpdo->getCount('sabConversion', array('test' => $this->get('id'), 'varation' => $id)),
+                    'picks' => $this->xpdo->getCount('sabPick', array('test' => $this->get('id'), 'variation' => $id)),
+                    'conversions' => $this->xpdo->getCount('sabConversion', array('test' => $this->get('id'), 'variation' => $id)),
                     'conversionrate' => 0,
                 );
                 if ($stats[$id]['conversions'] > 0) {
@@ -109,7 +109,7 @@ class sabTest extends xPDOSimpleObject {
         $cacheOptions = $this->xpdo->simpleab->cacheOptions;
         $id = $this->get('id');
 
-        $this->xpdo->cacheManager->delete("tests/{$id}", $cacheOptions);
+        $this->xpdo->cacheManager->delete("tests/{$id}/", $cacheOptions);
         $this->xpdo->cacheManager->delete("registry", $cacheOptions);
     }
 
