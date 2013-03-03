@@ -16,7 +16,9 @@ SimpleAB.grid.Tests = function(config) {
             {name: 'randomize', type: 'int'},
             {name: 'active', type: 'bool'},
             {name: 'variations', type: 'int'},
-            {name: 'conversions', type: 'int'}
+            {name: 'conversions', type: 'int'},
+            {name: 'resources', type: 'string'},
+            {name: 'templates', type: 'string'}
         ],
         paging: true,
 		remoteSort: true,
