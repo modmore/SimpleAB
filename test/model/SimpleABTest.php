@@ -121,7 +121,7 @@ class SimpleABTest extends PHPUnit_Framework_TestCase {
         );
     }
 
-    public function _testPickOneUseRandom ($expected, $testArray) {
+    public function testPickOneUseRandom ($expected, $testArray) {
         $this->SimpleAB->considerPreviousPicks = false;
 
         /** @var $test sabTest */
@@ -142,8 +142,6 @@ class SimpleABTest extends PHPUnit_Framework_TestCase {
 
         $this->SimpleAB->pickOne($test, $variations, $userData);
         $this->assertEquals('random', $this->SimpleAB->lastPickDetails['mode']);
-        $this->assertEquals('foo', $this->SimpleAB->lastPickDetails['key']);
-        $this->assertNull($this->SimpleAB->lastPickDetails['data']);
     }
 
     /**
