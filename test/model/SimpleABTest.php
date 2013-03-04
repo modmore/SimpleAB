@@ -34,29 +34,31 @@ class SimpleABTest extends PHPUnit_Framework_TestCase {
         $this->assertNotEmpty($this->SimpleAB->config['jsUrl'], 'missing jsUrl config entry.');
         $this->assertNotEmpty($this->SimpleAB->config['cssUrl'], 'missing cssUrl config entry.');
         $this->assertNotEmpty($this->SimpleAB->config['connectorUrl'], 'missing connectorUrl config entry.');
-
-        /** Specifics for SimpleAB */
-        $this->assertNotEmpty($this->SimpleAB->config['randomThreshold'], 'missing randomThreshold config entry.');
-        $this->assertInternalType('integer', $this->SimpleAB->config['randomThreshold']);
-        $this->assertGreaterThan(0, $this->SimpleAB->config['randomThreshold']);
-
-        $this->assertNotEmpty($this->SimpleAB->config['randomPercentage'], 'missing randomPercentage config entry.');
-        $this->assertInternalType('integer', $this->SimpleAB->config['randomPercentage']);
-        $this->assertGreaterThan(0, $this->SimpleAB->config['randomPercentage']);
-        $this->assertLessThan(100, $this->SimpleAB->config['randomPercentage']);
     }
 
     /**
      * @dataProvider providerPickOnePreviously
      *
      * @param $expected
-     * @param $key
-     * @param $options
+     * @param $test
+     * @param $variations
      * @param $userData
+     *
+     * @return void
      */
-    public function testPickOnePreviously ($expected, $key, $options, $userData) {
-        $this->assertEquals($expected, $this->SimpleAB->pickOne($key, $options, $userData));
+    public function testPickOnePreviously ($expected, $test, $variations, $userData) {
+        $this->SimpleAB->considerPreviousPicks = true;
+
+        /** @var $sabTest sabTest */
+        $sabTest = $this->modx->newObject('sabTest');
+        $sabTest->fromArray($test, '', true);
+
+        $pick = $this->SimpleAB->pickOne($sabTest, $variations, $userData);
         $this->assertEquals('previous', $this->SimpleAB->lastPickDetails['mode']);
+        $this->assertEquals($sabTest->get('id'), $this->SimpleAB->lastPickDetails['test']);
+        $this->assertEquals($variations, $this->SimpleAB->lastPickDetails['variations']);
+        $this->assertEquals($expected['id'], $this->SimpleAB->lastPickDetails['pick']);
+        $this->assertEquals($expected, $pick);
     }
 
     /**
@@ -64,26 +66,84 @@ class SimpleABTest extends PHPUnit_Framework_TestCase {
      */
     public function providerPickOnePreviously () {
         return array(
-            array('foo', 'uniquekey', array('bar','foo','dog'),array('_picked' => array('uniquekey' => 'foo') ) ),
-            array('bar', 'uniquekey', array('bar','foo','dog'),array('_picked' => array('uniquekey' => 'bar') ) ),
-            array('dog', 'uniquekey', array('bar','foo','dog'),array('_picked' => array('uniquekey' => 'dog') ) ),
+            array(
+                array('id' => 'foo'),
+                array('id' => 99999,'threshold' => 1000,'randomize' => 0,),
+                array(
+                    'foo' => array('id' => 'foo'),
+                    'bar' => array('id' => 'bar'),
+                    'dog' => array('id' => 'dog'),
+                    'lalala' => array('id' => 'lalala'),
+                ),
+                array(
+                    '_picked' => array(99999 => 'foo')
+                )
+            ),
+            array(
+                array('id' => 'bar'),
+                array('id' => 999999,'threshold' => 1000,'randomize' => 0,),
+                array(
+                    'foo' => array('id' => 'foo'),
+                    'bar' => array('id' => 'bar'),
+                    'dog' => array('id' => 'dog'),
+                    'lalala' => array('id' => 'lalala'),
+                ),
+                array(
+                    '_picked' => array(999999 => 'bar')
+                )
+            ),
+            array(
+                array('id' => 'dog'),
+                array('id' => 999990,'threshold' => 1000,'randomize' => 0,),
+                array(
+                    'foo' => array('id' => 'foo'),
+                    'bar' => array('id' => 'bar'),
+                    'dog' => array('id' => 'dog'),
+                    'lalala' => array('id' => 'lalala'),
+                ),
+                array(
+                    '_picked' => array(999990 => 'dog')
+                )
+            ),
+            array(
+                array('id' => 'lalala'),
+                array('id' => 9990,'threshold' => 1000,'randomize' => 0,),
+                array(
+                    'foo' => array('id' => 'foo'),
+                    'bar' => array('id' => 'bar'),
+                    'dog' => array('id' => 'dog'),
+                    'lalala' => array('id' => 'lalala'),
+                ),
+                array(
+                    '_picked' => array(9990 => 'lalala')
+                )
+            ),
         );
     }
 
-    public function testPickOneUseRandom () {
-        $this->SimpleAB->config['randomThreshold'] = 50;
-        $this->SimpleAB->config['randomPercentage'] = 100;
-        $userData = $this->SimpleAB->getUserData();
-        $historicData = array(
-            '_count' => 0
-        );
-        $options = array('foo', 'bar', 'dog');
+    public function _testPickOneUseRandom ($expected, $testArray) {
+        $this->SimpleAB->considerPreviousPicks = false;
 
-        $pick = $this->SimpleAB->pickOne('foo', $options, $userData, $historicData);
+        /** @var $test sabTest */
+        $test = $this->modx->newObject('sabTest');
+        $test->fromArray(array(
+            'id' => 123,
+            'threshold' => 1000,
+            'randomize' => 0
+        ), '', true);
+
+        $userData = $this->SimpleAB->getUserData();
+        $variations = array(
+            'foo' => array('id' => 'foo'),
+            'bar' => array('id' => 'bar'),
+            'dog' => array('id' => 'dog'),
+            'lalala' => array('id' => 'lalala'),
+        );
+
+        $this->SimpleAB->pickOne($test, $variations, $userData);
         $this->assertEquals('random', $this->SimpleAB->lastPickDetails['mode']);
         $this->assertEquals('foo', $this->SimpleAB->lastPickDetails['key']);
         $this->assertNull($this->SimpleAB->lastPickDetails['data']);
-        $this->assertContains($pick, $options);
     }
 
     /**
@@ -115,14 +175,5 @@ class SimpleABTest extends PHPUnit_Framework_TestCase {
         $uData = $this->SimpleAB->getUserData();
         $this->assertInternalType('array', $uData);
         $this->assertArrayHasKey('_picked', $uData);
-    }
-
-    public function testGetHistoricData() {
-        $historicData = $this->SimpleAB->getHistoricData('key');
-        $this->assertInternalType('array', $historicData);
-        $this->assertArrayHasKey('_count', $historicData);
-        $this->assertInternalType('integer', $historicData['_count']);
-        $this->assertArrayHasKey('results', $historicData);
-        $this->assertInternalType('array', $historicData['results']);
     }
 }

@@ -41,7 +41,7 @@ foreach ($tests as $testId) {
          * @todo Make sure the template is loaded from cache!
          */
         $modx->resource->_cacheKey = "[contextKey]/resources/[id].tpl{$tpl}";
-        $modx->resource->_content =false;
+        $modx->resource->_content = false;
         $modx->resource->set('template', $tpl);
         $modx->resourceGenerated = true;
     }
