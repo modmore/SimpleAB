@@ -121,7 +121,7 @@ class SimpleABTest extends PHPUnit_Framework_TestCase {
         );
     }
 
-    public function testPickOneUseRandom ($expected, $testArray) {
+    public function testPickOneUseRandom () {
         $this->SimpleAB->considerPreviousPicks = false;
 
         /** @var $test sabTest */
