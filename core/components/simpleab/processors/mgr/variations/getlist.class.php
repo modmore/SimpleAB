@@ -9,6 +9,20 @@ class sabVariationGetListProcessor extends modObjectGetListProcessor {
     public $defaultSortDirection = 'ASC';
 
     /**
+     * Only load variations for current test.
+     *
+     * @param xPDOQuery $c
+     * @return xPDOQuery
+     */
+    public function prepareQueryBeforeCount(xPDOQuery $c) {
+        $test = $this->getProperty('test', 0);
+        $c->where(array(
+            'test' => $test,
+        ));
+        return $c;
+    }
+
+    /**
      * Transform the xPDOObject derivative to an array;
      * @param xPDOObject $object
      * @return array
