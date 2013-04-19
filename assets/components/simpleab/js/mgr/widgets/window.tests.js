@@ -92,3 +92,42 @@ SimpleAB.window.Test = function(config) {
 };
 Ext.extend(SimpleAB.window.Test,MODx.Window);
 Ext.reg('simpleab-window-test',SimpleAB.window.Test);
+
+
+SimpleAB.window.ClearTestData = function(config) {
+    config = config || {};
+    config.id = config.id || Ext.id(),
+    Ext.applyIf(config,{
+        title: _('simpleab.clear_test_data'),
+        autoHeight: true,
+        url: SimpleAB.config.connectorUrl,
+        baseParams: {
+            action: 'mgr/tests/cleardata'
+        },
+        width: 550,
+        fields: [{
+            xtype: 'statictextfield',
+            name: 'id',
+            fieldLabel: 'Test ID',
+            submitValue: true
+        },{
+            html: '<p>'+_('simpleab.clear_test_data_warning')+'</p>'
+        },{
+            xtype: 'checkbox',
+            name: 'clear_conversions',
+            boxLabel: _('simpleab.clear_conversions')
+        },{
+            xtype: 'checkbox',
+            name: 'clear_picks',
+            boxLabel: _('simpleab.clear_picks')
+        },{
+            xtype: 'checkbox',
+            name: 'clear_variations',
+            boxLabel: _('simpleab.clear_variations')
+        }],
+        keys: [] //prevent enter from firing submit as this is an important action
+    });
+    SimpleAB.window.ClearTestData.superclass.constructor.call(this,config);
+};
+Ext.extend(SimpleAB.window.ClearTestData,MODx.Window);
+Ext.reg('simpleab-window-clear-test-data',SimpleAB.window.ClearTestData);

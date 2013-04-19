@@ -4,6 +4,7 @@ $_lang['simpleab'] = 'A/B Testing';
 $_lang['simpleab.menu_desc'] = 'Manage your SimpleAB tests and variations.';
 
 $_lang['simpleab.home'] = 'Manage A/B Tests';
+$_lang['simpleab.test'] = 'Test';
 $_lang['simpleab.tests'] = 'Tests';
 $_lang['simpleab.to_home'] = 'Back to Tests';
 
@@ -35,6 +36,14 @@ $_lang['simpleab.add_test'] = 'Add Test';
 $_lang['simpleab.update_test'] = 'Update Test';
 $_lang['simpleab.manage_test'] = 'Manage Test';
 $_lang['simpleab.manage_test.title'] = 'Manage [[+name]]';
+$_lang['simpleab.archive_test'] = 'Archive Test';
+$_lang['simpleab.clear_test_data'] = 'Clear Test Data';
 $_lang['simpleab.add_variation'] = 'Add Variation';
 $_lang['simpleab.update_variation'] = 'Update Variation';
 $_lang['simpleab.refresh_to_update'] = '<strong>Note:</strong> You have made changes to the variations of this test. You will need to refresh your browser to see this reflected in the Analytics tab. <a href="javascript:location.href=location.href;">Click here to refresh.</a>';
+
+
+$_lang['simpleab.clear_test_data_warning'] = 'Clearing the data for this test cannot be undone. If you are sure you want to do this, please tick the boxes for the data you would like to remove below. ';
+$_lang['simpleab.clear_conversions'] = 'Remove Conversion Data';
+$_lang['simpleab.clear_picks'] = 'Remove Picks Data ';
+$_lang['simpleab.clear_variations'] = 'Remove Variations';

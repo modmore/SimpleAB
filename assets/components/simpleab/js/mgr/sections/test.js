@@ -157,6 +157,12 @@ SimpleAB.page.Test = function(config) {
             text: _('simpleab.update_test'),
             handler: this.updateTest
         },'-',{
+            text: _('simpleab.archive_test'),
+            handler: this.archiveTest
+        },'-',{
+            text: _('simpleab.clear_test_data'),
+            handler: this.clearTestData
+        },'-',{
             text: _('simpleab.to_home'),
             handler: this.toHome
         }]
@@ -172,6 +178,23 @@ Ext.extend(SimpleAB.page.Test,MODx.Component,{
         var record = SimpleAB.record;
         var win = MODx.load({
             xtype: 'simpleab-window-test',
+            isUpdate: true,
+            record: record,
+            listeners: {
+                success: {fn: function() {
+                    location.href = location.href;
+                },scope: this},
+                scope: this
+            }
+        });
+        win.setValues(record);
+        win.show();
+    },
+
+    clearTestData: function() {
+        var record = SimpleAB.record;
+        var win = MODx.load({
+            xtype: 'simpleab-window-clear-test-data',
             isUpdate: true,
             record: record,
             listeners: {
