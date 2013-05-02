@@ -63,6 +63,15 @@ SimpleAB.grid.Tests = function(config) {
             text: _('simpleab.add_test'),
             handler: this.addTest,
             scope: this
+        },'->',{
+            text: _('simpleab.view_archived_tests'),
+            enableToggle: true,
+            scope: this,
+            toggleHandler: function(btn, pressed) {
+                btn.setText(pressed ? _('simpleab.view_current_tests') : _('simpleab.view_archived_tests'));
+                this.getStore().baseParams.include_archived = (pressed ? 1 : 0);
+                this.getBottomToolbar().changePage(1);
+            }
         }]
     });
     SimpleAB.grid.Tests.superclass.constructor.call(this,config);
@@ -84,12 +93,35 @@ Ext.extend(SimpleAB.grid.Tests,MODx.grid.Grid,{
     manageTest: function() {
         MODx.loadPage(MODx.request.a,'action=test&id='+this.menu.record.id);
     },
+
+    archiveTest: function() {
+        var record = this.menu.record;
+        MODx.msg.confirm({
+            title: _('simpleab.archive_test'),
+            text: _('simpleab.archive_test.confirm'),
+            url: SimpleAB.config.connectorUrl,
+            params: {
+                action: 'mgr/tests/archive',
+                id: record.id
+            },
+            listeners: {
+                'success':{fn: function(r) {
+                    this.refresh();
+                },scope: this}
+            }
+        });
+    },
+
     getMenu: function() {
         var m = [];
 
         m.push({
             text: _('simpleab.manage_test'),
             handler: this.manageTest,
+            scope: this
+        }, '-', {
+            text: _('simpleab.archive_test'),
+            handler: this.archiveTest,
             scope: this
         });
         return m;

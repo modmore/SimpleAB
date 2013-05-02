@@ -9,6 +9,21 @@ class sabTestGetListProcessor extends modObjectGetListProcessor {
     public $defaultSortDirection = 'ASC';
 
     /**
+     * @param xPDOQuery $c
+     *
+     * @return xPDOQuery
+     */
+    public function prepareQueryBeforeCount(xPDOQuery $c) {
+        $includeArchived = $this->getProperty('include_archived', false);
+        if (!$includeArchived) {
+            $c->where(array(
+                'archived' => false,
+            ));
+        }
+        return $c;
+    }
+
+    /**
      * Transform the xPDOObject derivative to an array;
      * @param xPDOObject $object
      * @return array

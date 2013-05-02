@@ -25,6 +25,7 @@
         <field key="description" dbtype="varchar" precision="500" phptype="string" null="false" />
         <field key="type" dbtype="varchar" precision="75" phptype="string" null="false" default="modTemplate" />
         <field key="active" dbtype="tinyint" precision="1" phptype="bool" null="false" default="0" />
+        <field key="archived" dbtype="tinyint" precision="1" phptype="bool" null="false" default="0" />
 
         <field key="threshold" dbtype="int" precision="10" phptype="integer" null="false" default="100" />
         <field key="randomize" dbtype="int" precision="3" phptype="integer" null="false" default="25" />

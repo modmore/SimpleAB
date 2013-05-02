@@ -37,10 +37,14 @@ $_lang['simpleab.update_test'] = 'Update Test';
 $_lang['simpleab.manage_test'] = 'Manage Test';
 $_lang['simpleab.manage_test.title'] = 'Manage [[+name]]';
 $_lang['simpleab.archive_test'] = 'Archive Test';
+$_lang['simpleab.archive_test.confirm'] = 'Are you sure you want to archive this test? It will be deactivated and removed from the Tests grid.';
+$_lang['simpleab.archive_test.already_archived'] = 'This test has already been archived.';
 $_lang['simpleab.clear_test_data'] = 'Clear Test Data';
 $_lang['simpleab.add_variation'] = 'Add Variation';
 $_lang['simpleab.update_variation'] = 'Update Variation';
 $_lang['simpleab.refresh_to_update'] = '<strong>Note:</strong> You have made changes to the variations of this test. You will need to refresh your browser to see this reflected in the Analytics tab. <a href="javascript:location.href=location.href;">Click here to refresh.</a>';
+$_lang['simpleab.view_archived_tests'] = 'Include Archived Tests';
+$_lang['simpleab.view_current_tests'] = 'View Current Tests Only';
 
 
 $_lang['simpleab.clear_test_data_warning'] = 'Clearing the data for this test cannot be undone. If you are sure you want to do this, please tick the boxes for the data you would like to remove below. ';

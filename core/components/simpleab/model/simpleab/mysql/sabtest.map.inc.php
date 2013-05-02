@@ -31,6 +31,7 @@ $xpdo_meta_map['sabTest']= array (
     'description' => NULL,
     'type' => 'modTemplate',
     'active' => 0,
+    'archived' => 0,
     'threshold' => 100,
     'randomize' => 25,
     'resources' => NULL,
@@ -61,6 +62,14 @@ $xpdo_meta_map['sabTest']= array (
       'default' => 'modTemplate',
     ),
     'active' => 
+    array (
+      'dbtype' => 'tinyint',
+      'precision' => '1',
+      'phptype' => 'bool',
+      'null' => false,
+      'default' => 0,
+    ),
+    'archived' => 
     array (
       'dbtype' => 'tinyint',
       'precision' => '1',

@@ -164,5 +164,6 @@ $manager->addField('sabTest', 'randomize');
 $manager->addField('sabConversion', 'date');
 $manager->addField('sabTest', 'resources');
 $manager->addField('sabTest', 'templates');
+$manager->addField('sabTest', 'archived');
 
 exit ();

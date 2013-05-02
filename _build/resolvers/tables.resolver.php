@@ -22,6 +22,8 @@ if ($object->xpdo) {
                 $manager->createObjectContainer($obj);
             }
 
+            $manager->addField('sabTest', 'archived');
+
             $modx->setLogLevel($logLevel);
         break;
     }
