@@ -157,8 +157,8 @@ SimpleAB.page.Test = function(config) {
             text: _('simpleab.update_test'),
             handler: this.updateTest
         },'-',{
-            text: _('simpleab.archive_test'),
-            handler: this.archiveTest
+            text: parseInt(SimpleAB.record.archived) ? _('simpleab.unarchive_test') :  _('simpleab.archive_test'),
+            handler: parseInt(SimpleAB.record.archived) ? this.unArchiveTest : this.archiveTest
         },'-',{
             text: _('simpleab.clear_test_data'),
             handler: this.clearTestData
@@ -206,6 +206,40 @@ Ext.extend(SimpleAB.page.Test,MODx.Component,{
         });
         win.setValues(record);
         win.show();
+    },
+
+    archiveTest: function() {
+        MODx.msg.confirm({
+            title: _('simpleab.archive_test'),
+            text: _('simpleab.archive_test.confirm'),
+            url: SimpleAB.config.connectorUrl,
+            params: {
+                action: 'mgr/tests/archive',
+                id: SimpleAB.record.id
+            },
+            listeners: {
+                'success':{fn: function(r) {
+                    MODx.loadPage(MODx.request.a);
+                },scope: this}
+            }
+        });
+    },
+
+    unArchiveTest: function() {
+        MODx.msg.confirm({
+            title: _('simpleab.unarchive_test'),
+            text: _('simpleab.unarchive_test.confirm'),
+            url: SimpleAB.config.connectorUrl,
+            params: {
+                action: 'mgr/tests/unarchive',
+                id: SimpleAB.record.id
+            },
+            listeners: {
+                'success':{fn: function(r) {
+                    MODx.loadPage(MODx.request.a,'id='+SimpleAB.record.id);
+                },scope: this}
+            }
+        });
     }
 });
 Ext.reg('simpleab-page-test',SimpleAB.page.Test);

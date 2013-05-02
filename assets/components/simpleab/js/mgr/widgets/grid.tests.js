@@ -15,6 +15,7 @@ SimpleAB.grid.Tests = function(config) {
             {name: 'threshold', type: 'int'},
             {name: 'randomize', type: 'int'},
             {name: 'active', type: 'bool'},
+            {name: 'archived', type: 'bool'},
             {name: 'variations', type: 'int'},
             {name: 'conversions', type: 'int'},
             {name: 'resources', type: 'string'},
@@ -26,17 +27,18 @@ SimpleAB.grid.Tests = function(config) {
 			header: _('simpleab.id'),
 			dataIndex: 'id',
 			sortable: true,
-			width: .1
+			width: .05
 		},{
 			header: _('simpleab.name'),
 			dataIndex: 'name',
 		    sortable: true,
-			width: .3
+			width: .2
 		},{
 			header: _('simpleab.description'),
 			dataIndex: 'description',
 		    sortable: true,
-			width: .5
+            hidden: true,
+			width: .4
 		},{
 			header: _('simpleab.type'),
 			dataIndex: 'type',
@@ -45,6 +47,12 @@ SimpleAB.grid.Tests = function(config) {
 		},{
 			header: _('simpleab.active'),
 			dataIndex: 'active',
+		    sortable: true,
+			width: .1,
+            renderer: MODx.grid.Grid.prototype.rendYesNo
+		},{
+			header: _('simpleab.archived'),
+			dataIndex: 'archived',
 		    sortable: true,
 			width: .1,
             renderer: MODx.grid.Grid.prototype.rendYesNo
@@ -112,6 +120,24 @@ Ext.extend(SimpleAB.grid.Tests,MODx.grid.Grid,{
         });
     },
 
+    unArchiveTest: function() {
+        var record = this.menu.record;
+        MODx.msg.confirm({
+            title: _('simpleab.unarchive_test'),
+            text: _('simpleab.unarchive_test.confirm'),
+            url: SimpleAB.config.connectorUrl,
+            params: {
+                action: 'mgr/tests/unarchive',
+                id: record.id
+            },
+            listeners: {
+                'success':{fn: function(r) {
+                    this.refresh();
+                },scope: this}
+            }
+        });
+    },
+
     getMenu: function() {
         var m = [];
 
@@ -119,11 +145,21 @@ Ext.extend(SimpleAB.grid.Tests,MODx.grid.Grid,{
             text: _('simpleab.manage_test'),
             handler: this.manageTest,
             scope: this
-        }, '-', {
-            text: _('simpleab.archive_test'),
-            handler: this.archiveTest,
-            scope: this
-        });
+        }, '-');
+
+        if (this.menu.record.archived) {
+            m.push({
+                text: _('simpleab.unarchive_test'),
+                handler: this.unArchiveTest,
+                scope: this
+            });
+        } else {
+            m.push({
+                text: _('simpleab.archive_test'),
+                handler: this.archiveTest,
+                scope: this
+            });
+        }
         return m;
     }
 });
