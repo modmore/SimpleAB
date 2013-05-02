@@ -46,4 +46,3 @@ foreach ($tests as $testId) {
         $modx->resourceGenerated = true;
     }
 }
-
