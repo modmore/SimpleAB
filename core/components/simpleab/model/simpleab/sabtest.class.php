@@ -37,6 +37,7 @@ class sabTest extends xPDOSimpleObject {
             $c = $modx->newQuery('sabTest');
             $c->where(array(
                 'active' => true,
+                'archived' => false,
                 'id' => $id
             ));
 

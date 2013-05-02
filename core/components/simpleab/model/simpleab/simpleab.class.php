@@ -301,7 +301,7 @@ class SimpleAB {
             'resources' => array(),
             'templates' => array(),
         );
-        $tests = $this->modx->getCollection('sabTest', array('active' => true));
+        $tests = $this->modx->getCollection('sabTest', array('active' => true, 'archived' => false));
 
         /** @var sabTest $test */
         foreach ($tests as $test) {

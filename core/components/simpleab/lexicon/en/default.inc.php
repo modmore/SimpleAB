@@ -35,7 +35,7 @@ $_lang['simpleab.normalized.desc'] = 'The actual conversion rate (percentage) fo
 
 $_lang['simpleab.add_test'] = 'Add Test';
 $_lang['simpleab.update_test'] = 'Edit Test';
-$_lang['simpleab.manage_test'] = 'Manage Test';
+$_lang['simpleab.manage_test'] = 'Manage Variations & Results';
 $_lang['simpleab.manage_test.title'] = 'Manage [[+name]]';
 $_lang['simpleab.unarchive_test'] = 'Un-archive Test';
 $_lang['simpleab.unarchive_test.confirm'] = 'Are you sure you want to unarchive this test?';
