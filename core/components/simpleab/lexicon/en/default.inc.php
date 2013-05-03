@@ -49,6 +49,8 @@ $_lang['simpleab.update_variation'] = 'Edit Variation';
 $_lang['simpleab.refresh_to_update'] = '<strong>Note:</strong> You have made changes to the variations of this test. You will need to refresh your browser to see this reflected in the Analytics tab. <a href="javascript:location.href=location.href;">Click here to refresh.</a>';
 $_lang['simpleab.view_archived_tests'] = 'Include Archived Tests';
 $_lang['simpleab.view_current_tests'] = 'View Current Tests Only';
+$_lang['simpleab.clear_variation_data'] = 'Clear Picks & Conversions Data';
+$_lang['simpleab.clear_variation_data.confirm'] = 'Clearing the data for this Variation cannot be undone. Are you sure you want to do this?';
 
 
 $_lang['simpleab.clear_test_data_warning'] = 'Clearing the data for this test cannot be undone. If you are sure you want to do this, please tick the boxes for the data you would like to remove below. ';

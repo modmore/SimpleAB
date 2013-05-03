@@ -34,6 +34,16 @@ SimpleAB.page.Test = function(config) {
                 cls: 'main-wrapper'
             },
             items: [{
+                title: _('simpleab.variations'),
+                items: [{
+                    xtype: 'panel',
+                    id: 'simpleab-panel-refresh',
+                    hidden: true,
+                    html: '<p style="border: 1px solid red; padding: 5px; background-color: #ff9d00;">'+_('simpleab.refresh_to_update')+'</p>'
+                },{
+                    xtype: 'simpleab-grid-variations'
+                }]
+            },{
                 title: _('simpleab.statistics'),
                 items: [{
                     layout: 'column',
@@ -140,16 +150,6 @@ SimpleAB.page.Test = function(config) {
                             })
                         }]
                     }]
-                }]
-            },{
-                title: _('simpleab.variations'),
-                items: [{
-                    xtype: 'panel',
-                    id: 'simpleab-panel-refresh',
-                    hidden: true,
-                    html: '<p style="border: 1px solid red; padding: 5px; background-color: #ff9d00;">'+_('simpleab.refresh_to_update')+'</p>'
-                },{
-                    xtype: 'simpleab-grid-variations'
                 }]
             }]
         }],
