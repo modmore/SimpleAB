@@ -101,6 +101,7 @@ Ext.extend(SimpleAB.grid.Tests,MODx.grid.Grid,{
     updateTest: function() {
         var win = MODx.load({
             xtype: 'simpleab-window-test',
+            isUpdate: true,
             listeners: {
                 success: {fn: function(r) {
                     this.refresh();
@@ -153,6 +154,26 @@ Ext.extend(SimpleAB.grid.Tests,MODx.grid.Grid,{
         });
     },
 
+    duplicateTest: function() {
+        var record = {
+            id: this.menu.record.id,
+            name: _('simpleab.duplicate_of') + this.menu.record.name
+        };
+        var win = MODx.load({
+            xtype: 'simpleab-window-duplicate-test',
+            isUpdate: true,
+            record: record,
+            listeners: {
+                success: {fn: function() {
+                    this.refresh();
+                },scope: this},
+                scope: this
+            }
+        });
+        win.setValues(record);
+        win.show();
+    },
+
     getMenu: function() {
         var m = [];
 
@@ -164,7 +185,11 @@ Ext.extend(SimpleAB.grid.Tests,MODx.grid.Grid,{
             text: _('simpleab.manage_test'),
             handler: this.manageTest,
             scope: this
-        }, '-');
+        }, '-', {
+            text: _('simpleab.duplicate_test'),
+            handler: this.duplicateTest,
+            scope: this
+        });
 
         if (this.menu.record.archived) {
             m.push({
