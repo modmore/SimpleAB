@@ -1,10 +1,26 @@
-++++++++++++++++++++++++++++++++
-++   SimpleAB 0.1.0-pl        ++
-++   Released on 2013-03-03   ++
-++++++++++++++++++++++++++++++++
+++ SimpleAB 0.3.0-pl
+++ Released on 2013-05-04
+++++++++++++++++++++++++++
 
-- Add simpleab.test_{ID}.pick placeholder with the SimpleAB::lastPickDetails as JSON.
-- Add ability to disable looking at previous picks.
-- Fix several caching bugs.
-- Implement conversion-rate picking of best variation.
-- Initial build.
+- Add conversion testing for Chunks
+- Add preview function for tests + variations
+- Add toggle switch to enable or disable smart optimization
+- Add ability to permanently delete tests
+- Add ability to duplicate tests, with or without test data attached.
+- Add ability to remove variations
+- Add ability to clear data on a single variation
+- Add ability to archive tests.
+- Add ability to clear data on tests.
+
+++ SimpleAB 0.2.0-pl
+++ Released on 2013-03-11
++++++++++++++++++++++++++
+
+- Many small improvements based on early feedback.
+
+
+++ SimpleAB 0.1.0-pl
+++ Released on 2013-03-03
+++++++++++++++++++++++++
+
+- Initial release.
