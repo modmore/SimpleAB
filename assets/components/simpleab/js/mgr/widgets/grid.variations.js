@@ -120,6 +120,23 @@ Ext.extend(SimpleAB.grid.Variations,MODx.grid.Grid,{
         });
     },
 
+    deleteVariation: function() {
+        MODx.msg.confirm({
+            title: _('simpleab.delete_variation'),
+            text: _('simpleab.delete_variation.confirm'),
+            url: SimpleAB.config.connectorUrl,
+            params: {
+                action: 'mgr/variations/remove',
+                id: this.menu.record.id
+            },
+            listeners: {
+                'success':{fn: function(r) {
+                    this.refresh();
+                },scope: this}
+            }
+        });
+    },
+
     getMenu: function() {
         var m = [];
 
@@ -136,6 +153,12 @@ Ext.extend(SimpleAB.grid.Variations,MODx.grid.Grid,{
                 scope: this
             });
         }
+
+        m.push('-',{
+            text: _('simpleab.delete_variation'),
+            handler: this.deleteVariation,
+            scope: this
+        });
         return m;
     }
 });

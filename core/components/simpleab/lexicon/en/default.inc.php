@@ -51,6 +51,8 @@ $_lang['simpleab.view_archived_tests'] = 'Include Archived Tests';
 $_lang['simpleab.view_current_tests'] = 'View Current Tests Only';
 $_lang['simpleab.clear_variation_data'] = 'Clear Picks & Conversions Data';
 $_lang['simpleab.clear_variation_data.confirm'] = 'Clearing the data for this Variation cannot be undone. Are you sure you want to do this?';
+$_lang['simpleab.delete_variation'] = 'Delete Variation';
+$_lang['simpleab.delete_variation.confirm'] = 'Are you sure you want to do this? You can recreate the variation, but you will not be able of restoring the statistics for the variation.';
 
 
 $_lang['simpleab.clear_test_data_warning'] = 'Clearing the data for this test cannot be undone. If you are sure you want to do this, please tick the boxes for the data you would like to remove below. ';
