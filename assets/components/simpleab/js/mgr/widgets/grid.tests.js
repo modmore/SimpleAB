@@ -246,7 +246,7 @@ Ext.extend(SimpleAB.grid.Tests,MODx.grid.Grid,{
             });
         }
 
-        m.push('-', {
+        m.push({
             text: _('simpleab.delete_test'),
             handler: this.deleteTest,
             scope: this

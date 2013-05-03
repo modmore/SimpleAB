@@ -5,9 +5,9 @@
 class testsClearDataProcessor extends modObjectProcessor {
     public $classKey = 'sabTest';
     public $backup = array(
+        'sabVariation' => array(),
         'sabConversion' => array(),
         'sabPick' => array(),
-        'sabVariation' => array(),
     );
 
     public function process() {
