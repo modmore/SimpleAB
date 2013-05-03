@@ -24,6 +24,7 @@ $_lang['simpleab.apply_to_resources'] = 'Apply to Resources';
 $_lang['simpleab.apply_to_resources.desc'] = 'Comma separated list of Resource IDs to run this test on. Example: 1,6,345';
 $_lang['simpleab.apply_to_templates'] = 'Apply to Templates';
 $_lang['simpleab.apply_to_templates.desc'] = 'Comma separated list of Template IDs to run this test on. Example: 2,5';
+$_lang['simpleab.variation'] = 'Variation';
 $_lang['simpleab.variations'] = 'Variations';
 $_lang['simpleab.statistics'] = 'Analytics';
 $_lang['simpleab.conversions'] = 'Conversions';
@@ -59,6 +60,8 @@ $_lang['simpleab.delete_test.confirm'] = 'Are you sure you want to do this? Whil
 $_lang['simpleab.duplicate_test'] = 'Duplicate Test';
 $_lang['simpleab.duplicate_data'] = 'Include Picks & Conversions Data';
 $_lang['simpleab.duplicate_of'] = 'Duplicate of ';
+$_lang['simpleab.preview_variation'] = 'Preview Variation';
+$_lang['simpleab.resource'] = 'Resource';
 
 
 $_lang['simpleab.clear_test_data_warning'] = 'Clearing the data for this test cannot be undone. If you are sure you want to do this, please tick the boxes for the data you would like to remove below. ';

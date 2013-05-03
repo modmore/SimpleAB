@@ -137,10 +137,24 @@ Ext.extend(SimpleAB.grid.Variations,MODx.grid.Grid,{
         });
     },
 
+    previewVariation: function() {
+        var record = this.menu.record;
+
+        var win = MODx.load({
+            xtype: 'simpleab-window-preview-variation',
+            record: this.menu.record
+        });
+        win.show();
+    },
+
     getMenu: function() {
         var m = [];
 
         m.push({
+            text: _('simpleab.preview_variation'),
+            handler: this.previewVariation,
+            scope: this
+        },{
             text: _('simpleab.update_variation'),
             handler: this.updateVariation,
             scope: this

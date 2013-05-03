@@ -12,6 +12,10 @@ if (!$simpleAB = $modx->getService('simpleab', 'SimpleAB', $corePath.'model/simp
     return 'SimpleAB not found in ' . $corePath;
 }
 
+
+/**
+ * Handle tests
+ */
 $tests = $simpleAB->getTestsForResource($modx->resource);
 
 foreach ($tests as $testId) {
@@ -19,11 +23,36 @@ foreach ($tests as $testId) {
 
     if ($test instanceof sabTest && ($test->get('type') == 'modTemplate')) {
         $variations = $test->getVariations();
-
         $picked = $simpleAB->pickOne($test, $variations, $simpleAB->getUserData());
+        $tpl = $picked['element'];
+
+        /**
+         * Override tpl for the preview functionality.
+         */
+        if (isset($_GET['sabTest']) && isset($_GET['sabVariation']) && ($_GET['sabTest'] == $test->get('id'))) {
+            if ($modx->user->isAuthenticated('mgr')) {
+                $variation = $modx->getObject('sabVariation', array(
+                    'id' => (int)$_GET['sabVariation'],
+                    'test' => $test->get('id'),
+                ));
+                if ($variation) {
+                    $tpl = $variation->get('element');
+                    $modx->regClientHTMLBlock(<<<HTML
+<div style="position: fixed; bottom: 0px; left: 0px; background: #1f4a7f; color: white; margin: 0; padding: 15px; -webkit-border-radius: 0px 10px 0px 0px; border-radius: 0px 10px 0px 0px; border-top: 1px solid #fff; border-right: 1px solid #fff;">
+    <p style="margin: 0 0 10px 0; padding: 0; width: 100%;font-size: 125%;">SimpleAB Admin Preview</p>
+    <p><strong>Test:</strong> {$test->name} <br />
+    <strong>Variation</strong> {$variation->name}
+    </p>
+</div>
+HTML
+);
+
+                }
+            }
+        }
+
 
         /** Make sure the element (template) exists. */
-        $tpl = $picked['element'];
         if ($modx->getCount('modTemplate', $tpl) < 1) {
             // Uh oh, looks like the template doesn't exist. Do nothing.
             $modx->log(modX::LOG_LEVEL_ERROR,'[SimpleAB] Template for AB test ' . $test->get('id') . 'not found: ' . $tpl);
