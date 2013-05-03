@@ -74,7 +74,9 @@ class sabTest extends xPDOSimpleObject {
             $variations = array();
             foreach ($this->getMany('Variations') as $variation) {
                 /** @var sabVariation $variation */
-                $variations[$variation->get('id')] = $variation->toArray();
+                if ($variation->get('active')) {
+                    $variations[$variation->get('id')] = $variation->toArray();
+                }
             }
             $this->xpdo->cacheManager->set($cacheKey, $variations, 0, $this->xpdo->simpleab->cacheOptions);
         }
