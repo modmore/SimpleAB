@@ -28,24 +28,12 @@ SimpleAB.window.Test = function(config) {
                     maxLength: 75,
                     anchor: '100%'
                 },{
-                    xtype: 'numberfield',
-                    name: 'threshold',
-                    fieldLabel: _('simpleab.threshold'),
-                    description: _('simpleab.threshold.desc'),
-                    value: 100,
-                    allowBlank: false,
-                    minValue: 0,
-                    anchor: '100%'
-                },{
-                    xtype: 'numberfield',
-                    name: 'randomize',
-                    fieldLabel: _('simpleab.randomize'),
-                    description: _('simpleab.randomize.desc'),
-                    value: 25,
-                    allowBlank: false,
-                    minValue: 0,
-                    maxValue: 100,
-                    anchor: '100%'
+                    xtype: 'textfield',
+                    name: 'resources',
+                    fieldLabel: _('simpleab.apply_to_resources'),
+                    description: _('simpleab.apply_to_resources.desc'),
+                    anchor: '100%',
+                    allowBlank: true
                 }]
             },{
                 columnWidth:.5,
@@ -58,13 +46,6 @@ SimpleAB.window.Test = function(config) {
                     anchor: '100%',
                     submitValue: true,
                     value: 'modTemplate'
-                },{
-                    xtype: 'textfield',
-                    name: 'resources',
-                    fieldLabel: _('simpleab.apply_to_resources'),
-                    description: _('simpleab.apply_to_resources.desc'),
-                    anchor: '100%',
-                    allowBlank: true
                 },{
                     xtype: 'textfield',
                     name: 'templates',
@@ -85,12 +66,70 @@ SimpleAB.window.Test = function(config) {
             xtype: 'checkbox',
             name: 'active',
             boxLabel: _('simpleab.active')
+        },{
+            xtype: 'checkbox',
+            name: 'archived',
+            boxLabel: _('simpleab.archived')
+        },{
+            id: config.id + '-smartoptimize-toggle',
+            xtype: 'checkbox',
+            name: 'smartoptimize',
+            boxLabel: _('simpleab.smartoptimize'),
+            listeners: {
+                check: function(fld, checked) {
+                    var flds = Ext.getCmp(config.id + '-smartoptimize');
+                    if (checked) {
+                        flds.show();
+                    } else {
+                        flds.hide();
+                    }
+                }
+            }
+        },{
+            id: config.id + '-smartoptimize',
+            hidden: true,
+            layout: 'column',
+            border: false,
+            defaults: {
+                layout: 'form'
+            },
+            items: [{
+                columnWidth:.5,
+                items: [{
+                    xtype: 'numberfield',
+                    name: 'threshold',
+                    fieldLabel: _('simpleab.threshold'),
+                    description: _('simpleab.threshold.desc'),
+                    value: 100,
+                    allowBlank: false,
+                    minValue: 0,
+                    anchor: '100%'
+                }]
+            },{
+                columnWidth:.5,
+                items: [{
+                    xtype: 'numberfield',
+                    name: 'randomize',
+                    fieldLabel: _('simpleab.randomize'),
+                    description: _('simpleab.randomize.desc'),
+                    value: 25,
+                    allowBlank: false,
+                    minValue: 0,
+                    maxValue: 100,
+                    anchor: '100%'
+                }]
+            }]
         }],
         keys: [] //prevent enter in textarea from firing submit
     });
     SimpleAB.window.Test.superclass.constructor.call(this,config);
 };
-Ext.extend(SimpleAB.window.Test,MODx.Window);
+Ext.extend(SimpleAB.window.Test,MODx.Window, {
+    triggerOptimizeBox: function() {
+        var toggle = Ext.getCmp(this.config.id + '-smartoptimize-toggle');
+        toggle.fireEvent('check', toggle, toggle.getValue());
+    }
+});
 Ext.reg('simpleab-window-test',SimpleAB.window.Test);
 
 

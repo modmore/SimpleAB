@@ -19,6 +19,7 @@ $_lang['simpleab.randomize'] = 'Randomization Percentage';
 $_lang['simpleab.randomize.desc'] = 'After passing the Conversion Threshold, SimpleAB will use the variation with the highest conversion by default. The Randomization Percentage indicates how often, after passing the threshold, a random variation should be shown to validate the conversion. For example, a randomization of 25% will mean one in four requests will be shown a random variation after passing the conversion threshold.';
 $_lang['simpleab.active'] = 'Active';
 $_lang['simpleab.archived'] = 'Archived';
+$_lang['simpleab.smartoptimize'] = 'Enable Smart Optimizer';
 $_lang['simpleab.apply_to_resources'] = 'Apply to Resources';
 $_lang['simpleab.apply_to_resources.desc'] = 'Comma separated list of Resource IDs to run this test on. Example: 1,6,345';
 $_lang['simpleab.apply_to_templates'] = 'Apply to Templates';

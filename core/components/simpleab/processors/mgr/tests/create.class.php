@@ -18,6 +18,7 @@ class sabTestCreateProcessor extends modObjectCreateProcessor {
 
         /* Set checkbox */
         $this->setCheckbox('active', true);
+        $this->setCheckbox('smartoptimize', true);
         return parent::beforeSet();
     }
 }

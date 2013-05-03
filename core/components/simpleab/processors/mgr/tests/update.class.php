@@ -17,6 +17,7 @@ class sabTestUpdateProcessor extends modObjectUpdateProcessor {
         }
 
         $this->setCheckbox('active', true);
+        $this->setCheckbox('smartoptimize', true);
         return parent::beforeSet();
     }
 }

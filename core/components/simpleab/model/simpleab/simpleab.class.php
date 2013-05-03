@@ -135,7 +135,7 @@ class SimpleAB {
         if (!$theOne) {
             // Check if we can pick it randomly, by matching the total historic conversions
             // to the threshold.
-            $random = $this->pickOneRandomly($test->get('threshold'), $totalConversions, $test->get('randomize'));
+            $random = $this->pickOneRandomly($test, $totalConversions);
 
             // Yay, we can do it randomly!
             if ($random) {
@@ -145,7 +145,7 @@ class SimpleAB {
                 $this->registerPick($testId, $theOne);
             }
 
-            // No randomness involved - perform some smart stuff and pick the best option.
+            // No randomness involved - use smart optimize mode to pick the best performing variation.
             else {
                 $mode = 'bestpick';
                 $highestRate = 0;
@@ -174,17 +174,21 @@ class SimpleAB {
     }
 
     /**
-     * @param $threshold
+     * Decides if we need to use a random test or not.
+     *
+     * @param sabTest $test
      * @param $conversions
-     * @param $randomizePercentage
      *
      * @return bool
      */
-    public function pickOneRandomly($threshold, $conversions, $randomizePercentage) {
-        $random = ($conversions <= $threshold);
+    public function pickOneRandomly(sabTest $test, $conversions) {
+        if (!$test->get('smartoptimize')) {
+            return true;
+        }
+        $random = ($conversions <= $test->get('threshold'));
         if (!$random) {
             $randomChance = rand(0,100);
-            if ($randomChance < $randomizePercentage) {
+            if ($randomChance < $test->get('randomize')) {
                 $random = true;
             }
         }

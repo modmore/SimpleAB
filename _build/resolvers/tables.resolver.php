@@ -23,6 +23,7 @@ if ($object->xpdo) {
             }
 
             $manager->addField('sabTest', 'archived');
+            $manager->addField('sabTest', 'smartoptimize');
 
             $modx->setLogLevel($logLevel);
         break;

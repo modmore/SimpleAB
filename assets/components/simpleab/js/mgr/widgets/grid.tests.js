@@ -16,6 +16,7 @@ SimpleAB.grid.Tests = function(config) {
             {name: 'randomize', type: 'int'},
             {name: 'active', type: 'bool'},
             {name: 'archived', type: 'bool'},
+            {name: 'smartoptimize', type: 'bool'},
             {name: 'variations', type: 'int'},
             {name: 'conversions', type: 'int'},
             {name: 'resources', type: 'string'},
@@ -111,6 +112,7 @@ Ext.extend(SimpleAB.grid.Tests,MODx.grid.Grid,{
             record: this.menu.record
         });
         win.setValues(this.menu.record);
+        win.triggerOptimizeBox();
         win.show();
     },
 
