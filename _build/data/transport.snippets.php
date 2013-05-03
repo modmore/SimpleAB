@@ -2,6 +2,7 @@
 $snips = array(
     'sabConversion' => 'Stand-alone snippet to register a conversion to SimpleAB.',
     'sabConversionHook' => 'Hook for use with FormIt to register a conversion to SimpleAB.',
+    'SimpleAB' => 'SimpleAB snippet to run Chunk A/B tests. Specify the &test property.',
 );
 
 $snippets = array();
@@ -19,5 +20,3 @@ foreach ($snips as $name => $description) {
 }
 
 return $snippets;
-
-?>

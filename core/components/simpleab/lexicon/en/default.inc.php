@@ -36,6 +36,8 @@ $_lang['simpleab.normalized'] = 'Conversion Rate';
 $_lang['simpleab.normalized.desc'] = 'The actual conversion rate (percentage) for each variation. It is calculated by dividing the amount of picks by the amount of conversions per variation.';
 
 $_lang['simpleab.add_test'] = 'Add Test';
+$_lang['simpleab.add_template_test'] = 'Add Template Test';
+$_lang['simpleab.add_chunk_test'] = 'Add Chunk Test';
 $_lang['simpleab.update_test'] = 'Edit Test';
 $_lang['simpleab.manage_test'] = 'Manage Variations & Results';
 $_lang['simpleab.manage_test.title'] = 'Manage [[+name]]';

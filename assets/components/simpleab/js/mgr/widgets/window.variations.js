@@ -31,7 +31,7 @@ SimpleAB.window.Variation = function(config) {
             maxLength: 500,
             allowBlank: true
         },{
-            xtype: 'modx-combo-template',
+            xtype: (SimpleAB.record.type == 'modTemplate') ? 'modx-combo-template' : 'numberfield',
             name: 'element',
             hiddenName: 'element',
             fieldLabel: _('simpleab.element'),

@@ -69,8 +69,12 @@ SimpleAB.grid.Tests = function(config) {
 			width: .1
 		}],
         tbar: [{
-            text: _('simpleab.add_test'),
-            handler: this.addTest,
+            text: _('simpleab.add_template_test'),
+            handler: this.addTemplateTest,
+            scope: this
+        },'-',{
+            text: _('simpleab.add_chunk_test'),
+            handler: this.addChunkTest,
             scope: this
         },'->',{
             text: _('simpleab.view_archived_tests'),
@@ -86,7 +90,7 @@ SimpleAB.grid.Tests = function(config) {
     SimpleAB.grid.Tests.superclass.constructor.call(this,config);
 };
 Ext.extend(SimpleAB.grid.Tests,MODx.grid.Grid,{
-    addTest: function() {
+    addTemplateTest: function() {
         var win = MODx.load({
             xtype: 'simpleab-window-test',
             listeners: {
@@ -96,6 +100,23 @@ Ext.extend(SimpleAB.grid.Tests,MODx.grid.Grid,{
                 scope: this
             }
         });
+        win.show();
+    },
+
+    addChunkTest: function() {
+        var win = MODx.load({
+            xtype: 'simpleab-window-test',
+            record: {
+                type: 'modChunk'
+            },
+            listeners: {
+                success: {fn: function(r) {
+                    this.refresh();
+                },scope: this},
+                scope: this
+            }
+        });
+        win.setValues({type: 'modChunk'});
         win.show();
     },
 
@@ -205,7 +226,7 @@ Ext.extend(SimpleAB.grid.Tests,MODx.grid.Grid,{
             text: _('simpleab.manage_test'),
             handler: this.manageTest,
             scope: this
-        }, '-', {
+        },{
             text: _('simpleab.duplicate_test'),
             handler: this.duplicateTest,
             scope: this

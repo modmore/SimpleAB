@@ -1,6 +1,7 @@
 SimpleAB.window.Test = function(config) {
     config = config || {};
-    config.id = config.id || Ext.id(),
+    config.id = config.id || Ext.id();
+    config.record = config.record || {type: 'modTemplate'};
     Ext.applyIf(config,{
         title: (config.isUpdate) ? _('simpleab.update_test') : _('simpleab.add_test'),
         autoHeight: true,
@@ -33,14 +34,14 @@ SimpleAB.window.Test = function(config) {
                     fieldLabel: _('simpleab.apply_to_resources'),
                     description: _('simpleab.apply_to_resources.desc'),
                     anchor: '100%',
-                    allowBlank: true
+                    allowBlank: true,
+                    hidden: !(config.record.type == 'modTemplate')
                 }]
             },{
                 columnWidth:.5,
                 border: false,
                 items: [{
-                    xtype: 'textfield',
-                    disabled: true,
+                    xtype: 'statictextfield',
                     name: 'type',
                     fieldLabel: _('simpleab.type'),
                     anchor: '100%',
@@ -52,7 +53,8 @@ SimpleAB.window.Test = function(config) {
                     fieldLabel: _('simpleab.apply_to_templates'),
                     description: _('simpleab.apply_to_templates.desc'),
                     anchor: '100%',
-                    allowBlank: true
+                    allowBlank: true,
+                    hidden: !(config.record.type == 'modTemplate')
                 }]
             }]
         },{
