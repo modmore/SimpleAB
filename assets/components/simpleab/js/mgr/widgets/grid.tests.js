@@ -154,6 +154,24 @@ Ext.extend(SimpleAB.grid.Tests,MODx.grid.Grid,{
         });
     },
 
+    deleteTest: function() {
+        var record = this.menu.record;
+        MODx.msg.confirm({
+            title: _('simpleab.delete_test'),
+            text: _('simpleab.delete_test.confirm'),
+            url: SimpleAB.config.connectorUrl,
+            params: {
+                action: 'mgr/tests/remove',
+                id: record.id
+            },
+            listeners: {
+                'success':{fn: function(r) {
+                    this.refresh();
+                },scope: this}
+            }
+        });
+    },
+
     duplicateTest: function() {
         var record = {
             id: this.menu.record.id,
@@ -189,7 +207,7 @@ Ext.extend(SimpleAB.grid.Tests,MODx.grid.Grid,{
             text: _('simpleab.duplicate_test'),
             handler: this.duplicateTest,
             scope: this
-        });
+        }, '-');
 
         if (this.menu.record.archived) {
             m.push({
@@ -204,6 +222,13 @@ Ext.extend(SimpleAB.grid.Tests,MODx.grid.Grid,{
                 scope: this
             });
         }
+
+        m.push('-', {
+            text: _('simpleab.delete_test'),
+            handler: this.deleteTest,
+            scope: this
+        });
+
         return m;
     }
 });
