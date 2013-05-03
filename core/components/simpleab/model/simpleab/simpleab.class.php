@@ -65,6 +65,7 @@ class SimpleAB {
             'jsUrl' => $assetsUrl.'js/',
             'cssUrl' => $assetsUrl.'css/',
             'connectorUrl' => $assetsUrl.'connector.php',
+            'hideLogo' => (bool)$this->modx->getOption('simpleab.hide_logo', null, false),
         ),$config);
 
         $this->modx->lexicon->load('simpleab:default');

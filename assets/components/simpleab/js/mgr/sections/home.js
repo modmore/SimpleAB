@@ -34,7 +34,7 @@ SimpleAB.page.Home = function(config) {
                     xtype: 'simpleab-grid-tests'
                 }]
             }]
-        }]
+        },SimpleAB.attribution()]
     });
     SimpleAB.page.Home.superclass.constructor.call(this,config);
 };

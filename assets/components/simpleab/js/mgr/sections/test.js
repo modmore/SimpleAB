@@ -152,7 +152,7 @@ SimpleAB.page.Test = function(config) {
                     }]
                 }]
             }]
-        }],
+        },SimpleAB.attribution()],
         buttons: [{
             text: _('simpleab.update_test'),
             handler: this.updateTest
