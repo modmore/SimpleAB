@@ -23,7 +23,6 @@
 class sabVariation extends xPDOSimpleObject {
     public function clearCache() {
         $cacheOptions = $this->xpdo->simpleab->cacheOptions;
-        $id = $this->get('id');
         $testId = $this->get('test');
 
         $this->xpdo->cacheManager->delete("tests/{$testId}/stats", $cacheOptions);

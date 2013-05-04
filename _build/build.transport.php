@@ -22,7 +22,7 @@ set_time_limit(0);
 /* define package */
 define('PKG_NAME','SimpleAB');
 define('PKG_NAME_LOWER',strtolower(PKG_NAME));
-define('PKG_VERSION','0.3.0');
+define('PKG_VERSION','0.3.1');
 define('PKG_RELEASE','pl');
 
 $root = dirname(dirname(__FILE__)).'/';
@@ -62,6 +62,22 @@ $category = $modx->newObject('modCategory');
 $category->set('id',1);
 $category->set('category',PKG_NAME);
 $modx->log(modX::LOG_LEVEL_INFO,'Packaged in category.'); flush();
+
+/* Settings */
+$settings = include_once $sources['data'].'transport.settings.php';
+$attributes= array(
+    xPDOTransport::UNIQUE_KEY => 'key',
+    xPDOTransport::PRESERVE_KEYS => true,
+    xPDOTransport::UPDATE_OBJECT => false,
+);
+if (!is_array($settings)) { $modx->log(modX::LOG_LEVEL_FATAL,'Adding settings failed.'); }
+foreach ($settings as $setting) {
+    $vehicle = $builder->createVehicle($setting,$attributes);
+    $builder->putVehicle($vehicle);
+}
+$modx->log(modX::LOG_LEVEL_INFO,'Packaged in '.count($settings).' system settings.'); flush();
+unset($settings,$setting,$attributes);
+
 
 /* add plugins */
 $plugins = include $sources['data'].'transport.plugins.php';

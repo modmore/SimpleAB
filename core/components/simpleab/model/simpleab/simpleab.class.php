@@ -28,8 +28,6 @@ class SimpleAB {
     /** @var array Array of configuration options, primarily paths. */
     public $config = array();
 
-    public $debug = false;
-
     public $considerPreviousPicks = true;
 
     public $lastPickDetails = array();
@@ -77,7 +75,6 @@ class SimpleAB {
         $this->modx->loadClass('sabVariation', $modelPath.'simpleab/');
         $this->modx->loadClass('sabPick', $modelPath.'simpleab/');
 
-        $this->debug = $this->modx->getOption('simpleab.debug', null, false);
         $this->considerPreviousPicks = (bool)$this->modx->getOption('simpleab.use_previous_picks', null, true);
     }
 

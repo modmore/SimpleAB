@@ -70,3 +70,10 @@ $_lang['simpleab.clear_test_data_warning'] = 'Clearing the data for this test ca
 $_lang['simpleab.clear_conversions'] = 'Remove Conversion Data';
 $_lang['simpleab.clear_picks'] = 'Remove Picks Data ';
 $_lang['simpleab.clear_variations'] = 'Remove Variations';
+
+
+$_lang['setting_simpleab.use_previous_picks'] = 'Use Previous Picks';
+$_lang['setting_simpleab.use_previous_picks_desc'] = 'When enabled, SimpleAB will look at the users\' session to make sure they are presented the same variation on subsequent visits. You probably don\'t really want to turn this off in production, but it\'s great for demos!';
+
+$_lang['setting_simpleab.hide_logo'] = 'Hide modmore logo';
+$_lang['setting_simpleab.hide_logo_desc'] = 'By default, there is a subtle modmore logo in the bottom right of the component, linking back to the SimpleAB documentation. If you don\'t want it there, no sweat, just enable this setting.';
