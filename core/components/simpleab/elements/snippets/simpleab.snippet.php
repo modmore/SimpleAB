@@ -39,7 +39,7 @@ if ($test instanceof sabTest && ($test->get('type') == 'modChunk')) {
             if ($variation) {
                 $chunkId = $variation->get('element');
                 $modx->regClientHTMLBlock(<<<HTML
-<div style="position: fixed; bottom: 0px; left: 0px; background: #1f4a7f; color: white; margin: 0; padding: 15px; -webkit-border-radius: 0px 10px 0px 0px; border-radius: 0px 10px 0px 0px; border-top: 1px solid #fff; border-right: 1px solid #fff;">
+<div style="position: fixed; bottom: 0px; left: 0px; background: #1f4a7f; color: white; margin: 0; padding: 15px; -webkit-border-radius: 0px 10px 0px 0px; border-radius: 0px 10px 0px 0px; border-top: 1px solid #fff; border-right: 1px solid #fff; z-index: 10000;">
 <p style="margin: 0 0 10px 0; padding: 0; width: 100%;font-size: 125%;">SimpleAB Admin Preview</p>
 <p><strong>Test:</strong> {$test->name} <br />
 <strong>Variation</strong> {$variation->name}
