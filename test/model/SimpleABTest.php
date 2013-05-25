@@ -148,13 +148,16 @@ class SimpleABTest extends PHPUnit_Framework_TestCase {
      * @dataProvider providerPickOneRandomly
      *
      * @param $expected
-     * @param $threshold
+     * @param $testArray
      * @param $conversions
-     * @param $randomizePercentage
      */
-    public function testPickOneRandomly($expected, $threshold, $conversions, $randomizePercentage) {
+    public function testPickOneRandomly($expected, $testArray, $conversions) {
+        /** @var sabTest $test */
+        $test = $this->modx->newObject('sabTest');
+        $test->fromArray($testArray);
+
         $this->assertEquals($expected,
-            $this->SimpleAB->pickOneRandomly($threshold, $conversions, $randomizePercentage));
+            $this->SimpleAB->pickOneRandomly($test, $conversions));
     }
 
     /**
@@ -162,10 +165,10 @@ class SimpleABTest extends PHPUnit_Framework_TestCase {
      */
     public function providerPickOneRandomly() {
         return array(
-            array(true, 100, 50, 50),
-            array(false, 50, 100, 0),
-            array(true, 100, 50, 0),
-            array(true, 50, 100, 100),
+            array(true, array('smartoptimize' => false), 0),
+            array(true, array('smartoptimize' => true, 'threshold' => 500, 'randomize' => 0), 100),
+            array(false, array('smartoptimize' => true, 'threshold' => 500, 'randomize' => 0), 750),
+            array(true, array('smartoptimize' => true, 'threshold' => 500, 'randomize' => 101), 750),
         );
     }
 
