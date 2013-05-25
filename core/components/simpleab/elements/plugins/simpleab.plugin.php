@@ -35,15 +35,7 @@ foreach ($tests as $testId) {
             if ($variation) {
                 $tpl = $variation->get('element');
                 $simpleAB->registerPick($test->get('id'), $variation->get('id'));
-                $modx->regClientHTMLBlock(<<<HTML
-<div style="position: fixed; bottom: 0px; left: 0px; background: #1f4a7f; color: white; margin: 0; padding: 15px; -webkit-border-radius: 0px 10px 0px 0px; border-radius: 0px 10px 0px 0px; border-top: 1px solid #fff; border-right: 1px solid #fff;">
-<p style="margin: 0 0 10px 0; padding: 0; width: 100%;font-size: 125%;">SimpleAB Admin Preview</p>
-<p><strong>Test:</strong> {$test->name} <br />
-<strong>Variation</strong> {$variation->name}
-</p>
-</div>
-HTML
-);
+                $simpleAB->registerAdminPreviewBox($test, $variations);
             }
             /** Variation not found? Pretend like our nose is bleeding and do like normal. */
             else {

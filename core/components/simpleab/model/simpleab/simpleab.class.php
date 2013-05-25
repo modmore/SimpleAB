@@ -340,5 +340,39 @@ class SimpleAB {
         $this->modx->cacheManager->set('registry', $registry, 0, $this->cacheOptions);
         return $registry;
     }
+
+    /**
+     * Creates a simple admin preview box and puts it in the markup.
+     *
+     * @param sabTest $test
+     * @param array $variations
+     */
+    public function registerAdminPreviewBox(sabTest $test, array $variations = array()) {
+        /** @var string $variationsDropdown Build a <select> field with variations  */
+        $variationsDropdown = '<select name="sabVariation" onchange="this.form.submit();">';
+        foreach ($variations as $key => $options) {
+            $selected = ($_GET['sabVariation'] == $key) ? ' selected="selected" ' : '';
+            $variationsDropdown .= '<option value="'.$key.'"'.$selected.'>'.$options['name'].'</option>';
+        }
+        $variationsDropdown .= '</select>';
+
+        /** @var string $thisPageUrl The URL to the current page. */
+        $thisPageUrl = $this->modx->makeUrl($this->modx->resource->get('id'), '', '', 'full');
+
+        $html = <<<HTML
+<div style="position: fixed; bottom: 0px; left: 0px; background: #1f4a7f; color: white; margin: 0; padding: 15px; -webkit-border-radius: 0px 10px 0px 0px; border-radius: 0px 10px 0px 0px; border-top: 1px solid #fff; border-right: 1px solid #fff; z-index: 10000;">
+<p style="margin: 0 0 10px 0; padding: 0; width: 100%;font-size: 125%;">SimpleAB Admin Preview</p>
+<form action="{$thisPageUrl}" method="get">
+    <input type="hidden" name="sabTest" value="{$test->get('id')}" />
+    <p>
+        <strong>Test:</strong> {$test->name} <br />
+        <strong>Variation</strong> {$variationsDropdown}
+    </p>
+</form>
+</div>
+HTML;
+
+        $this->modx->regClientHTMLBlock($html);
+    }
 }
 
