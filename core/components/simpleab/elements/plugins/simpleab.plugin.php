@@ -36,6 +36,13 @@ foreach ($tests as $testId) {
                 $tpl = $variation->get('element');
                 $simpleAB->registerPick($test->get('id'), $variation->get('id'));
                 $simpleAB->registerAdminPreviewBox($test, $variations);
+                $simpleAB->lastPickDetails = array(
+                    'test' => $testId,
+                    'mode' => 'preview',
+                    'pick' => $variation->get('id'),
+                    'variation' => $variation->toArray(),
+                    'variations' => $variations,
+                );
             }
             /** Variation not found? Pretend like our nose is bleeding and do like normal. */
             else {
@@ -60,6 +67,8 @@ foreach ($tests as $testId) {
             $modx->log(modX::LOG_LEVEL_ERROR,'[SimpleAB] Template for AB test ' . $test->get('id') . 'not found: ' . $tpl);
             continue;
         }
+
+        $modx->toPlaceholders($simpleAB->lastPickDetails, 'simpleab.test_' . $testId);
 
         /**
          * Dynamically swap out the template.

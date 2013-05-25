@@ -39,6 +39,13 @@ if ($test instanceof sabTest && ($test->get('type') == 'modChunk')) {
             $chunkId = $variation->get('element');
             $simpleAB->registerPick($test->get('id'), $variation->get('id'));
             $simpleAB->registerAdminPreviewBox($test, $variations);
+            $simpleAB->lastPickDetails = array(
+                'test' => $testId,
+                'mode' => 'preview',
+                'pick' => $variation->get('id'),
+                'variation' => $variation->toArray(),
+                'variations' => $variations,
+            );
         }
         /** If we're an admin in preview mode, but the variation doesn't exist, just grab one. */
         else {
@@ -57,6 +64,8 @@ if ($test instanceof sabTest && ($test->get('type') == 'modChunk')) {
         return 'Inactive test #'.$testId;
     }
 
+    $modx->toPlaceholders($simpleAB->lastPickDetails, 'simpleab.test_' . $testId);
+    $scriptProperties['simpleab.test'] = $simpleAB->lastPickDetails;
     /**
      * Load and return the processed chunk.
      */

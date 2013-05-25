@@ -162,10 +162,10 @@ class SimpleAB {
         $this->lastPickDetails = array(
             'test' => $testId,
             'mode' => $mode,
-            'variations' => $variations,
             'pick' => $theOne,
+            'variation' => $variations[$theOne],
+            'variations' => $variations,
         );
-        $this->modx->setPlaceholder('simpleab.test_' . $testId . '.pick', $this->modx->toJSON($this->lastPickDetails));
         if (isset($variations[$theOne])) {
             return $variations[$theOne];
         }
