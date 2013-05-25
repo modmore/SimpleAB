@@ -155,6 +155,7 @@ class SimpleAB {
                     }
                 }
                 $theOne = $highestVariation;
+                $this->registerPick($testId, $theOne);
             }
         }
 
@@ -217,8 +218,9 @@ class SimpleAB {
 
     /**
      * @param $tests
+     * @param bool $resetPickForTest
      */
-    public function registerConversion($tests) {
+    public function registerConversion($tests, $resetPickForTest = true) {
         $userData = $this->getUserData();
         $visitedTests = $userData['_picked'];
 
@@ -262,7 +264,12 @@ class SimpleAB {
                 'date' => date('Ymd'),
                 'value' => 1,
             ));
-            if (!$conversion->save()) {
+            if ($conversion->save()) {
+                if ($resetPickForTest) {
+                    unset($_SESSION['_simpleab']['_picked'][$testId]);
+                }
+            }
+            else {
                 $this->modx->log(modX::LOG_LEVEL_ERROR,'[SimpleAB.sabConversionHook] Error occurred trying to save new sabConversion object.');
             }
         }
@@ -303,7 +310,7 @@ class SimpleAB {
             'resources' => array(),
             'templates' => array(),
         );
-        $tests = $this->modx->getCollection('sabTest', array('active' => true, 'archived' => false));
+        $tests = $this->modx->getCollection('sabTest', array('archived' => false));
 
         /** @var sabTest $test */
         foreach ($tests as $test) {

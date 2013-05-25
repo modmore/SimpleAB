@@ -1,3 +1,11 @@
+++ SimpleAB 0.9.0-pl
+++ In Development
+++++++++++++++++++++++++++
+
+- Refactor plugin and snippet to properly log picks when in preview mode, and to enable previews when tests were inactive.
+- Fix bug where bestpick mode (with Auto Optimizer) picks did not register the pick.
+- Rename Smart Optimizer to Auto Optimizer due to clash with other package.
+
 ++ SimpleAB 0.3.1-pl
 ++ Released on 2013-05-04
 ++++++++++++++++++++++++++

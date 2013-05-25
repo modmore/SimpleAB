@@ -6,51 +6,61 @@
  * @event OnLoadWebDocument
  */
 
-/* Load the SimpleAB service class */
+/** Load the SimpleAB service class */
 $corePath = $modx->getOption('simpleab.core_path',null,$modx->getOption('core_path').'components/simpleab/');
 if (!$simpleAB = $modx->getService('simpleab', 'SimpleAB', $corePath.'model/simpleab/')) {
     return 'SimpleAB not found in ' . $corePath;
 }
 
 
-/**
- * Handle tests
- */
+/** Get the tests that could apply on this resource and loop over them. */
 $tests = $simpleAB->getTestsForResource($modx->resource);
-
 foreach ($tests as $testId) {
+    /** Get the individual test object from cache, and continue it if it's a template test */
     $test = $modx->call('sabTest', 'getTest', array(&$modx, $testId));
-
     if ($test instanceof sabTest && ($test->get('type') == 'modTemplate')) {
+        $isActive = $test->get('active');
+        $isAdmin = $modx->user->isAuthenticated('mgr');
+        $isPreview = isset($_GET['sabTest']) && isset($_GET['sabVariation']) && ($_GET['sabTest'] == $test->get('id'));
         $variations = $test->getVariations();
-        $picked = $simpleAB->pickOne($test, $variations, $simpleAB->getUserData());
-        $tpl = $picked['element'];
 
-        /**
-         * Override tpl for the preview functionality.
-         */
-        if (isset($_GET['sabTest']) && isset($_GET['sabVariation']) && ($_GET['sabTest'] == $test->get('id'))) {
-            if ($modx->user->isAuthenticated('mgr')) {
-                $variation = $modx->getObject('sabVariation', array(
-                    'id' => (int)$_GET['sabVariation'],
-                    'test' => $test->get('id'),
-                ));
-                if ($variation) {
-                    $tpl = $variation->get('element');
-                    $modx->regClientHTMLBlock(<<<HTML
+        $tpl = 0;
+        /** Admin and in preview mode? Fetch the specified variation. */
+        if ($isAdmin && $isPreview) {
+            $variation = $modx->getObject('sabVariation', array(
+                'id' => (int)$_GET['sabVariation'],
+                'test' => $test->get('id'),
+            ));
+            /**  Variation found => get it, register the pick and add the admin preview box. */
+            if ($variation) {
+                $tpl = $variation->get('element');
+                $simpleAB->registerPick($test->get('id'), $variation->get('id'));
+                $modx->regClientHTMLBlock(<<<HTML
 <div style="position: fixed; bottom: 0px; left: 0px; background: #1f4a7f; color: white; margin: 0; padding: 15px; -webkit-border-radius: 0px 10px 0px 0px; border-radius: 0px 10px 0px 0px; border-top: 1px solid #fff; border-right: 1px solid #fff;">
-    <p style="margin: 0 0 10px 0; padding: 0; width: 100%;font-size: 125%;">SimpleAB Admin Preview</p>
-    <p><strong>Test:</strong> {$test->name} <br />
-    <strong>Variation</strong> {$variation->name}
-    </p>
+<p style="margin: 0 0 10px 0; padding: 0; width: 100%;font-size: 125%;">SimpleAB Admin Preview</p>
+<p><strong>Test:</strong> {$test->name} <br />
+<strong>Variation</strong> {$variation->name}
+</p>
 </div>
 HTML
 );
-
-                }
+            }
+            /** Variation not found? Pretend like our nose is bleeding and do like normal. */
+            else {
+                $picked = $simpleAB->pickOne($test, $variations, $simpleAB->getUserData());
+                $tpl = $picked['element'];
             }
         }
 
+        /** No admin/preview? Handle test if it is active. */
+        elseif ($isActive) {
+            $picked = $simpleAB->pickOne($test, $variations, $simpleAB->getUserData());
+            $tpl = $picked['element'];
+        }
+
+        else {
+            continue;
+        }
 
         /** Make sure the element (template) exists. */
         if ($modx->getCount('modTemplate', $tpl) < 1) {
