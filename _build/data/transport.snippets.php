@@ -2,6 +2,7 @@
 $snips = array(
     'sabConversion' => 'Stand-alone snippet to register a conversion to SimpleAB.',
     'sabConversionHook' => 'Hook for use with FormIt to register a conversion to SimpleAB.',
+    'sabConversionUrl' => 'Snippet that properly generates the URL to load via AJAX to register a conversion.',
     'SimpleAB' => 'SimpleAB snippet to run Chunk A/B tests. Specify the &test property.',
 );
 
