@@ -2,6 +2,7 @@
 ++ In Development
 ++++++++++++++++++++++++++
 
+- Add &resetPick property to sabConversion and &sabResetPick property to sabConversionHook to indicate if previous Picks should be discarded after logging the conversion.
 - Add ability to more granularly debug/log tests through placeholders.
 - Refactor plugin and snippet to properly log picks when in preview mode, and to enable previews when tests were inactive.
 - Fix bug where bestpick mode (with Auto Optimizer) picks did not register the pick.

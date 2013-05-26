@@ -12,8 +12,9 @@ if (!$simpleAB = $modx->getService('simpleab', 'SimpleAB', $corePath.'model/simp
 }
 
 $fi = $hook->formit->config;
-$tests = $modx->getOption('sabTests', $fi);
+$resetPick = (bool)$modx->getOption('sabResetPick', $fi, true);
 
+$tests = $modx->getOption('sabTests', $fi);
 if (!$tests || empty($tests)) {
     /**
      * If we don't have any test ID(s), we'll log the issue and return true to prevent
@@ -23,5 +24,5 @@ if (!$tests || empty($tests)) {
     return true;
 }
 
-$simpleAB->registerConversion($tests);
+$simpleAB->registerConversion($tests, $resetPick);
 return true;

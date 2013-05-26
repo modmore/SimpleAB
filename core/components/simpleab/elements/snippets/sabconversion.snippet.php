@@ -11,8 +11,9 @@ if (!$simpleAB = $modx->getService('simpleab', 'SimpleAB', $corePath.'model/simp
     return 'SimpleAB not found in ' . $corePath;
 }
 
-$tests = $modx->getOption('tests', $scriptProperties, '*');
+$resetPick = (bool)$modx->getOption('resetPick', $scriptProperties, true);
 
+$tests = $modx->getOption('tests', $scriptProperties, '*');
 if (!$tests || empty($tests)) {
     /**
      * If we don't have any test ID(s), log it to the error log.
@@ -21,5 +22,5 @@ if (!$tests || empty($tests)) {
     return;
 }
 
-$simpleAB->registerConversion($tests);
+$simpleAB->registerConversion($tests, $resetPick);
 return;
