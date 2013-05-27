@@ -19,11 +19,30 @@ $mtime = $mtime[1] + $mtime[0];
 $tstart = $mtime;
 set_time_limit(0);
 
-/* define package */
-define('PKG_NAME','SimpleAB');
-define('PKG_NAME_LOWER',strtolower(PKG_NAME));
-define('PKG_VERSION','0.3.1');
-define('PKG_RELEASE','pl');
+if (!defined('MOREPROVIDER_BUILD')) {
+    /* define version */
+    define('PKG_NAME','SimpleAB');
+    define('PKG_NAMESPACE','simpleab');
+    define('PKG_VERSION','0.9.0');
+    define('PKG_RELEASE','pl');
+
+    /* load modx */
+    require_once dirname(dirname(__FILE__)) . '/config.core.php';
+    require_once MODX_CORE_PATH . 'model/modx/modx.class.php';
+    $modx= new modX();
+    $modx->initialize('mgr');
+    $modx->setLogLevel(modX::LOG_LEVEL_INFO);
+    $modx->setLogTarget('ECHO');
+
+
+    echo '<pre>';
+    flush();
+    $targetDirectory = dirname(dirname(__FILE__)) . '/_packages/';
+}
+else {
+    $targetDirectory = MOREPROVIDER_BUILD_TARGET;
+}
+
 
 $root = dirname(dirname(__FILE__)).'/';
 $sources= array (
@@ -32,13 +51,13 @@ $sources= array (
     'events' => $root . '_build/events/',
     'resolvers' => $root . '_build/resolvers/',
     'data' => $root . '_build/data/',
-    'source_core' => $root.'core/components/'.PKG_NAME_LOWER,
-    'source_assets' => $root.'assets/components/'.PKG_NAME_LOWER,
-    'plugins' => $root.'core/components/'.PKG_NAME_LOWER.'/elements/plugins/',
-    'snippets' => $root.'core/components/'.PKG_NAME_LOWER.'/elements/snippets/',
-    'lexicon' => $root . 'core/components/'.PKG_NAME_LOWER.'/lexicon/',
-    'docs' => $root.'core/components/'.PKG_NAME_LOWER.'/docs/',
-    'model' => $root.'core/components/'.PKG_NAME_LOWER.'/model/',
+    'source_core' => $root.'core/components/'.PKG_NAMESPACE,
+    'source_assets' => $root.'assets/components/'.PKG_NAMESPACE,
+    'plugins' => $root.'core/components/'.PKG_NAMESPACE.'/elements/plugins/',
+    'snippets' => $root.'core/components/'.PKG_NAMESPACE.'/elements/snippets/',
+    'lexicon' => $root . 'core/components/'.PKG_NAMESPACE.'/lexicon/',
+    'docs' => $root.'core/components/'.PKG_NAMESPACE.'/docs/',
+    'model' => $root.'core/components/'.PKG_NAMESPACE.'/model/',
 );
 unset($root);
 
@@ -48,14 +67,30 @@ require_once MODX_CORE_PATH . 'model/modx/modx.class.php';
 $modx= new modX();
 $modx->initialize('mgr');
 $modx->setLogLevel(modX::LOG_LEVEL_INFO);
-$modx->setLogTarget('ECHO'); echo 'Packing '.PKG_NAME_LOWER.'-'.PKG_VERSION.'-'.PKG_RELEASE.'<pre>'; flush();
+$modx->setLogTarget('ECHO'); echo 'Packing '.PKG_NAMESPACE.'-'.PKG_VERSION.'-'.PKG_RELEASE.'<pre>'; flush();
 
 $modx->loadClass('transport.modPackageBuilder','',false, true);
 $builder = new modPackageBuilder($modx);
-$builder->directory = dirname(dirname(__FILE__)).'/_packages/';
-$builder->createPackage(PKG_NAME_LOWER,PKG_VERSION,PKG_RELEASE);
-$builder->registerNamespace(PKG_NAME_LOWER,false,true,'{core_path}components/'.PKG_NAME_LOWER.'/');
-$modx->getService('lexicon','modLexicon');
+$builder->directory = $targetDirectory;
+$builder->createPackage(PKG_NAMESPACE,PKG_VERSION,PKG_RELEASE);
+$builder->registerNamespace(PKG_NAMESPACE,false,true,'{core_path}components/'.PKG_NAMESPACE.'/');
+
+require_once dirname(__FILE__) . '/vehicle/modmore/modmorevehicle.class.php';
+$builder->package->put(
+    array(
+        'source' => dirname(__FILE__) . '/vehicle/modmore/',
+        'target' => "return MODX_CORE_PATH . 'components/';"
+    ),
+    array(
+        'vehicle_class' => 'xPDOFileVehicle',
+        'resolve' => array(
+            array(
+                'type' => 'php',
+                'source' => dirname(__FILE__) . '/vehicle/scripts/resolver.php'
+            )
+        )
+    )
+);
 
 /** @var $category modCategory */
 $category = $modx->newObject('modCategory');
@@ -78,6 +113,13 @@ foreach ($settings as $setting) {
 $modx->log(modX::LOG_LEVEL_INFO,'Packaged in '.count($settings).' system settings.'); flush();
 unset($settings,$setting,$attributes);
 
+if (!defined('MODMORE_VEHICLE_PRIVATE_KEY')) {
+    if (file_exists(dirname(__FILE__).'/license.php')) {
+        include dirname(__FILE__).'/license.php';
+    } else {
+        exit ('You need a license and license.php file to build a package. Ask Mark.');
+    }
+}
 
 /* add plugins */
 $plugins = include $sources['data'].'transport.plugins.php';
@@ -94,6 +136,12 @@ $attributes = array(
             xPDOTransport::UNIQUE_KEY => array('pluginid','event'),
         ),
     ),
+
+    xPDOTransport::ABORT_INSTALL_ON_VEHICLE_FAIL => true,
+    'vehicle_package_path' => dirname(__FILE__) . '/',
+    'vehicle_class' => 'modmoreVehicle',
+    'vehicle_public_key' => MODMORE_VEHICLE_PUBLIC_KEY,
+    'vehicle_download_id' => MODMORE_VEHICLE_DOWNLOAD
 );
 foreach ($plugins as $plugin) {
     $vehicle = $builder->createVehicle($plugin, $attributes);
@@ -130,6 +178,12 @@ $attr = array(
             xPDOTransport::UNIQUE_KEY => 'name',
         ),
     ),
+
+    xPDOTransport::ABORT_INSTALL_ON_VEHICLE_FAIL => true,
+    'vehicle_package_path' => dirname(__FILE__) . '/',
+    'vehicle_class' => 'modmoreVehicle',
+    'vehicle_public_key' => MODMORE_VEHICLE_PUBLIC_KEY,
+    'vehicle_download_id' => MODMORE_VEHICLE_DOWNLOAD
 );
 $vehicle = $builder->createVehicle($category,$attr);
 $vehicle->resolve('file',array(
