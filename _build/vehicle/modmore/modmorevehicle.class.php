@@ -88,6 +88,7 @@ class modmoreVehicle extends xPDOObjectVehicle {
                 /**
                  * @var modRestResponse $response
                  */
+                $provider->xpdo->setOption('contentType', 'array');
                 $response = $provider->request('package/decode', 'POST', $params);
                 if ($response->isError()) {
                     $msg = $response->getError();
