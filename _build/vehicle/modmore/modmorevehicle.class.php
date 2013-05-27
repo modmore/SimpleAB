@@ -88,7 +88,7 @@ class modmoreVehicle extends xPDOObjectVehicle {
                 /**
                  * @var modRestResponse $response
                  */
-                $response = $provider->request('package/decode', 'GET', $params);
+                $response = $provider->request('package/decode', 'POST', $params);
                 if ($response->isError()) {
                     $msg = $response->getError();
                     $transport->xpdo->log(xPDO::LOG_LEVEL_ERROR, 'Error decoding encrypted data: ' . $msg);
