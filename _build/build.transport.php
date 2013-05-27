@@ -61,14 +61,6 @@ $sources= array (
 );
 unset($root);
 
-require_once $sources['root'] . 'config.core.php';
-require_once MODX_CORE_PATH . 'model/modx/modx.class.php';
-
-$modx= new modX();
-$modx->initialize('mgr');
-$modx->setLogLevel(modX::LOG_LEVEL_INFO);
-$modx->setLogTarget('ECHO'); echo 'Packing '.PKG_NAMESPACE.'-'.PKG_VERSION.'-'.PKG_RELEASE.'<pre>'; flush();
-
 $modx->loadClass('transport.modPackageBuilder','',false, true);
 $builder = new modPackageBuilder($modx);
 $builder->directory = $targetDirectory;
