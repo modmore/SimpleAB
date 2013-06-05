@@ -7,7 +7,7 @@
  * Class modmoreVehicle
  */
 class modmoreVehicle extends xPDOObjectVehicle {
-    const VERSION = '0.5.0';
+    const VERSION = '0.6.0';
 
     public $class = 'modmoreVehicle';
 
@@ -45,7 +45,7 @@ class modmoreVehicle extends xPDOObjectVehicle {
      * successful.
      */
     public function install(& $transport, $options) {
-        if (!$this->decodePayloads($transport)) {
+        if (!$this->decodePayloads($transport, 'install')) {
             return false;
         }
         return parent::install($transport, $options);
@@ -59,16 +59,20 @@ class modmoreVehicle extends xPDOObjectVehicle {
      * @return boolean True, always.
      */
     public function uninstall(& $transport, $options) {
-        return true;
+        if (!$this->decodePayloads($transport, 'uninstall')) {
+            return false;
+        }
+        return parent::uninstall($transport, $options);
     }
 
 
     /**
      * @param xPDOTransport $transport
+     * @param string $endpoint
      *
      * @return bool
      */
-    public function decodePayloads(xPDOTransport &$transport) {
+    public function decodePayloads(xPDOTransport &$transport, $endpoint = 'install') {
         $params = array(
             'download_id' => $this->payload['vehicle_download_id'],
             'public_key' => $this->payload['vehicle_public_key'],
@@ -76,8 +80,6 @@ class modmoreVehicle extends xPDOObjectVehicle {
             'related_objects' => (isset($this->payload['related_objects_encrypted'])) ? urlencode($this->payload['related_objects_encrypted']) : '',
             'vehicle_version' => self::VERSION,
         );
-
-        $transport->xpdo->log(xPDO::LOG_LEVEL_INFO,$params['object']);
 
         $package = $transport->xpdo->getObject('transport.modTransportPackage', array(
             'signature' => $transport->signature
@@ -88,8 +90,8 @@ class modmoreVehicle extends xPDOObjectVehicle {
                 /**
                  * @var modRestResponse $response
                  */
-                $provider->xpdo->setOption('contentType', 'array');
-                $response = $provider->request('package/decode', 'POST', $params);
+                $provider->xpdo->setOption('contentType','default');
+                $response = $provider->request('package/decode/'.$endpoint, 'POST', $params);
                 if ($response->isError()) {
                     $msg = $response->getError();
                     $transport->xpdo->log(xPDO::LOG_LEVEL_ERROR, 'Error decoding encrypted data: ' . $msg);

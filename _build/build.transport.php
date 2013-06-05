@@ -23,7 +23,7 @@ if (!defined('MOREPROVIDER_BUILD')) {
     /* define version */
     define('PKG_NAME','SimpleAB');
     define('PKG_NAMESPACE','simpleab');
-    define('PKG_VERSION','0.9.0');
+    define('PKG_VERSION','0.9.9');
     define('PKG_RELEASE','pl');
 
     /* load modx */
@@ -43,6 +43,14 @@ else {
     $targetDirectory = MOREPROVIDER_BUILD_TARGET;
 }
 
+if (!defined('MODMORE_VEHICLE_PRIVATE_KEY')) {
+    if (file_exists(dirname(__FILE__).'/license.php')) {
+        include dirname(__FILE__).'/license.php';
+    } else {
+        exit ('You need a license and license.php file to build a package. Ask Mark.');
+    }
+}
+
 
 $root = dirname(dirname(__FILE__)).'/';
 $sources= array (
@@ -53,8 +61,8 @@ $sources= array (
     'data' => $root . '_build/data/',
     'source_core' => $root.'core/components/'.PKG_NAMESPACE,
     'source_assets' => $root.'assets/components/'.PKG_NAMESPACE,
-    'plugins' => $root.'core/components/'.PKG_NAMESPACE.'/elements/plugins/',
-    'snippets' => $root.'core/components/'.PKG_NAMESPACE.'/elements/snippets/',
+    'plugins' => $root.'_build/elements/plugins/',
+    'snippets' => $root.'_build/elements/snippets/',
     'lexicon' => $root . 'core/components/'.PKG_NAMESPACE.'/lexicon/',
     'docs' => $root.'core/components/'.PKG_NAMESPACE.'/docs/',
     'model' => $root.'core/components/'.PKG_NAMESPACE.'/model/',
@@ -67,10 +75,10 @@ $builder->directory = $targetDirectory;
 $builder->createPackage(PKG_NAMESPACE,PKG_VERSION,PKG_RELEASE);
 $builder->registerNamespace(PKG_NAMESPACE,false,true,'{core_path}components/'.PKG_NAMESPACE.'/');
 
-require_once dirname(__FILE__) . '/vehicle/modmore/modmorevehicle.class.php';
+require_once dirname(__FILE__) . '/vehicle/modmoresimpleab/modmorevehicle.class.php';
 $builder->package->put(
     array(
-        'source' => dirname(__FILE__) . '/vehicle/modmore/',
+        'source' => dirname(__FILE__) . '/vehicle/modmoresimpleab/',
         'target' => "return MODX_CORE_PATH . 'components/';"
     ),
     array(
@@ -105,20 +113,12 @@ foreach ($settings as $setting) {
 $modx->log(modX::LOG_LEVEL_INFO,'Packaged in '.count($settings).' system settings.'); flush();
 unset($settings,$setting,$attributes);
 
-if (!defined('MODMORE_VEHICLE_PRIVATE_KEY')) {
-    if (file_exists(dirname(__FILE__).'/license.php')) {
-        include dirname(__FILE__).'/license.php';
-    } else {
-        exit ('You need a license and license.php file to build a package. Ask Mark.');
-    }
-}
-
 /* add plugins */
 $plugins = include $sources['data'].'transport.plugins.php';
 if (!is_array($plugins)) { $modx->log(modX::LOG_LEVEL_FATAL,'Adding plugins failed.'); }
 $attributes = array(
     xPDOTransport::UNIQUE_KEY => 'name',
-    xPDOTransport::PRESERVE_KEYS => false,
+    xPDOTransport::PRESERVE_KEYS => true,
     xPDOTransport::UPDATE_OBJECT => true,
     xPDOTransport::RELATED_OBJECTS => true,
     xPDOTransport::RELATED_OBJECT_ATTRIBUTES => array (
@@ -165,7 +165,7 @@ $attr = array(
     xPDOTransport::RELATED_OBJECTS => true,
     xPDOTransport::RELATED_OBJECT_ATTRIBUTES => array (
         'Snippets' => array(
-            xPDOTransport::PRESERVE_KEYS => false,
+            xPDOTransport::PRESERVE_KEYS => true,
             xPDOTransport::UPDATE_OBJECT => true,
             xPDOTransport::UNIQUE_KEY => 'name',
         ),
@@ -201,6 +201,18 @@ $builder->setPackageAttributes(array(
     'changelog' => file_get_contents($sources['docs'] . 'changelog.txt'),
 ));
 $modx->log(modX::LOG_LEVEL_INFO,'Packaged in package attributes.'); flush();
+
+/**
+ * Add xPDOScriptVehicle to load the modmoreVehicle in uninstall.
+ */
+$vehicle = $builder->createVehicle(array(
+        'source' => $sources['resolvers'] . 'modmorevehicle.resolver.php',
+    ),
+    array(
+        'vehicle_class' => 'xPDOScriptVehicle',
+    )
+);
+$builder->putVehicle($vehicle);
 
 $modx->log(modX::LOG_LEVEL_INFO,'Packing...'); flush();
 $builder->pack();

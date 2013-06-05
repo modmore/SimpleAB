@@ -23,7 +23,8 @@ foreach ($s as $key => $value) {
         'value' => $value,
         'xtype' => $type,
         'namespace' => 'simpleab',
-        'area' => $area
+        'area' => $area,
+        'editedon' => time(),
     ));
 }
 

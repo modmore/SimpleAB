@@ -3,11 +3,9 @@ $plugins = array();
 
 /** create the plugin object */
 $plugins[0] = $modx->newObject('modPlugin');
-$plugins[0]->set('id',1);
 $plugins[0]->set('name','SimpleAB');
 $plugins[0]->set('description','The plugin making the multivariate template testing a reality (Part of SimpleAB)');
 $plugins[0]->set('plugincode', getSnippetContent($sources['plugins'] . 'simpleab.plugin.php'));
-$plugins[0]->set('category', 0);
 
 $events = include $sources['events'].'events.simpleab.php';
 if (is_array($events) && !empty($events)) {
