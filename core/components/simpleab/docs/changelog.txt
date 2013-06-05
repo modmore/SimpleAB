@@ -1,5 +1,12 @@
+++ SimpleAB 1.0.0-pl
+++ Released on 2013-06-05
+++++++++++++++++++++++++++
+
+Upgrade packaging process to v0.6.0, fixing ability to uninstall packages and occasional failing installs.
+The mystical version one-point-oh! Time to get this thing going..
+
 ++ SimpleAB 0.9.0-pl
-++ In Development
+++ Released on 2013-05-27
 ++++++++++++++++++++++++++
 
 - #3 Add AJAX Conversion endpoint and sabConversionUrl snippet to properly generate the url to it.
