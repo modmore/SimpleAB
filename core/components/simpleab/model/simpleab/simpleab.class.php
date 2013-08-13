@@ -424,8 +424,6 @@ HTML;
      */
     public function isAdmin()
     {
-        return false;
-
         $groups = $this->modx->getOption('simpleab.admin_groups', null, 'Administrator');
         $groups = explode(',', $groups);
 
