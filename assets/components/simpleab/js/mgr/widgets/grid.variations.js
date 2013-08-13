@@ -62,7 +62,14 @@ SimpleAB.grid.Variations = function(config) {
             text: _('simpleab.add_variation'),
             handler: this.addVariation,
             scope: this
-        }]
+        }],
+        listeners: {
+            rowDblClick: function(grid, rowIndex, e) {
+                var row = grid.store.getAt(rowIndex);
+                this.menu.record = row.json;
+                this.updateVariation();
+            }
+        }
     });
     SimpleAB.grid.Variations.superclass.constructor.call(this,config);
 };

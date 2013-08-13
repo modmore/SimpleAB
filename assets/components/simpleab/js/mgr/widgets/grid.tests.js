@@ -85,7 +85,14 @@ SimpleAB.grid.Tests = function(config) {
                 this.getStore().baseParams.include_archived = (pressed ? 1 : 0);
                 this.getBottomToolbar().changePage(1);
             }
-        }]
+        }],
+        listeners: {
+            rowDblClick: function(grid, rowIndex, e) {
+                var row = grid.store.getAt(rowIndex);
+                this.menu.record = {id: row.id};
+                this.manageTest();
+            }
+        }
     });
     SimpleAB.grid.Tests.superclass.constructor.call(this,config);
 };

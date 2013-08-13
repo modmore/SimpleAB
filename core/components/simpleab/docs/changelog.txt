@@ -2,6 +2,7 @@
 ++ Released on
 ++++++++++++++++++++++++++
 
+- #21 Add double click actions to grids for default action.
 - #18 Refactor to not store individual table rows for each view/conversion.
 
 ++ SimpleAB 1.0.0-pl
