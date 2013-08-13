@@ -61,10 +61,13 @@ SimpleAB.grid.Variations = function(config) {
         tbar: [{
             text: _('simpleab.add_variation'),
             handler: this.addVariation,
-            scope: this
+            scope: this,
+            hidden: !SimpleAB.config.isAdmin
         }],
         listeners: {
             rowDblClick: function(grid, rowIndex, e) {
+                if (!SimpleAB.config.isAdmin) return;
+
                 var row = grid.store.getAt(rowIndex);
                 this.menu.record = row.json;
                 this.updateVariation();
@@ -161,25 +164,30 @@ Ext.extend(SimpleAB.grid.Variations,MODx.grid.Grid,{
             text: _('simpleab.preview_variation'),
             handler: this.previewVariation,
             scope: this
-        },{
-            text: _('simpleab.update_variation'),
-            handler: this.updateVariation,
-            scope: this
         });
 
-        if (this.menu.record.picks > 0 || this.menu.record.conversions > 0) {
+        if (SimpleAB.config.isAdmin)
+        {
+            m.push({
+                text: _('simpleab.update_variation'),
+                handler: this.updateVariation,
+                scope: this
+            });
+
+            if (this.menu.record.picks > 0 || this.menu.record.conversions > 0) {
+                m.push('-',{
+                    text: _('simpleab.clear_variation_data'),
+                    handler: this.clearVariationData,
+                    scope: this
+                });
+            }
+
             m.push('-',{
-                text: _('simpleab.clear_variation_data'),
-                handler: this.clearVariationData,
+                text: _('simpleab.delete_variation'),
+                handler: this.deleteVariation,
                 scope: this
             });
         }
-
-        m.push('-',{
-            text: _('simpleab.delete_variation'),
-            handler: this.deleteVariation,
-            scope: this
-        });
         return m;
     }
 });

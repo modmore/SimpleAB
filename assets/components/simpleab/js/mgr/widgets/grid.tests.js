@@ -71,11 +71,13 @@ SimpleAB.grid.Tests = function(config) {
         tbar: [{
             text: _('simpleab.add_template_test'),
             handler: this.addTemplateTest,
-            scope: this
+            scope: this,
+            hidden: !SimpleAB.config.isAdmin
         },'-',{
             text: _('simpleab.add_chunk_test'),
             handler: this.addChunkTest,
-            scope: this
+            scope: this,
+            hidden: !SimpleAB.config.isAdmin
         },'->',{
             text: _('simpleab.view_archived_tests'),
             enableToggle: true,
@@ -225,39 +227,49 @@ Ext.extend(SimpleAB.grid.Tests,MODx.grid.Grid,{
     getMenu: function() {
         var m = [];
 
-        m.push({
-            text: _('simpleab.update_test'),
-            handler: this.updateTest,
-            scope: this
-        },{
-            text: _('simpleab.manage_test'),
-            handler: this.manageTest,
-            scope: this
-        },{
-            text: _('simpleab.duplicate_test'),
-            handler: this.duplicateTest,
-            scope: this
-        }, '-');
-
-        if (this.menu.record.archived) {
+        if (SimpleAB.config.isAdmin)
+        {
             m.push({
-                text: _('simpleab.unarchive_test'),
-                handler: this.unArchiveTest,
-                scope: this
-            });
-        } else {
-            m.push({
-                text: _('simpleab.archive_test'),
-                handler: this.archiveTest,
+                text: _('simpleab.update_test'),
+                handler: this.updateTest,
                 scope: this
             });
         }
 
         m.push({
-            text: _('simpleab.delete_test'),
-            handler: this.deleteTest,
+            text: _('simpleab.manage_test'),
+            handler: this.manageTest,
             scope: this
         });
+
+        if (SimpleAB.config.isAdmin)
+        {
+            m.push({
+                text: _('simpleab.duplicate_test'),
+                handler: this.duplicateTest,
+                scope: this
+            }, '-');
+
+            if (this.menu.record.archived) {
+                m.push({
+                    text: _('simpleab.unarchive_test'),
+                    handler: this.unArchiveTest,
+                    scope: this
+                });
+            } else {
+                m.push({
+                    text: _('simpleab.archive_test'),
+                    handler: this.archiveTest,
+                    scope: this
+                });
+            }
+
+            m.push({
+                text: _('simpleab.delete_test'),
+                handler: this.deleteTest,
+                scope: this
+            });
+        }
 
         return m;
     }

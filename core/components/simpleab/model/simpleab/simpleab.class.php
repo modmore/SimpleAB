@@ -53,6 +53,7 @@ class SimpleAB {
             'cssUrl' => $assetsUrl.'css/',
             'connectorUrl' => $assetsUrl.'connector.php',
             'hideLogo' => (bool)$this->modx->getOption('simpleab.hide_logo', null, false),
+            'isAdmin' => $this->isAdmin(),
         ),$config);
 
         $this->modx->lexicon->load('simpleab:default');
@@ -415,6 +416,24 @@ class SimpleAB {
 HTML;
 
         $this->modx->regClientHTMLBlock($html);
+    }
+
+    /**
+     * Checks if the user is an admin for SimpleAB.
+     * @return bool
+     */
+    public function isAdmin()
+    {
+        return false;
+
+        $groups = $this->modx->getOption('simpleab.admin_groups', null, 'Administrator');
+        $groups = explode(',', $groups);
+
+        if ($this->modx->user) {
+            if ($this->modx->user->get('sudo')) return true;
+            if ($this->modx->user->isMember($groups)) return true;
+        }
+        return false;
     }
 }
 

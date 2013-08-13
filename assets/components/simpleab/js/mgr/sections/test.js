@@ -155,13 +155,16 @@ SimpleAB.page.Test = function(config) {
         },SimpleAB.attribution()],
         buttons: [{
             text: _('simpleab.update_test'),
-            handler: this.updateTest
+            handler: this.updateTest,
+            hidden: !SimpleAB.config.isAdmin
         },'-',{
             text: parseInt(SimpleAB.record.archived) ? _('simpleab.unarchive_test') :  _('simpleab.archive_test'),
-            handler: parseInt(SimpleAB.record.archived) ? this.unArchiveTest : this.archiveTest
+            handler: parseInt(SimpleAB.record.archived) ? this.unArchiveTest : this.archiveTest,
+            hidden: !SimpleAB.config.isAdmin
         },'-',{
             text: _('simpleab.clear_test_data'),
-            handler: this.clearTestData
+            handler: this.clearTestData,
+            hidden: !SimpleAB.config.isAdmin
         },'-',{
             text: _('simpleab.to_home'),
             handler: this.toHome
