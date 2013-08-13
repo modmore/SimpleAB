@@ -10,6 +10,7 @@ SimpleAB.window.Test = function(config) {
             action: 'mgr/tests/' + ((config.isUpdate) ? 'update' : 'create')
         },
         width: 550,
+        modal: true,
         fields: [{
             xtype: 'hidden',
             name: 'id'

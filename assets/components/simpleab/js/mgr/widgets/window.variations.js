@@ -4,6 +4,7 @@ SimpleAB.window.Variation = function(config) {
     Ext.applyIf(config,{
         title: (config.isUpdate) ? _('simpleab.update_variation') : _('simpleab.add_variation'),
         autoHeight: true,
+        modal: true,
         url: SimpleAB.config.connectorUrl,
         baseParams: {
             action: 'mgr/variations/' + ((config.isUpdate) ? 'update' : 'create')
