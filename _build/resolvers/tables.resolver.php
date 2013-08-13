@@ -22,8 +22,13 @@ if ($object->xpdo) {
                 $manager->createObjectContainer($obj);
             }
 
+
+            $modx->setLogLevel(modX::LOG_LEVEL_FATAL);
             $manager->addField('sabTest', 'archived');
             $manager->addField('sabTest', 'smartoptimize');
+            $manager->removeField('sabConversion', 'value');
+            $manager->addField('sabConversion', 'amount');
+            $manager->addField('sabPick', 'amount');
 
             $modx->setLogLevel($logLevel);
         break;

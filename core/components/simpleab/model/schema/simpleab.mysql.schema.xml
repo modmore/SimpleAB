@@ -2,22 +2,11 @@
 <!--
  * SimpleAB
  *
- * Copyright 2011-2013 by Mark Hamstra <mark@modx.§com>
+ * Copyright 2011-2013 by Mark Hamstra <support@modmore.com>
  *
- * This file is part of SimpleAB, a versioning addon for MODX Revolution
+ * This file is part of SimpleAB.
  *
- * SimpleAB is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation; either version 2 of the License, or (at your option) any later
- * version.
- *
- * SimpleAB is distributed in the hope that it will be useful, but WITHOUT ANY
- * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
- * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with
- * SimpleAB; if not, write to the Free Software Foundation, Inc., 59 Temple Place,
- * Suite 330, Boston, MA 02111-1307 USA
+ * For license terms, please review core/components/simpleab/docs/license.txt.
 -->
 <model package="simpleab" baseClass="xPDOSimpleObject" platform="mysql" defaultEngine="MyISAM" version="1.1">
     <object class="sabTest" table="simpleab_test">
@@ -60,7 +49,7 @@
         <field key="test" dbtype="int" precision="11" phptype="integer" null="false" attributes="unsigned" />
         <field key="variation" dbtype="int" precision="11" phptype="integer" null="false" attributes="unsigned" />
         <field key="date" dbtype="int" precision="8" phptype="integer" null="false" attributes="unsigned" />
-        <field key="value" dbtype="int" precision="11" phptype="integer" null="false" attributes="unsigned" />
+        <field key="amount" dbtype="int" precision="8" phptype="integer" null="false" default="0" attributes="unsigned" />
 
         <aggregate alias="Test" class="sabTest" cardinality="one" foreign="id" local="test" owner="foreign" />
         <aggregate alias="Variation" class="sabVariation" cardinality="one" foreign="id" local="variation" owner="foreign" />
@@ -70,6 +59,7 @@
         <field key="test" dbtype="int" precision="11" phptype="integer" null="false" attributes="unsigned" />
         <field key="variation" dbtype="int" precision="11" phptype="integer" null="false" attributes="unsigned" />
         <field key="date" dbtype="int" precision="8" phptype="integer" null="false" attributes="unsigned" />
+        <field key="amount" dbtype="int" precision="8" phptype="integer" null="false" default="0" attributes="unsigned" />
 
         <aggregate alias="Test" class="sabTest" cardinality="one" foreign="id" local="test" owner="foreign" />
         <aggregate alias="Variation" class="sabVariation" cardinality="one" foreign="id" local="variation" owner="foreign" />

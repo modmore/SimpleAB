@@ -17,7 +17,6 @@ class getConversionStatsGetListProcessor extends modObjectGetListProcessor {
         $c->innerJoin('sabVariation', 'Variation');
         $c->where(array(
             'Variation.test' => $this->getProperty('test', 0),
-            'AND:date:>=' => date('Ymd', time() - (30 * 24 * 60 * 60)),
         ));
 
 
@@ -27,7 +26,7 @@ class getConversionStatsGetListProcessor extends modObjectGetListProcessor {
         $c->select(array(
             'id' => 'sabConversion.id',
             'var_id' => 'Variation.id',
-            'count' => 'COUNT(*)',
+            'amount',
             'date',
         ));
         return $c;
@@ -60,7 +59,7 @@ class getConversionStatsGetListProcessor extends modObjectGetListProcessor {
                 }
 
                 if (!isset($interimList[$date]['var_'.$objectArray['var_id']])) {
-                    $interimList[$date]['var_'.$objectArray['var_id']] = $objectArray['count'];
+                    $interimList[$date]['var_'.$objectArray['var_id']] = $objectArray['amount'];
                 }
 
                 $this->currentIndex++;

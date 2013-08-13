@@ -1,3 +1,9 @@
+++ SimpleAB in development
+++ Released on
+++++++++++++++++++++++++++
+
+- #18 Refactor to not store individual table rows for each view/conversion.
+
 ++ SimpleAB 1.0.0-pl
 ++ Released on 2013-06-05
 ++++++++++++++++++++++++++

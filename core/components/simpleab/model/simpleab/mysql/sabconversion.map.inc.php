@@ -19,7 +19,7 @@ $xpdo_meta_map['sabConversion']= array (
     'test' => NULL,
     'variation' => NULL,
     'date' => NULL,
-    'value' => NULL,
+    'amount' => 0,
   ),
   'fieldMeta' => 
   array (
@@ -47,12 +47,13 @@ $xpdo_meta_map['sabConversion']= array (
       'null' => false,
       'attributes' => 'unsigned',
     ),
-    'value' => 
+    'amount' => 
     array (
       'dbtype' => 'int',
-      'precision' => '11',
+      'precision' => '8',
       'phptype' => 'integer',
       'null' => false,
+      'default' => 0,
       'attributes' => 'unsigned',
     ),
   ),

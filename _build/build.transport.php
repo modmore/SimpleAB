@@ -186,9 +186,11 @@ $vehicle->resolve('file',array(
     'source' => $sources['source_assets'],
     'target' => "return MODX_ASSETS_PATH . 'components/';",
 ));
-
 $vehicle->resolve('php',array(
     'source' => $sources['resolvers'] . 'tables.resolver.php',
+));
+$vehicle->resolve('php',array(
+    'source' => $sources['resolvers'] . 'migratedata.resolver.php',
 ));
 
 $modx->log(modX::LOG_LEVEL_INFO,'Packaged in resolvers.'); flush();

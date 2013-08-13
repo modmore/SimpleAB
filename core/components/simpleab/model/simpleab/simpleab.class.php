@@ -195,14 +195,38 @@ class SimpleAB {
         $data =& $_SESSION['_simpleab'];
         $data['_picked'][$key] = $theOne;
 
-        /** Log the pick in the database for stats. */
-        $pick = $this->modx->newObject('sabPick');
-        $pick->fromArray(array(
-            'test' => $key,
-            'variation' => $theOne,
-            'date' => date('Ymd'),
-        ));
-        $pick->save();
+        /** Log the pick in the database for stats.
+         * @var sabPick $pick
+         */
+        $pick = $this->modx->getObject('sabPick',
+            array(
+                'test' => $key,
+                'variation' => $theOne,
+                'date' => date('Ymd')
+            )
+        );
+
+
+        if (!$pick)
+        {
+            $pick = $this->modx->newObject('sabPick');
+            $pick->fromArray(
+                array(
+                    'test' => $key,
+                    'variation' => $theOne,
+                    'date' => date('Ymd'),
+                    'amount' => 0,
+                ),
+                '',
+                true
+            );
+        }
+
+        $pick->set('amount', $pick->get('amount') + 1);
+        if (!$pick->save())
+        {
+            $this->modx->log(modX::LOG_LEVEL_ERROR,'[SimpleAB] Could not save pick');
+        }
     }
 
     /**
@@ -213,53 +237,62 @@ class SimpleAB {
         $userData = $this->getUserData();
         $visitedTests = $userData['_picked'];
 
-        /** Allow tests to be passed as "*" to indicate all visited tests. */
+        // Allow tests to be passed as "*" to indicate all visited tests.
         if (!is_array($tests) && ($tests == '*')) {
             $tests = array_keys($visitedTests);
         }
 
-        /** Make test ID string into array. */
+        // Make test ID string into array.
         if (!is_array($tests)) {
             $tests = explode(',', $tests);
         }
 
         foreach ($tests as $testId) {
-            /**
-             * Verify if test exists.
-             */
+            // Verify the test actually exists
             $test = $this->modx->call('sabTest','getTest', array(&$this->modx, $testId));
             if (!($test instanceof sabTest)) continue;
 
-            /**
-             * We'll need the shown variation from the users' data.
-             */
+            // Get the variation ID the user saw.
             $variationId = 0;
             if (array_key_exists($testId, $visitedTests)) {
                 $variationId = (int)$visitedTests[$testId];
             }
             if (!$variationId || ($variationId < 1)) continue;
 
-            /**
-             * Verify if variation exists.
-             */
+            // Verify the variation exists for the test
             $variationExists = (bool)$this->modx->getCount('sabVariation', array('id' => $variationId, 'test' => $testId));
             if (!$variationExists) continue;
 
             /** @var sabConversion $conversion */
-            $conversion = $this->modx->newObject('sabConversion');
-            $conversion->fromArray(array(
-                'test' => $testId,
-                'variation' => $variationId,
-                'date' => date('Ymd'),
-                'value' => 1,
-            ));
+            $conversion = $this->modx->getObject('sabConversion',
+                array(
+                    'test' => $testId,
+                    'variation' => $variationId,
+                    'date' => date('Ymd'),
+                )
+            );
+            if (!$conversion)
+            {
+                $conversion = $this->modx->newObject('sabConversion');
+                $conversion->fromArray(
+                    array(
+                        'test' => $testId,
+                        'variation' => $variationId,
+                        'date' => date('Ymd'),
+                        'amount' => 0,
+                    ), '', true
+                );
+            }
+
+            $conversion->set('amount', $conversion->get('amount') + 1);
+
             if ($conversion->save()) {
                 if ($resetPickForTest) {
                     unset($_SESSION['_simpleab']['_picked'][$testId]);
                 }
             }
             else {
-                $this->modx->log(modX::LOG_LEVEL_ERROR,'[SimpleAB.sabConversionHook] Error occurred trying to save new sabConversion object.');
+                $this->modx->log(modX::LOG_LEVEL_ERROR,'[SimpleAB.registerConversion] Error occurred trying to save the sabConversion object.');
             }
         }
     }
@@ -328,6 +361,26 @@ class SimpleAB {
         }
         $this->modx->cacheManager->set('registry', $registry, 0, $this->cacheOptions);
         return $registry;
+    }
+
+    /**
+     * @param $class
+     * @param array $where
+     * @param string $field
+     *
+     * @return int
+     */
+    public function getSum($class, array $where = array(), $field = 'amount')
+    {
+        $c = $this->modx->newQuery($class);
+        $c->select('sum('.$field.') as cnt');
+        $c->where($where);
+        if ($c->prepare() && $c->stmt->execute())
+        {
+            $this->modx->log(modX::LOG_LEVEL_ERROR, $c->toSQL());
+            return (int)$c->stmt->fetchColumn();
+        }
+        return 0;
     }
 
     /**

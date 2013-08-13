@@ -125,4 +125,8 @@ $manager->addField('sabTest', 'templates');
 $manager->addField('sabTest', 'archived');
 $manager->addField('sabTest', 'smartoptimize');
 
+$manager->removeField('sabConversion', 'value');
+$manager->addField('sabConversion', 'amount');
+$manager->addField('sabPick', 'amount');
+
 exit ();

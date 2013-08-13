@@ -19,6 +19,7 @@ $xpdo_meta_map['sabPick']= array (
     'test' => NULL,
     'variation' => NULL,
     'date' => NULL,
+    'amount' => 0,
   ),
   'fieldMeta' => 
   array (
@@ -44,6 +45,15 @@ $xpdo_meta_map['sabPick']= array (
       'precision' => '8',
       'phptype' => 'integer',
       'null' => false,
+      'attributes' => 'unsigned',
+    ),
+    'amount' => 
+    array (
+      'dbtype' => 'int',
+      'precision' => '8',
+      'phptype' => 'integer',
+      'null' => false,
+      'default' => 0,
       'attributes' => 'unsigned',
     ),
   ),

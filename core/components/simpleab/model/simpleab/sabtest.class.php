@@ -76,13 +76,16 @@ class sabTest extends xPDOSimpleObject {
         if (empty($stats)) {
             $stats = array();
 
-            foreach ($variations as $id => $values) {
-                $stats[$id] = array(
-                    'picks' => $this->xpdo->getCount('sabPick', array('test' => $this->get('id'), 'variation' => $id)),
-                    'conversions' => $this->xpdo->getCount('sabConversion', array('test' => $this->get('id'), 'variation' => $id)),
-                    'conversionrate' => 0,
+            foreach ($variations as $id => $values)
+            {
+                $stats[$id] = array (
+                    'conversions' => $this->xpdo->simpleab->getSum('sabConversion', array('test' => $this->get('id'), 'variation' => $id)),
+                    'picks' => $this->xpdo->simpleab->getSum('sabPick', array('test' => $this->get('id'), 'variation' => $id)),
+                    'conversionrate' => 0
                 );
-                if ($stats[$id]['conversions'] > 0) {
+
+                if ($stats[$id]['conversions'] > 0)
+                {
                     $stats[$id]['conversionrate'] = $stats[$id]['conversions'] / $stats[$id]['picks'];
                 }
             }

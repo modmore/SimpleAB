@@ -25,13 +25,13 @@ class sabTestGetListProcessor extends modObjectGetListProcessor {
 
     /**
      * Transform the xPDOObject derivative to an array;
-     * @param xPDOObject $object
+     * @param sabTest|xPDOObject $object
      * @return array
      */
     public function prepareRow(xPDOObject $object) {
         $row = $object->toArray('', false, true);
         $row['variations'] = $this->modx->getCount('sabVariation', array('test' => $row['id']));
-        $row['conversions'] = $this->modx->getCount('sabConversion', array('test' => $row['id']));
+        $row['conversions'] = $this->modx->simpleab->getSum('sabConversion', array('test' => $row['id']));
         return $row;
     }
 }
