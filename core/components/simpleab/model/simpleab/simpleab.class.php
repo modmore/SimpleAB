@@ -156,6 +156,8 @@ class SimpleAB {
             'variation' => $variations[$theOne],
             'variations' => $variations,
         );
+
+        $this->getGaVar();
         if (isset($variations[$theOne])) {
             return $variations[$theOne];
         }
@@ -432,6 +434,16 @@ HTML;
             if ($this->modx->user->isMember($groups)) return true;
         }
         return false;
+    }
+
+    public function getGaVar()
+    {
+        $gaTpl = $this->modx->newObject('modChunk', array('content' => $this->modx->getOption('simpleab.ga_custom_var_tpl', null, "_gaq.push(['_setCustomVar', 7, 'SAB-[[+test]]','[[+variation.name:htmlent]]', 2]);")));
+
+        $gaInsert = $gaTpl->process($this->lastPickDetails);
+
+        $this->modx->setPlaceholder('simpleab.ga_custom_var', $gaInsert);
+        $this->modx->setPlaceholder('simpleab.ga_custom_var.test_' . $this->lastPickDetails['test'], $gaInsert);
     }
 }
 

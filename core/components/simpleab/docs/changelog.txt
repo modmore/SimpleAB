@@ -2,6 +2,7 @@
 ++ Released on
 ++++++++++++++++++++++++++
 
+- #19 Set ga_custom_var placeholder for easy Google Analytics integration.
 - #20 Add ability to lock down the CMP so users can only view information and not edit.
 - #21 Add double click actions to grids for default action.
 - #18 Refactor to not store individual table rows for each view/conversion.
