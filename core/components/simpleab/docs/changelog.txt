@@ -2,6 +2,8 @@
 ++ Released on
 ++++++++++++++++++++++++++
 
+- #15 Define resources for template tests by a resource range ("5-15")
+- #14 Define resources for template tests based on its parent ("5>")
 - #19 Set ga_custom_var placeholder for easy Google Analytics integration.
 - #20 Add ability to lock down the CMP so users can only view information and not edit.
 - #21 Add double click actions to grids for default action.

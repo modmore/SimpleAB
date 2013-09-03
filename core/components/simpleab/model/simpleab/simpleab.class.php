@@ -344,7 +344,7 @@ class SimpleAB {
             $templates = (string)$test->get('templates');
 
             if (!empty($resources)) {
-                $resources = explode(',', $resources);
+                $resources = $this->_parseResourceDefinition($resources);
                 foreach ($resources as $resourceId) {
                     if (!isset($registry['resources'][$resourceId])) {
                         $registry['resources'][$resourceId] = array();
@@ -443,6 +443,51 @@ HTML;
 
         $this->modx->setPlaceholder('simpleab.ga_custom_var', $gaInsert);
         $this->modx->setPlaceholder('simpleab.ga_custom_var.test_' . $this->lastPickDetails['test'], $gaInsert);
+    }
+
+    protected function _parseResourceDefinition($resources)
+    {
+        $return = array();
+        $resources = explode(',', $resources);
+
+        foreach ($resources as $def) {
+            switch (true) {
+
+                // 5> to use all children of resource 5
+                case (substr($def, -1) == '>'):
+                    $id = (int)substr($def, 0, -1);
+                    $children = $this->modx->getChildIds($id);
+                    $return = array_merge($return, array_values($children));
+                    break;
+
+                // 3-5 to use 3, 4 and 5
+                case (strpos($def, '-', 1) > 0):
+                    $pos = strpos($def, '-', 1);
+                    $start = (int)substr($def, 0, $pos);
+                    $end = (int)substr($def, $pos + 1);
+
+                    if ($end < $start) {
+                        $originalStart = $start;
+                        $start = $end;
+                        $end = $originalStart;
+                    }
+
+                    while ($start <= $end) {
+                        $return[] = $start;
+                        $start++;
+                    }
+
+                    break;
+
+                default:
+                    if (is_numeric($def)) {
+                        $return[] = (int)$def;
+                    }
+            }
+        }
+
+        $return = array_unique($return);
+        return $return;
     }
 }
 
