@@ -1,5 +1,5 @@
-++ SimpleAB in development
-++ Released on
+++ SimpleAB 1.1.0-pl
+++ Released on 2013-09-03
 ++++++++++++++++++++++++++
 
 - #15 Define resources for template tests by a resource range ("5-15")
