@@ -380,7 +380,6 @@ class SimpleAB {
         $c->where($where);
         if ($c->prepare() && $c->stmt->execute())
         {
-            $this->modx->log(modX::LOG_LEVEL_ERROR, $c->toSQL());
             return (int)$c->stmt->fetchColumn();
         }
         return 0;
