@@ -3,6 +3,7 @@
 $s = array(
     'use_previous_picks' => true,
     'hide_logo' => false,
+    'admin_groups' => 'Administrator',
 
 );
 
