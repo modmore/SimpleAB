@@ -4,7 +4,9 @@ $s = array(
     'use_previous_picks' => true,
     'hide_logo' => false,
     'admin_groups' => 'Administrator',
-
+    'ga_custom_var_index' => 1,
+    'ga_custom_var_name' => 'SAB',
+    'ga_custom_var_scope' => 2,
 );
 
 $settings = array();

@@ -437,9 +437,14 @@ HTML;
 
     public function getGaVar()
     {
-        $gaTpl = $this->modx->newObject('modChunk', array('content' => $this->modx->getOption('simpleab.ga_custom_var_tpl', null, "_gaq.push(['_setCustomVar', 7, 'SAB-[[+test]]','[[+variation.name:htmlent]]', 2]);")));
+        $gaTpl = $this->modx->newObject('modChunk', array('content' => $this->modx->getOption('simpleab.ga_custom_var_tpl', null, "_gaq.push(['_setCustomVar', [[+index]], '[[+name]]-[[+test]]','[[+variation.name:htmlent]]', [[+scope]] ]);")));
 
-        $gaInsert = $gaTpl->process($this->lastPickDetails);
+        $placeholders = array_merge($this->lastPickDetails, array(
+            'index' => $this->modx->getOption('simpleab.ga_custom_var_index', null, 1, true),
+            'name' => $this->modx->getOption('simpleab.ga_custom_var_name', null, 'SAB', true),
+            'scope' => $this->modx->getOption('simpleab.ga_custom_var_scope', null, 2, true),
+        ));
+        $gaInsert = $gaTpl->process($placeholders);
 
         $this->modx->setPlaceholder('simpleab.ga_custom_var', $gaInsert);
         $this->modx->setPlaceholder('simpleab.ga_custom_var.test_' . $this->lastPickDetails['test'], $gaInsert);
