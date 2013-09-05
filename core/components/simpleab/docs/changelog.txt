@@ -1,3 +1,6 @@
+++ SimpleAB 1.1.1-pl
+++ Released on 2013-09-05
+++++++++++++++++++++++++++
 - Add more flexibility to the ga_custom_var
 - Make sure the admin_groups setting is built.
 
