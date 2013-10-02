@@ -6,7 +6,7 @@ class getNormalizedStatsGetListProcessor extends modProcessor {
     public $classKey = 'sabConversion';
     public $languageTopics = array('simpleab:default');
     public $defaultSortField = 'date';
-    public $defaultSortDirection = 'ASC';
+    public $defaultSortDirection = 'DESC';
 
     /**
      * @return array|string

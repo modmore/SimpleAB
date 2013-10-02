@@ -6,7 +6,7 @@ class getPickStatsGetListProcessor extends modObjectGetListProcessor {
     public $classKey = 'sabPick';
     public $languageTopics = array('simpleab:default');
     public $defaultSortField = 'date';
-    public $defaultSortDirection = 'ASC';
+    public $defaultSortDirection = 'DESC';
 
     /**
      * @param xPDOQuery $c
@@ -64,6 +64,8 @@ class getPickStatsGetListProcessor extends modObjectGetListProcessor {
                 $this->currentIndex++;
             }
         }
+
+        $interimList = array_reverse($interimList);
 
         $list = array_merge($list, array_values($interimList));
 

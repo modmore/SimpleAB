@@ -78,3 +78,11 @@ foreach ($plugins as $plugin) {
         $exists->save();
     }
 }
+
+$modx->getService('simpleab', 'SimpleAB', dirname(dirname(__FILE__)).'/core/components/simpleab/model/simpleab/');
+
+$manager = $modx->getManager();
+$manager->createObjectContainer('sabConversion');
+$manager->createObjectContainer('sabPick');
+$manager->createObjectContainer('sabTest');
+$manager->createObjectContainer('sabVariation');

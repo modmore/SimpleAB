@@ -6,7 +6,19 @@ class getConversionStatsGetListProcessor extends modObjectGetListProcessor {
     public $classKey = 'sabConversion';
     public $languageTopics = array('simpleab:default');
     public $defaultSortField = 'date';
-    public $defaultSortDirection = 'ASC';
+    public $defaultSortDirection = 'DESC';
+
+    /**
+     * {@inheritDoc}
+     * @return boolean
+     */
+    public function initialize() {
+        parent::initialize();
+        $this->setDefaultProperties(array(
+            'limit' => 9999,
+        ));
+        return true;
+    }
 
     /**
      * @param xPDOQuery $c
@@ -65,6 +77,7 @@ class getConversionStatsGetListProcessor extends modObjectGetListProcessor {
                 $this->currentIndex++;
             }
         }
+        $interimList = array_reverse($interimList);
 
         $list = array_merge($list, array_values($interimList));
 
