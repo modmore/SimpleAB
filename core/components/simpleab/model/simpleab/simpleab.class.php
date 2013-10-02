@@ -226,7 +226,6 @@ class SimpleAB {
             );
         }
 
-        $this->modx->log(modX::LOG_LEVEL_ERROR, print_r($pick->toArray(), true));
         $pick->set('amount', $pick->get('amount') + 1);
         if (!$pick->save())
         {
