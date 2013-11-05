@@ -201,12 +201,11 @@ class SimpleAB {
         /** Log the pick in the database for stats.
          * @var sabPick $pick
          */
-        $date = date('Ymd', time() - (10 * 24 * 60 * 60));
         $pick = $this->modx->getObject('sabPick',
             array(
                 'test' => $key,
                 'variation' => $theOne,
-                'date' => $date
+                'date' => date('Ymd')
             )
         );
 
@@ -218,7 +217,7 @@ class SimpleAB {
                 array(
                     'test' => $key,
                     'variation' => $theOne,
-                    'date' => $date,
+                    'date' => date('Ymd'),
                     'amount' => 0,
                 ),
                 '',

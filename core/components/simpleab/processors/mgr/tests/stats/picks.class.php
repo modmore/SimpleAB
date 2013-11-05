@@ -9,6 +9,18 @@ class getPickStatsGetListProcessor extends modObjectGetListProcessor {
     public $defaultSortDirection = 'DESC';
 
     /**
+     * {@inheritDoc}
+     * @return boolean
+     */
+    public function initialize() {
+        parent::initialize();
+        $this->setDefaultProperties(array(
+            'limit' => 9999,
+        ));
+        return true;
+    }
+
+    /**
      * @param xPDOQuery $c
      *
      * @return xPDOQuery

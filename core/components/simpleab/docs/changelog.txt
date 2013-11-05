@@ -1,3 +1,5 @@
+- Fix critical issue with Picks data collection.
+
 ++ SimpleAB 1.1.2-pl
 ++ Released on 2013-10-02
 ++++++++++++++++++++++++++
