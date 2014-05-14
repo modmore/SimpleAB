@@ -1,12 +1,23 @@
 <?php
-require_once dirname(dirname(__FILE__)) . '/config.core.php';
-require_once MODX_CORE_PATH . 'model/modx/modx.class.php';
-$modx= new modX();
-$modx->initialize('mgr');
-$modx->setLogLevel(modX::LOG_LEVEL_INFO);
-$modx->setLogTarget('ECHO');
+/* Get the core config */
+if (!file_exists(dirname(dirname(__FILE__)).'/config.core.php')) {
+    die('ERROR: missing '.dirname(dirname(__FILE__)).'/config.core.php file defining the MODX core path.');
+}
 
-$modx->getService('simpleab', 'SimpleAB', dirname(dirname(__FILE__)).'/core/components/simpleab/model/simpleab/');
+echo "<pre>";
+/* Boot up MODX */
+echo "Loading modX...\n";
+require_once dirname(dirname(__FILE__)).'/config.core.php';
+require_once MODX_CORE_PATH.'model/modx/modx.class.php';
+$modx = new modX();
+echo "Initializing manager...\n";
+$modx->initialize('mgr');
+$modx->getService('error','error.modError', '', '');
+
+$componentPath = dirname(dirname(__FILE__));
+$SimpleAB = $modx->getService('simpleab','SimpleAB', $componentPath.'/core/components/simpleab/model/simpleab/', array(
+    'simpleab.core_path' => $componentPath.'/core/components/simpleab/',
+));
 
 $test = 1;
 $variationA = 1;
@@ -168,3 +179,4 @@ foreach ($data as $day => $vals) {
     $conversionB->save();
 }
 
+echo "Done.";
