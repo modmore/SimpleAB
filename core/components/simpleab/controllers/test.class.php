@@ -57,6 +57,7 @@ class SimpleABTestManagerController extends SimpleABManagerController {
         $this->addJavascript($this->simpleab->config['jsUrl'].'mgr/widgets/window.variations.js');
         $this->addJavascript($this->simpleab->config['jsUrl'].'mgr/widgets/window.tests.js');
 
+        $this->addJavascript($this->simpleab->config['jsUrl'].'mgr/panels/test.js');
         $this->addLastJavascript($this->simpleab->config['jsUrl'].'mgr/sections/test.js');
     }
 }

@@ -21,6 +21,7 @@ class SimpleABHomeManagerController extends SimpleABManagerController {
         $this->addJavascript($this->simpleab->config['jsUrl'].'mgr/widgets/grid.tests.js');
         $this->addJavascript($this->simpleab->config['jsUrl'].'mgr/widgets/window.tests.js');
 
+        $this->addJavascript($this->simpleab->config['jsUrl'].'mgr/panels/home.js');
         $this->addLastJavascript($this->simpleab->config['jsUrl'].'mgr/sections/home.js');
     }
 }

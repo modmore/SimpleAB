@@ -6,7 +6,7 @@ $_lang['simpleab.menu_desc'] = 'Manage your SimpleAB tests and variations.';
 $_lang['simpleab.home'] = 'Manage A/B Tests';
 $_lang['simpleab.test'] = 'Test';
 $_lang['simpleab.tests'] = 'Tests';
-$_lang['simpleab.to_home'] = 'Back to Tests';
+$_lang['simpleab.tests.desc'] = 'Below you will find all your A/B tests, active or not. If you have archived tests, which will not be executed anymore, you can filter to show the archived tests.';
 
 $_lang['simpleab.id'] = 'ID';
 $_lang['simpleab.name'] = 'Name';
@@ -26,7 +26,7 @@ $_lang['simpleab.apply_to_templates'] = 'Apply to Templates';
 $_lang['simpleab.apply_to_templates.desc'] = 'Comma separated list of Template IDs to run this test on. Example: 2,5';
 $_lang['simpleab.variation'] = 'Variation';
 $_lang['simpleab.variations'] = 'Variations';
-$_lang['simpleab.statistics'] = 'Analytics';
+$_lang['simpleab.statistics'] = 'Statistics';
 $_lang['simpleab.conversions'] = 'Conversions';
 $_lang['simpleab.conversions.desc'] = 'A conversion is when a desired action (such as submitting a form, or viewing a certain page) was completed, and this test had a value assigned to it for completing the action.';
 $_lang['simpleab.conversionrate'] = 'Conv. Rate';
@@ -38,9 +38,11 @@ $_lang['simpleab.normalized.desc'] = 'The actual conversion rate (percentage) fo
 $_lang['simpleab.add_test'] = 'Add Test';
 $_lang['simpleab.add_template_test'] = 'Add Template Test';
 $_lang['simpleab.add_chunk_test'] = 'Add Chunk Test';
-$_lang['simpleab.update_test'] = 'Edit Test';
-$_lang['simpleab.manage_test'] = 'Manage Variations & Results';
-$_lang['simpleab.manage_test.title'] = 'Manage [[+name]]';
+$_lang['simpleab.update_test'] = 'Modify Test';
+$_lang['simpleab.manage_test'] = 'Manage Variations & Statistics';
+$_lang['simpleab.manage_test.title'] = 'Manage: [[+name]]';
+$_lang['simpleab.manage_test.desc'] = 'Here you can view the test record and below these information you will find the Variations for this test.';
+$_lang['simpleab.manage_test.desc_admin'] = 'Here you can change the test record and below these fields you will find the Variations for this test.';
 $_lang['simpleab.unarchive_test'] = 'Un-archive Test';
 $_lang['simpleab.unarchive_test.confirm'] = 'Are you sure you want to unarchive this test?';
 $_lang['simpleab.archive_test'] = 'Archive Test';
@@ -48,6 +50,7 @@ $_lang['simpleab.archive_test.confirm'] = 'Are you sure you want to archive this
 $_lang['simpleab.archive_test.already_archived'] = 'This test has already been archived.';
 $_lang['simpleab.unarchive_test.already_unarchived'] = 'This test has already been unarchived.';
 $_lang['simpleab.clear_test_data'] = 'Clear Test Data';
+$_lang['simpleab.cancel_test_confirm'] = 'There are some unsaved changes. Would you like to proceed without saving your changes?';
 $_lang['simpleab.add_variation'] = 'Add Variation';
 $_lang['simpleab.update_variation'] = 'Edit Variation';
 $_lang['simpleab.refresh_to_update'] = '<strong>Note:</strong> You have made changes to the variations of this test. You will need to refresh your browser to see this reflected in the Analytics tab. <a href="javascript:location.href=location.href;">Click here to refresh.</a>';
@@ -65,13 +68,15 @@ $_lang['simpleab.duplicate_of'] = 'Duplicate of ';
 $_lang['simpleab.preview_variation'] = 'Preview Variation';
 $_lang['simpleab.resource'] = 'Resource';
 
-
 $_lang['simpleab.clear_test_data_warning'] = 'Clearing the data for this test cannot be undone. If you are sure you want to do this, please tick the boxes for the data you would like to remove below. ';
 $_lang['simpleab.clear_conversions'] = 'Remove Conversion Data';
 $_lang['simpleab.clear_picks'] = 'Remove Picks Data ';
 $_lang['simpleab.clear_variations'] = 'Remove Variations';
 
+$_lang['simpleab.type_modTemplate'] = 'Template Test';
+$_lang['simpleab.type_modChunk'] = 'Chunk Test';
 
+// settings
 $_lang['setting_simpleab.use_previous_picks'] = 'Use Previous Picks';
 $_lang['setting_simpleab.use_previous_picks_desc'] = 'When enabled, SimpleAB will look at the users\' session to make sure they are presented the same variation on subsequent visits. You probably don\'t really want to turn this off in production, but it\'s great for demos!';
 

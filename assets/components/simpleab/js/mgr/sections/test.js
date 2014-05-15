@@ -1,11 +1,122 @@
 Ext.onReady(function() {
-    MODx.load({
-        xtype: 'simpleab-page-test',
-        renderTo: 'simpleab-wrapper-div'
-    });
-    MODx.config.help_url = 'http://rtfm.modx.com/display/ADDON/SimpleAB';
+    MODx.load({ xtype: 'simpleab-page-test' ,renderTo: 'simpleab-wrapper-div' });
+    MODx.config.help_url = 'https://www.modmore.com/extras/simpleab/documentation/?embed=1';
 });
 
+// test page
+SimpleAB.page.Test = function(config) {
+	config = config || {};
+
+	Ext.applyIf(config,{
+        formpanel: 'simpleab-panel-test-update'
+        ,components: [{
+			xtype: 'simpleab-panel-test-update'
+		},SimpleAB.attribution()]
+        ,buttons: this.getPanelButtons()
+	});
+
+	SimpleAB.page.Test.superclass.constructor.call(this, config);
+};
+
+Ext.extend(SimpleAB.page.Test, MODx.Component, {
+    getPanelButtons: function() {
+        var it = []
+
+        if(SimpleAB.config.isAdmin) {
+
+            it.push({
+                text: _('save')
+                ,id: 'simpleab-test-save-btn'
+                ,process: 'mgr/tests/update'
+                ,method: 'remote'
+                ,disabled: true
+                ,checkDirty: true
+                ,keys: [{
+                    key: MODx.config.keymap_save || 's'
+                    ,ctrl: true
+                }]
+            },'-',{
+                text: parseInt(SimpleAB.record.archived) ? _('simpleab.unarchive_test') :  _('simpleab.archive_test')
+                ,handler: parseInt(SimpleAB.record.archived) ? this.unArchiveTest : this.archiveTest
+            },{
+                text: _('simpleab.clear_test_data')
+                ,handler: this.clearTestData
+            }, '-');
+        }
+
+        it.push({
+            text: _('cancel')
+            ,handler: this.cancel
+        },'-',{
+            text: _('help_ex')
+            ,handler: MODx.loadHelpPane
+        });
+
+        return it;
+    }
+    ,cancel: function() {
+        var fp = Ext.getCmp(this.config.formpanel);
+        if (fp && fp.isDirty()) {
+            Ext.Msg.confirm(_('warning'), _('simpleab.cancel_test_confirm'), function(e) {
+                if (e == 'yes') {
+                    MODx.loadPage(MODx.request.a);
+                }
+            }, this);
+        } else {
+            MODx.loadPage(MODx.request.a);
+        }
+    }
+    ,clearTestData: function() {
+        var record = SimpleAB.record;
+        var win = MODx.load({
+            xtype: 'simpleab-window-clear-test-data'
+            ,isUpdate: true
+            ,record: record
+            ,listeners: {
+                'success': { fn: function() {
+                    location.href = location.href;
+                } ,scope: this }
+            }
+        });
+        win.setValues(record);
+        win.show();
+    }
+    ,archiveTest: function() {
+        MODx.msg.confirm({
+            title: _('simpleab.archive_test')
+            ,text: _('simpleab.archive_test.confirm')
+            ,url: SimpleAB.config.connectorUrl
+            ,params: {
+                action: 'mgr/tests/archive'
+                ,id: SimpleAB.record.id
+            }
+            ,listeners: {
+                'success': { fn: function(r) {
+                    MODx.loadPage(MODx.request.a);
+                } ,scope: this}
+            }
+        });
+    }
+    ,unArchiveTest: function() {
+        MODx.msg.confirm({
+            title: _('simpleab.unarchive_test')
+            ,text: _('simpleab.unarchive_test.confirm')
+            ,url: SimpleAB.config.connectorUrl
+            ,params: {
+                action: 'mgr/tests/unarchive'
+                ,id: SimpleAB.record.id
+            }
+            ,listeners: {
+                'success': { fn: function(r) {
+                    MODx.loadPage(MODx.request.a, 'id=' + SimpleAB.record.id);
+                } ,scope: this }
+            }
+        });
+    }
+});
+Ext.reg('simpleab-page-test', SimpleAB.page.Test);
+
+/*
 var chartStyles = {
     legend: {
         display: 'right'
@@ -168,6 +279,9 @@ SimpleAB.page.Test = function(config) {
         },'-',{
             text: _('simpleab.to_home'),
             handler: this.toHome
+        },'-',{
+            text: _('help_ex')
+            ,handler: MODx.loadHelpPane
         }]
     });
     SimpleAB.page.Test.superclass.constructor.call(this,config);
@@ -246,3 +360,4 @@ Ext.extend(SimpleAB.page.Test,MODx.Component,{
     }
 });
 Ext.reg('simpleab-page-test',SimpleAB.page.Test);
+*/
