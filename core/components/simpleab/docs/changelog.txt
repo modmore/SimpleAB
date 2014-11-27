@@ -1,5 +1,7 @@
-Fix potential install issue on certain MySQL configurations
-Add French translation
+- Add description to Tests and Variations grid using a row expander
+- Fix missing class on primary button when editing a test
+- Fix potential install issue on certain MySQL configurations
+- Add French translation
 
 ++ SimpleAB 1.1.3-pl
 ++ Released on 2013-11-06

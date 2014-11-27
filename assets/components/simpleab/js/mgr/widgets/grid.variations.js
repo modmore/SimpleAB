@@ -1,5 +1,13 @@
 SimpleAB.grid.Variations = function(config) {
     config = config || {};
+    var exp = new Ext.grid.RowExpander({
+        tpl : new Ext.Template('<p style="margin-top: 8px">{description}</p>'),
+        renderer : function(v, p, record){
+            return record.get('description').length > 0 ? '<div class="x-grid3-row-expander">&#160;</div>' : '&#160;';
+        },
+        expandOnEnter: false,
+        expandOnDblClick: false
+    });
     Ext.applyIf(config,{
 		url: SimpleAB.config.connectorUrl,
 		id: 'simpleab-grid-variations',
@@ -21,11 +29,12 @@ SimpleAB.grid.Variations = function(config) {
         ],
         paging: true,
 		remoteSort: true,
-		columns: [{
+        plugins: [exp],
+		columns: [exp, {
 			header: _('simpleab.id'),
 			dataIndex: 'id',
 			sortable: true,
-			width: .1
+			width: .05
 		},{
 			header: _('simpleab.name'),
 			dataIndex: 'name',
@@ -35,7 +44,8 @@ SimpleAB.grid.Variations = function(config) {
 			header: _('simpleab.description'),
 			dataIndex: 'description',
 		    sortable: true,
-			width: .5
+			width: .5,
+            hidden: true
 		},{
 			header: _('simpleab.active'),
 			dataIndex: 'active',
