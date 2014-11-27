@@ -26,6 +26,7 @@ Ext.extend(SimpleAB.page.Test, MODx.Component, {
 
             it.push({
                 text: _('save')
+                ,cls: 'primary-button'
                 ,id: 'simpleab-test-save-btn'
                 ,process: 'mgr/tests/update'
                 ,method: 'remote'
