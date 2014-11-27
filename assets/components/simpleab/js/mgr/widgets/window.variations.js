@@ -32,10 +32,10 @@ SimpleAB.window.Variation = function(config) {
             maxLength: 500,
             allowBlank: true
         },{
-            xtype: (SimpleAB.record.type == 'modTemplate') ? 'modx-combo-template' : 'simpleab-combo-chunk',
+            xtype: (SimpleAB.record.type == 'modTemplate') ? 'modx-combo-template' : 'simpleab-combo-chunks',
             name: 'element',
             hiddenName: 'element',
-            fieldLabel: _('simpleab.element'),
+            fieldLabel: (SimpleAB.record.type == 'modTemplate') ? _('simpleab.template') : _('simpleab.chunk'),
             anchor: '100%'
         },{
             xtype: 'checkbox',

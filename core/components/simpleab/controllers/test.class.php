@@ -53,6 +53,7 @@ class SimpleABTestManagerController extends SimpleABManagerController {
      * combine and compress them if enabled in system settings.
      */
     public function loadCustomCssJs() {
+        $this->addJavascript($this->simpleab->config['jsUrl'].'mgr/widgets/combos.js');
         $this->addJavascript($this->simpleab->config['jsUrl'].'mgr/widgets/grid.variations.js');
         $this->addJavascript($this->simpleab->config['jsUrl'].'mgr/widgets/window.variations.js');
         $this->addJavascript($this->simpleab->config['jsUrl'].'mgr/widgets/window.tests.js');
