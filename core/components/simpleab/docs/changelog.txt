@@ -1,3 +1,4 @@
+- Add ability to activate/deactivate a variation inline
 - Add description to Tests and Variations grid using a row expander
 - Fix missing class on primary button when editing a test
 - Fix potential install issue on certain MySQL configurations

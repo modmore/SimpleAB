@@ -15,6 +15,8 @@ SimpleAB.grid.Variations = function(config) {
             action: 'mgr/variations/getlist',
             test: SimpleAB.record.id
         },
+        autosave: true,
+        save_action: 'mgr/variations/update_from_grid',
         emptyText: _('simpleab.error.noresults'),
 		fields: [
             {name: 'id', type: 'int'},
@@ -51,7 +53,10 @@ SimpleAB.grid.Variations = function(config) {
 			dataIndex: 'active',
 		    sortable: true,
 			width: .1,
-            renderer: MODx.grid.Grid.prototype.rendYesNo
+            renderer: MODx.grid.Grid.prototype.rendYesNo,
+            editor: {
+                xtype: 'modx-combo-boolean'
+            }
 		},{
 			header: _('simpleab.picks'),
 			dataIndex: 'picks',
