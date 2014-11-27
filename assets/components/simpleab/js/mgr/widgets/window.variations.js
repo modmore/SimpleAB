@@ -32,7 +32,7 @@ SimpleAB.window.Variation = function(config) {
             maxLength: 500,
             allowBlank: true
         },{
-            xtype: (SimpleAB.record.type == 'modTemplate') ? 'modx-combo-template' : 'numberfield',
+            xtype: (SimpleAB.record.type == 'modTemplate') ? 'modx-combo-template' : 'simpleab-combo-chunk',
             name: 'element',
             hiddenName: 'element',
             fieldLabel: _('simpleab.element'),
@@ -98,11 +98,5 @@ SimpleAB.window.PreviewVariation = function(config) {
     });
     SimpleAB.window.PreviewVariation.superclass.constructor.call(this,config);
 };
-Ext.extend(SimpleAB.window.PreviewVariation,MODx.Window, {
-    previewVariation: function() {
-        var form = this.fp.getForm(),
-            values = form.getValues();
-        console.log(form, values);
-    }
-});
+Ext.extend(SimpleAB.window.PreviewVariation,MODx.Window);
 Ext.reg('simpleab-window-preview-variation',SimpleAB.window.PreviewVariation);
