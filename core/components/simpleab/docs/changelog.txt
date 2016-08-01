@@ -1,4 +1,4 @@
-++ SimpleAB 1.1.3-rc1
+++ SimpleAB 1.2.0-rc1
 ++ Released on 2016-08-01
 ++++++++++++++++++++++++++
 - Re-license to MIT and remove associated license checks
