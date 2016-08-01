@@ -1,3 +1,7 @@
+++ SimpleAB 1.1.3-rc1
+++ Released on 2016-08-01
+++++++++++++++++++++++++++
+- Re-license to MIT and remove associated license checks
 - Add ability to activate/deactivate a variation inline
 - Add description to Tests and Variations grid using a row expander
 - Fix missing class on primary button when editing a test

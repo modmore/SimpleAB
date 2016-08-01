@@ -43,15 +43,6 @@ else {
     $targetDirectory = MOREPROVIDER_BUILD_TARGET;
 }
 
-if (!defined('MODMORE_VEHICLE_PRIVATE_KEY')) {
-    if (file_exists(dirname(__FILE__).'/license.php')) {
-        include dirname(__FILE__).'/license.php';
-    } else {
-        exit ('You need a license and license.php file to build a package. Ask Mark.');
-    }
-}
-
-
 $root = dirname(dirname(__FILE__)).'/';
 $sources= array (
     'root' => $root,
@@ -74,23 +65,6 @@ $builder = new modPackageBuilder($modx);
 $builder->directory = $targetDirectory;
 $builder->createPackage(PKG_NAMESPACE,PKG_VERSION,PKG_RELEASE);
 $builder->registerNamespace(PKG_NAMESPACE,false,true,'{core_path}components/'.PKG_NAMESPACE.'/');
-
-require_once dirname(__FILE__) . '/vehicle/modmoresimpleab/modmorevehicle.class.php';
-$builder->package->put(
-    array(
-        'source' => dirname(__FILE__) . '/vehicle/modmoresimpleab/',
-        'target' => "return MODX_CORE_PATH . 'components/';"
-    ),
-    array(
-        'vehicle_class' => 'xPDOFileVehicle',
-        'resolve' => array(
-            array(
-                'type' => 'php',
-                'source' => dirname(__FILE__) . '/vehicle/scripts/resolver.php'
-            )
-        )
-    )
-);
 
 /** @var $category modCategory */
 $category = $modx->newObject('modCategory');
@@ -128,12 +102,6 @@ $attributes = array(
             xPDOTransport::UNIQUE_KEY => array('pluginid','event'),
         ),
     ),
-
-    xPDOTransport::ABORT_INSTALL_ON_VEHICLE_FAIL => true,
-    'vehicle_package_path' => dirname(__FILE__) . '/',
-    'vehicle_class' => 'modmoreVehicle',
-    'vehicle_public_key' => MODMORE_VEHICLE_PUBLIC_KEY,
-    'vehicle_download_id' => MODMORE_VEHICLE_DOWNLOAD
 );
 foreach ($plugins as $plugin) {
     $vehicle = $builder->createVehicle($plugin, $attributes);
@@ -170,12 +138,6 @@ $attr = array(
             xPDOTransport::UNIQUE_KEY => 'name',
         ),
     ),
-
-    xPDOTransport::ABORT_INSTALL_ON_VEHICLE_FAIL => true,
-    'vehicle_package_path' => dirname(__FILE__) . '/',
-    'vehicle_class' => 'modmoreVehicle',
-    'vehicle_public_key' => MODMORE_VEHICLE_PUBLIC_KEY,
-    'vehicle_download_id' => MODMORE_VEHICLE_DOWNLOAD
 );
 $vehicle = $builder->createVehicle($category,$attr);
 $vehicle->resolve('file',array(
@@ -203,18 +165,6 @@ $builder->setPackageAttributes(array(
     'changelog' => file_get_contents($sources['docs'] . 'changelog.txt'),
 ));
 $modx->log(modX::LOG_LEVEL_INFO,'Packaged in package attributes.'); flush();
-
-/**
- * Add xPDOScriptVehicle to load the modmoreVehicle in uninstall.
- */
-$vehicle = $builder->createVehicle(array(
-        'source' => $sources['resolvers'] . 'modmorevehicle.resolver.php',
-    ),
-    array(
-        'vehicle_class' => 'xPDOScriptVehicle',
-    )
-);
-$builder->putVehicle($vehicle);
 
 $modx->log(modX::LOG_LEVEL_INFO,'Packing...'); flush();
 $builder->pack();
