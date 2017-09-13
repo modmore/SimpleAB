@@ -1,3 +1,6 @@
+++ SimpleAB 1.2.0-pl
+++ Released on 2017-09-13
+++++++++++++++++++++++++++
 - Enable pagination on the chunks combo box to see more than 20 chunks [#33]
 - SimpleAB now requires PHP 5.5 like other modmore extras
 
