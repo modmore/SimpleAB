@@ -1,14 +1,7 @@
-------------------------------------------
-SimpleAB v0.3.0-pl
-------------------------------------------
-Author: Mark Hamstra - support@modmore.com
-------------------------------------------
+# SimpleAB
 
-SimpleAB is a tool to employ A/B or multivariate testing on a MODX Revolution powered website.
-
-It was developed by Mark Hamstra, originally for Reply.com, continued for modmore (with permission).
-
-The current version lets you dynamically switch templates to one of several variations, as
-defined in the custom manager page. It also lets you test Chunks.
+SimpleAB is a tool to employ A/B or multivariate testing on a MODX Revolution powered website. It lets you set up a set of template or chunk variations, which will be randomly picked. By setting up conversions with snippets, AJAX requests and other ways, you can indicate what worked and what didn't, and use that insight to improve your site. 
 
 For more information and documentation, please refer to https://www.modmore.com/extras/simpleab/
+
+Licensed under the MIT license.
