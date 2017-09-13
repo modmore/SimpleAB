@@ -8,7 +8,8 @@ SimpleAB.combo.Chunks = function(config) {
         },
         fields: ['id', 'name'],
         hiddenName: config.name,
-        paging: false,
+        paging: true,
+        pageSize: 20,
         valueField: 'id',
         displayField: 'name'
     });

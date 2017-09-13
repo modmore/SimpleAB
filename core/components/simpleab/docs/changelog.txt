@@ -1,3 +1,5 @@
+- Enable pagination on the chunks combo box to see more than 20 chunks [#33]
+
 ++ SimpleAB 1.2.0-rc1
 ++ Released on 2016-08-01
 ++++++++++++++++++++++++++
