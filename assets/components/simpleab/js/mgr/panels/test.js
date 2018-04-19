@@ -1,3 +1,10 @@
+
+var chartStyles = {
+    legend: {
+        display: 'right'
+    }
+};
+
 SimpleAB.panel.UpdateTest = function(config) {
     config = config || {};
     Ext.apply(config, {
@@ -14,20 +21,127 @@ SimpleAB.panel.UpdateTest = function(config) {
 			html: '<h2>' + _('simpleab.manage_test.title', { name: SimpleAB.record.name }) + '</h2>'
 			,border: false
 			,cls: 'modx-page-header'
-		},MODx.getPageStructure([{
-            title: _('simpleab.test') + ' & ' + _('simpleab.variations')
-            ,defaults: { border: false ,msgTarget: 'side' }
-            ,layout: 'form'
-            ,labelWidth: 150
-			,items: this.getPanelItems()
-        },{
-            title: _('simpleab.statistics')
-            ,defaults: { border: false ,msgTarget: 'side' }
-			,items: [{
-                html: '<p>' + _('simpleab.manage_test.desc') + '</p>'
-                ,bodyCssClass: 'panel-desc'
+		},
+            MODx.getPageStructure([{
+                title: _('simpleab.test') + ' & ' + _('simpleab.variations')
+                ,defaults: { border: false ,msgTarget: 'side' }
+                ,layout: 'form'
+                ,labelWidth: 150
+                ,items: this.getPanelItems()
+            },{
+                title: _('simpleab.statistics')
+                ,defaults: { border: false ,msgTarget: 'side' }
+                ,items: [{
+                    cls: 'container',
+                    items: [{
+                        layout: 'column',
+                        border: false,
+                        items: [{
+                            columnWidth: .2,
+                            border: false,
+                            items: [{
+                                xtype: 'panel',
+                                html: '<h3>'+_('simpleab.normalized')+'</h3>' +
+                                '<p>'+_('simpleab.normalized.desc')+'</p>',
+                                border: false
+                            }]
+                        },{
+                            columnWidth: .8,
+                            border: false,
+                            items: [{
+                                xtype: 'linechart',
+                                id: 'simpleab-statistics-normalized',
+                                extraStyle: chartStyles,
+                                height: 200,
+                                xField: 'period',
+                                series: SimpleAB.chartSeries,
+                                store: new Ext.data.JsonStore({
+                                    url: SimpleAB.config.connectorUrl,
+                                    baseParams: {
+                                        action: 'mgr/tests/stats/normalized',
+                                        test: SimpleAB.record.id
+                                    },
+                                    autoLoad: true,
+                                    fields: SimpleAB.chartFields,
+                                    idProperty: 'period',
+                                    root: 'results'
+                                })
+                            }]
+                        }]
+                    },{
+                        layout: 'column',
+                        border: false,
+                        items: [{
+                            columnWidth: .2,
+                            border: false,
+                            items: [{
+                                xtype: 'panel',
+                                html: '<h3>'+_('simpleab.conversions')+'</h3>' +
+                                '<p>'+_('simpleab.conversions.desc')+'</p>',
+                                border: false
+                            }]
+                        },{
+                            columnWidth: .8,
+                            border: false,
+                            items: [{
+                                xtype: 'linechart',
+                                id: 'simpleab-statistics-conversions',
+                                extraStyle: chartStyles,
+                                height: 200,
+                                xField: 'period',
+                                series: SimpleAB.chartSeries,
+                                store: new Ext.data.JsonStore({
+                                    url: SimpleAB.config.connectorUrl,
+                                    baseParams: {
+                                        action: 'mgr/tests/stats/conversions',
+                                        test: SimpleAB.record.id
+                                    },
+                                    autoLoad: true,
+                                    fields: SimpleAB.chartFields,
+                                    idProperty: 'period',
+                                    root: 'results'
+                                })
+                            }]
+                        }]
+                    },{
+                        layout: 'column',
+                        border: false,
+                        items: [{
+                            columnWidth: .2,
+                            border: false,
+                            items: [{
+                                xtype: 'panel',
+                                html: '<h3>'+_('simpleab.picks')+'</h3>' +
+                                '<p>'+_('simpleab.picks.desc')+'</p>',
+                                border: false
+                            }]
+                        },{
+                            columnWidth: .8,
+                            border: false,
+                            items: [{
+                                xtype: 'linechart',
+                                id: 'simpleab-statistics-picks',
+                                extraStyle: chartStyles,
+                                height: 200,
+                                xField: 'period',
+                                series: SimpleAB.chartSeries,
+                                store: new Ext.data.JsonStore({
+                                    url: SimpleAB.config.connectorUrl,
+                                    baseParams: {
+                                        action: 'mgr/tests/stats/picks',
+                                        test: SimpleAB.record.id
+                                    },
+                                    autoLoad: true,
+                                    fields: SimpleAB.chartFields,
+                                    idProperty: 'period',
+                                    root: 'results'
+                                })
+                            }]
+                        }]
+                    }]
+                }]
             }]
-        }])]
+        )]
         // only to redo the grid layout after the content is rendered
         // to fix overflow components' panels, especially when scroll bar is shown up
         ,listeners: {

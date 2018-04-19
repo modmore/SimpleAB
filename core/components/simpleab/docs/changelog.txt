@@ -1,3 +1,5 @@
+- Fix statistics not showing in the test UI
+
 ++ SimpleAB 1.2.0-pl
 ++ Released on 2017-09-13
 ++++++++++++++++++++++++++
