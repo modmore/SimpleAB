@@ -109,35 +109,18 @@ foreach ($s as $key => $value) {
 }
 
 /**
- * Action & Menu
- * @var modAction $action
+ * Menu
  */
-if (!createObject('modAction', array(
+if (!createObject('modMenu', array(
+    'text' => 'simpleab',
+    'parent' => 'components',
+    'description' => 'simpleab.menu_desc',
+    'icon' => 'images/icons/plugin.gif',
+    'menuindex' => 0,
     'namespace' => 'simpleab',
-    'parent' => '0',
-    'controller' => 'index',
-    'haslayout' => '1',
-    'lang_topics' => 'simpleab:default',
-), 'namespace', true)) {
-    echo "Error creating action.\n";
-}
-$action = $modx->getObject('modAction', array(
-    'namespace' => 'simpleab'
-));
-if ($action) {
-    if (!createObject('modMenu', array(
-        'text' => 'simpleab',
-        'parent' => 'components',
-        'description' => 'simpleab.menu_desc',
-        'icon' => 'images/icons/plugin.gif',
-        'menuindex' => 0,
-        'params' => '',
-        'handler' => '',
-        'permissions' => '',
-        'action' => $action->get('id')
-    ), 'text', true)) {
-        echo "Error creating modMenu.\n";
-    }
+    'action' => 'home',
+), 'text', false)) {
+    echo "Error creating menu.\n";
 }
 
 /**

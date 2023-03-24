@@ -4,7 +4,7 @@
  * The name of the controller is based on the path (test) and the
  * namespace (simpleab).
  */
-class SimpleABTestManagerController extends SimpleABManagerController {
+class SimpleABTestManagerController extends SimpleABHomeManagerController {
     /**
      * {@inheritdoc}
      * @param array $scriptProperties
