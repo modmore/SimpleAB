@@ -15,6 +15,7 @@ SimpleAB.grid.Variations = function(config) {
             action: 'mgr/variations/getlist',
             test: SimpleAB.record.id
         },
+        actionsColumnWidth: .1,
         autosave: true,
         save_action: 'mgr/variations/update_from_grid',
         emptyText: _('simpleab.error.noresults'),
