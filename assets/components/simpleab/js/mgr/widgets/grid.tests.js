@@ -61,13 +61,13 @@ SimpleAB.grid.Tests = function(config) {
 			,dataIndex: 'active'
 		    ,sortable: true
 			,width: .1
-            ,renderer: MODx.grid.Grid.prototype.rendYesNo
+            ,renderer: this.rendYesNo
 		},{
 			header: _('simpleab.archived')
 			,dataIndex: 'archived'
 		    ,sortable: true
 			,width: .1
-            ,renderer: MODx.grid.Grid.prototype.rendYesNo
+            ,renderer: this.rendYesNo
 		},{
 			header: _('simpleab.variations')
 			,dataIndex: 'variations'

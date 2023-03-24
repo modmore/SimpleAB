@@ -38,7 +38,7 @@ class SimpleABTestManagerController extends SimpleABHomeManagerController {
             SimpleAB.record = ' . $test->toJSON() . ';
             SimpleAB.chartSeries = '. $this->modx->toJSON($series) .';
             SimpleAB.chartFields = '. $this->modx->toJSON($fields) .';
-            Ext.chart.Chart.CHART_URL = "' . $this->simpleab->config['assetsUrl'] . 'swf/charts.swf";
+//            Ext.chart.Chart.CHART_URL = "' . $this->simpleab->config['assetsUrl'] . 'swf/charts.swf";
         </script>');
     }
 
