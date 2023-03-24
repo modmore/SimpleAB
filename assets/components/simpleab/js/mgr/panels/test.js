@@ -45,7 +45,7 @@ SimpleAB.panel.UpdateTest = function(config) {
                                 '<p>'+_('simpleab.normalized.desc')+'</p>',
                                 border: false
                             }]
-                        },{
+                        }/*,{
                             columnWidth: .8,
                             border: false,
                             items: [{
@@ -67,7 +67,7 @@ SimpleAB.panel.UpdateTest = function(config) {
                                     root: 'results'
                                 })
                             }]
-                        }]
+                        }*/]
                     },{
                         layout: 'column',
                         border: false,
@@ -80,7 +80,7 @@ SimpleAB.panel.UpdateTest = function(config) {
                                 '<p>'+_('simpleab.conversions.desc')+'</p>',
                                 border: false
                             }]
-                        },{
+                        },/*{
                             columnWidth: .8,
                             border: false,
                             items: [{
@@ -102,7 +102,7 @@ SimpleAB.panel.UpdateTest = function(config) {
                                     root: 'results'
                                 })
                             }]
-                        }]
+                        }*/]
                     },{
                         layout: 'column',
                         border: false,
@@ -115,7 +115,7 @@ SimpleAB.panel.UpdateTest = function(config) {
                                 '<p>'+_('simpleab.picks.desc')+'</p>',
                                 border: false
                             }]
-                        },{
+                        },/*{
                             columnWidth: .8,
                             border: false,
                             items: [{
@@ -137,7 +137,7 @@ SimpleAB.panel.UpdateTest = function(config) {
                                     root: 'results'
                                 })
                             }]
-                        }]
+                        }*/]
                     }]
                 }]
             }]
