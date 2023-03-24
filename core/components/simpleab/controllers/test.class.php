@@ -1,5 +1,7 @@
 <?php
 
+require_once __DIR__ . '/home.class.php';
+
 /**
  * The name of the controller is based on the path (test) and the
  * namespace (simpleab).
@@ -9,25 +11,25 @@ class SimpleABTestManagerController extends SimpleABHomeManagerController {
      * {@inheritdoc}
      * @param array $scriptProperties
      */
-    public function process(array $scriptProperties = array()) {
+    public function process(array $scriptProperties = []) {
         $id = (int)$this->modx->getOption('id', $scriptProperties, 0);
         if ($id < 1 || (!$test = $this->modx->getObject('sabTest', $id))) {
-            $this->modx->sendRedirect($this->modx->config['manager_url'] . '?a=' . $scriptProperties['a']);
+            $this->modx->sendRedirect($this->modx->config['manager_url'] . '?a=home&namespace=simpleab');
         }
 
         /** @var sabTest $test */
-        $series = array();
-        $fields = array('period');
+        $series = [];
+        $fields = ['period'];
 
         $vars = $test->getMany('Variations');
         foreach ($vars as $variation) {
             /** @var sabVariation $variation */
-            $series[] = array(
+            $series[] = [
                 'type' => 'line',
                 'displayName' => $variation->get('name'),
                 'yField' => 'var_' . $variation->get('id'),
                 'xField' => 'period',
-            );
+            ];
 
             $fields[] = 'var_' . $variation->get('id');
         }

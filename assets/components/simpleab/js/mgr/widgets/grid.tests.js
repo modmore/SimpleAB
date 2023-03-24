@@ -14,6 +14,7 @@ SimpleAB.grid.Tests = function(config) {
 		,baseParams: {
             action: 'mgr/tests/getlist'
         }
+        ,actionsColumnWidth: .1
         ,emptyText: _('simpleab.error.noresults')
 		,fields: [
             { name: 'id', type: 'int' }
