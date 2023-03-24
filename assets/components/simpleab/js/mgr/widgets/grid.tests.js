@@ -141,7 +141,7 @@ Ext.extend(SimpleAB.grid.Tests,MODx.grid.Grid,{
     },
 
     manageTest: function() {
-        MODx.loadPage(MODx.request.a,'action=test&id='+this.menu.record.id);
+        MODx.loadPage('test&namespace=simpleab&id=' + this.menu.record.id);
     },
 
     archiveTest: function() {
