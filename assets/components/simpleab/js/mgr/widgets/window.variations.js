@@ -32,10 +32,10 @@ SimpleAB.window.Variation = function(config) {
             maxLength: 500,
             allowBlank: true
         },{
-            xtype: (SimpleAB.record.type == 'modTemplate') ? 'modx-combo-template' : 'simpleab-combo-chunks',
+            xtype: (SimpleAB.record.type === 'modTemplate') ? 'modx-combo-template' : 'simpleab-combo-chunks',
             name: 'element',
             hiddenName: 'element',
-            fieldLabel: (SimpleAB.record.type == 'modTemplate') ? _('simpleab.template') : _('simpleab.chunk'),
+            fieldLabel: (SimpleAB.record.type === 'modTemplate') ? _('simpleab.template') : _('simpleab.chunk'),
             anchor: '100%'
         },{
             xtype: 'checkbox',
@@ -51,7 +51,7 @@ Ext.reg('simpleab-window-variation',SimpleAB.window.Variation);
 
 SimpleAB.window.PreviewVariation = function(config) {
     config = config || {};
-    config.id = config.id || Ext.id(),
+    config.id = config.id || Ext.id();
     Ext.applyIf(config,{
         title: _('simpleab.preview_variation'),
         saveBtnText: _('simpleab.preview_variation'),
@@ -89,7 +89,12 @@ SimpleAB.window.PreviewVariation = function(config) {
         listeners: {
             success: {
                 fn: function(r) {
-                    window.open(r.a.result.message);
+                    var obj = r.a.result.object,
+                        params = new URLSearchParams({
+                            sabTest: obj.sabTest,
+                            sabVariation: obj.sabVariation,
+                        });
+                    window.open(obj.url + '?' + params);
                     MODx.msg.alert(_('simpleab.preview_variation'), '<p>The requested preview should have opened in a new window or tab. If not, <a href="' + r.a.result.message + '" target="_blank">please use this link.</a></p>');
                 },
                 scope: this

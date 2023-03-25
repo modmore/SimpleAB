@@ -36,19 +36,19 @@ Ext.extend(SimpleAB.page.Test, MODx.Component, {
                     key: MODx.config.keymap_save || 's'
                     ,ctrl: true
                 }]
-            },'-',{
+            },{
                 text: parseInt(SimpleAB.record.archived) ? _('simpleab.unarchive_test') :  _('simpleab.archive_test')
                 ,handler: parseInt(SimpleAB.record.archived) ? this.unArchiveTest : this.archiveTest
             },{
                 text: _('simpleab.clear_test_data')
                 ,handler: this.clearTestData
-            }, '-');
+            });
         }
 
         it.push({
             text: _('cancel')
             ,handler: this.cancel
-        },'-',{
+        },{
             text: _('help_ex')
             ,handler: MODx.loadHelpPane
         });
@@ -59,12 +59,12 @@ Ext.extend(SimpleAB.page.Test, MODx.Component, {
         var fp = Ext.getCmp(this.config.formpanel);
         if (fp && fp.isDirty()) {
             Ext.Msg.confirm(_('warning'), _('simpleab.cancel_test_confirm'), function(e) {
-                if (e == 'yes') {
-                    MODx.loadPage(MODx.request.a);
+                if (e === 'yes') {
+                    MODx.loadPage('test&namespace=simpleab');
                 }
             }, this);
         } else {
-            MODx.loadPage(MODx.request.a);
+            MODx.loadPage('test&namespace=simpleab');
         }
     }
     ,clearTestData: function() {

@@ -172,7 +172,7 @@ foreach ($snips as $name => $description) {
 if (!createObject('modPlugin', array(
     'name' => 'SimpleAB',
     'static' => true,
-    'static_file' => '[[++simpleab.core_path]]elements/plugins/simpleab.plugin.php',
+    'static_file' => $componentPath . '/_build/elements/plugins/simpleab.plugin.php',
     'category' => $categoryId
 ), 'name', true)) {
     echo "Error creating modPlugin.\n";

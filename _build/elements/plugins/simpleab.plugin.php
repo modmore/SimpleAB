@@ -17,8 +17,8 @@ if (!$simpleAB = $modx->getService('simpleab', 'SimpleAB', $corePath.'model/simp
 $tests = $simpleAB->getTestsForResource($modx->resource);
 foreach ($tests as $testId) {
     /** Get the individual test object from cache, and continue it if it's a template test */
-    $test = $modx->call('sabTest', 'getTest', array(&$modx, $testId));
-    if ($test instanceof sabTest && ($test->get('type') == 'modTemplate')) {
+    $test = $modx->call('sabTest', 'getTest', [&$modx, $testId]);
+    if ($test instanceof sabTest && ($test->get('type') === 'modTemplate')) {
         $isActive = $test->get('active');
         $isAdmin = $modx->user->isAuthenticated('mgr');
         $isPreview = isset($_GET['sabTest']) && isset($_GET['sabVariation']) && ($_GET['sabTest'] == $test->get('id'));
@@ -27,22 +27,22 @@ foreach ($tests as $testId) {
         $tpl = 0;
         /** Admin and in preview mode? Fetch the specified variation. */
         if ($isAdmin && $isPreview) {
-            $variation = $modx->getObject('sabVariation', array(
+            $variation = $modx->getObject('sabVariation', [
                 'id' => (int)$_GET['sabVariation'],
                 'test' => $test->get('id'),
-            ));
+            ]);
             /**  Variation found => get it, register the pick and add the admin preview box. */
             if ($variation) {
                 $tpl = $variation->get('element');
                 $simpleAB->registerPick($test->get('id'), $variation->get('id'));
                 $simpleAB->registerAdminPreviewBox($test, $variations);
-                $simpleAB->lastPickDetails = array(
+                $simpleAB->lastPickDetails = [
                     'test' => $testId,
                     'mode' => 'preview',
                     'pick' => $variation->get('id'),
                     'variation' => $variation->toArray(),
                     'variations' => $variations,
-                );
+                ];
             }
             /** Variation not found? Pretend like our nose is bleeding and do like normal. */
             else {
