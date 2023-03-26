@@ -1,17 +1,9 @@
-
-var chartStyles = {
-    legend: {
-        display: 'right'
-    }
-};
-
 SimpleAB.panel.UpdateTest = function(config) {
     config = config || {};
     Ext.apply(config, {
         id: 'simpleab-panel-test-update'
         ,url: SimpleAB.config.connectorUrl
         ,baseParams: { action: 'mgr/tests/update' ,id: SimpleAB.record.id }
-
         ,border: false
 		,baseCls: 'modx-formpanel'
 		,cls: 'container form-with-labels'
@@ -67,7 +59,20 @@ SimpleAB.panel.UpdateTest = function(config) {
                                     root: 'results'
                                 })
                             }]
-                        }*/]
+                        }*/,{
+                            columnWidth: .8,
+                            border: false,
+                            items: [{
+                                html: '<canvas id="normalized-chart-div"></canvas>',
+                                chartType: 'normalized',
+                                listeners: {
+                                    afterrender: {
+                                        fn: this.loadChart,
+                                        scope: this
+                                    }
+                                }
+                            }]
+                        }]
                     },{
                         layout: 'column',
                         border: false,
@@ -80,7 +85,7 @@ SimpleAB.panel.UpdateTest = function(config) {
                                 '<p>'+_('simpleab.conversions.desc')+'</p>',
                                 border: false
                             }]
-                        },/*{
+                        }/*{
                             columnWidth: .8,
                             border: false,
                             items: [{
@@ -102,7 +107,19 @@ SimpleAB.panel.UpdateTest = function(config) {
                                     root: 'results'
                                 })
                             }]
-                        }*/]
+                        }*/,{
+                            columnWidth: .8,
+                            border: false,
+                            items: [{
+                                html: '<canvas id="conversions-chart-div"></canvas>',
+                                listeners: {
+                                    // afterrender: {
+                                    //     fn: this.loadChart('conversions'),
+                                    //     scope: this
+                                    // }
+                                }
+                            }]
+                        }]
                     },{
                         layout: 'column',
                         border: false,
@@ -115,7 +132,7 @@ SimpleAB.panel.UpdateTest = function(config) {
                                 '<p>'+_('simpleab.picks.desc')+'</p>',
                                 border: false
                             }]
-                        },/*{
+                        }/*{
                             columnWidth: .8,
                             border: false,
                             items: [{
@@ -137,7 +154,19 @@ SimpleAB.panel.UpdateTest = function(config) {
                                     root: 'results'
                                 })
                             }]
-                        }*/]
+                        }*/,{
+                            columnWidth: .8,
+                            border: false,
+                            items: [{
+                                html: '<canvas id="picks-chart-div"></canvas>',
+                                listeners: {
+                                    // afterrender: {
+                                    //     fn: this.loadChart('picks'),
+                                    //     scope: this
+                                    // }
+                                }
+                            }]
+                        }]
                     }]
                 }]
             }]
@@ -250,7 +279,7 @@ Ext.extend(SimpleAB.panel.UpdateTest, MODx.FormPanel, {
                         layout: 'column'
                         ,border: false
                         ,defaults: { layout: 'form' ,border: false }
-                        ,hidden: !(SimpleAB.record.type == 'modTemplate')
+                        ,hidden: !(SimpleAB.record.type === 'modTemplate')
                         ,items: [{
                             columnWidth: .5
                             ,defaults: { msgTarget: 'side' ,border: false ,anchor: '100%' }
@@ -344,6 +373,45 @@ Ext.extend(SimpleAB.panel.UpdateTest, MODx.FormPanel, {
         });
 
         return it;
-    }
+    },
+
+    loadChart: function(tabItem) {
+        var type = tabItem.chartType;
+        MODx.Ajax.request({
+            url: SimpleAB.config.connectorUrl,
+            params: {
+                action: 'mgr/tests/stats/' + type,
+                test: SimpleAB.record.id
+            },
+            listeners: {
+                'success':{
+                    fn: function(r) {
+                        const ctx = document.getElementById('normalized-chart-div').getContext('2d');
+                        const chart = new Chart(ctx, {
+                            type: 'line',
+                            data: {
+                                labels: ['Period'],
+                                datasets: [{
+                                    label: ['Label here'],
+                                    type: 'line',
+                                    data: r.results,
+                                    borderColor: 'rgba(0, 222, 204, 1)',
+                                    backgroundColor: 'rgba(0, 222, 204, 0.2)',
+                                }]
+                            },
+                            options: {
+                                scales: {
+                                    y: {
+                                        beginAtZero: true
+                                    }
+                                }
+                            }
+                        });
+                    },
+                    scope: this
+                }
+            }
+        });
+    },
 });
 Ext.reg('simpleab-panel-test-update', SimpleAB.panel.UpdateTest);

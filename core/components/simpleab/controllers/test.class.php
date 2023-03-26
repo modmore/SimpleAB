@@ -8,8 +8,8 @@ require_once __DIR__ . '/home.class.php';
  */
 class SimpleABTestManagerController extends SimpleABHomeManagerController {
     /**
-     * {@inheritdoc}
      * @param array $scriptProperties
+     * @throws \xPDO\xPDOException
      */
     public function process(array $scriptProperties = []) {
         $id = (int)$this->modx->getOption('id', $scriptProperties, 0);
@@ -36,9 +36,8 @@ class SimpleABTestManagerController extends SimpleABHomeManagerController {
 
         $this->addHtml('<script type="text/javascript">
             SimpleAB.record = ' . $test->toJSON() . ';
-            SimpleAB.chartSeries = '. $this->modx->toJSON($series) .';
-            SimpleAB.chartFields = '. $this->modx->toJSON($fields) .';
-//            Ext.chart.Chart.CHART_URL = "' . $this->simpleab->config['assetsUrl'] . 'swf/charts.swf";
+            SimpleAB.chartSeries = ' . $this->modx->toJSON($series) . ';
+            SimpleAB.chartFields = ' . $this->modx->toJSON($fields) . ';
         </script>');
     }
 
@@ -55,12 +54,13 @@ class SimpleABTestManagerController extends SimpleABHomeManagerController {
      * combine and compress them if enabled in system settings.
      */
     public function loadCustomCssJs() {
-        $this->addJavascript($this->simpleab->config['jsUrl'].'mgr/widgets/combos.js');
-        $this->addJavascript($this->simpleab->config['jsUrl'].'mgr/widgets/grid.variations.js');
-        $this->addJavascript($this->simpleab->config['jsUrl'].'mgr/widgets/window.variations.js');
-        $this->addJavascript($this->simpleab->config['jsUrl'].'mgr/widgets/window.tests.js');
+        $this->addJavascript($this->simpleab->config['assetsUrl'] . 'chartjs/chart.min.js');
+        $this->addJavascript($this->simpleab->config['jsUrl'] . 'mgr/widgets/combos.js');
+        $this->addJavascript($this->simpleab->config['jsUrl'] . 'mgr/widgets/grid.variations.js');
+        $this->addJavascript($this->simpleab->config['jsUrl'] . 'mgr/widgets/window.variations.js');
+        $this->addJavascript($this->simpleab->config['jsUrl'] . 'mgr/widgets/window.tests.js');
 
-        $this->addJavascript($this->simpleab->config['jsUrl'].'mgr/panels/test.js');
-        $this->addLastJavascript($this->simpleab->config['jsUrl'].'mgr/sections/test.js');
+        $this->addJavascript($this->simpleab->config['jsUrl'] . 'mgr/panels/test.js');
+        $this->addLastJavascript($this->simpleab->config['jsUrl'] . 'mgr/sections/test.js');
     }
 }

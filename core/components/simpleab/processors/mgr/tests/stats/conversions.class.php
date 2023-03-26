@@ -36,9 +36,9 @@ class getConversionStatsGetListProcessor extends modObjectGetListProcessor {
         $c->groupby('var_id');
 
         $c->select(array(
-            'id' => 'sabConversion.id',
+            'id' => 'MAX(sabConversion.id)',
             'var_id' => 'Variation.id',
-            'amount',
+            'amount' => 'SUM(amount)',
             'date',
         ));
         return $c;

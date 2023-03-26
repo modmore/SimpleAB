@@ -36,9 +36,9 @@ class getPickStatsGetListProcessor extends modObjectGetListProcessor {
         $c->groupby('var_id');
 
         $c->select(array(
-            'id' => 'sabPick.id',
+            'id' => 'MAX(sabPick.id)',
             'var_id' => 'Variation.id',
-            'amount',
+            'amount' => 'SUM(amount)',
             'date',
         ));
         return $c;
