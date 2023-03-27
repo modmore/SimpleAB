@@ -69,16 +69,17 @@ class getPickStatsGetListProcessor extends modObjectGetListProcessor {
         foreach ($data['results'] as $object) {
             $objectArray = $this->prepareRow($object);
             if (!empty($objectArray)) {
+                $varId = 'var_' . $objectArray['var_id'];
 
                 // Sort into sets by variation id -> date
                 foreach ($this->dates as $date) {
-                    if (!isset($list['var_' . $objectArray['var_id']][$date])) {
-                        $list['var_' . $objectArray['var_id']][$date] = 0;
+                    if (!isset($list[$varId][$date])) {
+                        $list[$varId][$date] = 0;
                     }
                 }
 
-                $list['var_' . $objectArray['var_id']][$objectArray['date']] = $objectArray['amount'];
-                $this->labels['var_' . $objectArray['var_id']] = $objectArray['label'];
+                $list[$varId][$objectArray['date']] = $objectArray['amount'];
+                $this->labels[$varId] = $objectArray['label'];
                 $this->currentIndex++;
             }
         }
