@@ -63,7 +63,7 @@ SimpleAB.panel.UpdateTest = function(config) {
                             columnWidth: .8,
                             border: false,
                             items: [{
-                                html: '<canvas id="normalized-chart-div"></canvas>',
+                                html: '<canvas id="normalized-chart-div" height="200" width="400"></canvas>',
                                 chartType: 'normalized',
                                 // listeners: {
                                 //     afterrender: {
@@ -111,13 +111,13 @@ SimpleAB.panel.UpdateTest = function(config) {
                             columnWidth: .8,
                             border: false,
                             items: [{
-                                html: '<canvas id="conversions-chart-div"></canvas>',
+                                html: '<canvas id="conversions-chart-div" height="200" width="400"></canvas>',
                                 chartType: 'conversions',
                                 listeners: {
-                                    // afterrender: {
-                                    //     fn: this.loadChart,
-                                    //     scope: this
-                                    // }
+                                    afterrender: {
+                                        fn: this.loadChart,
+                                        scope: this
+                                    }
                                 }
                             }]
                         }]
@@ -415,12 +415,15 @@ Ext.extend(SimpleAB.panel.UpdateTest, MODx.FormPanel, {
                                 }
                             }
 
-                            datasets.push({
-                                label: setLabel,
-                                data: r.results[set],
-                                borderColor: this.getColor(i),
-                                backgroundColor: this.getColor(i) + '02',
-                            });
+                            // If it's an array, it's empty
+                            if (!Array.isArray(r.results)) {
+                                datasets.push({
+                                    label: setLabel,
+                                    data: r.results[set],
+                                    borderColor: this.getColor(i),
+                                    backgroundColor: this.getColor(i) + '02',
+                                });
+                            }
 
                             i++;
                         }
@@ -428,7 +431,7 @@ Ext.extend(SimpleAB.panel.UpdateTest, MODx.FormPanel, {
                             type: 'line',
                             labels: r.dates,
                             data: {
-                                datasets: datasets
+                                datasets: datasets,
                             },
                             options: {
                                 responsive: true,
