@@ -3,34 +3,41 @@
  * Gets a list of sabPick objects.
  */
 class getPickStatsGetListProcessor extends modObjectGetListProcessor {
-    public $classKey = 'sabPick';
-    public $languageTopics = array('simpleab:default');
+    public $classKey = sabPick::class;
+    public $languageTopics = ['simpleab:default'];
     public $defaultSortField = 'date';
-    public $defaultSortDirection = 'DESC';
+    public $defaultSortDirection = 'ASC';
+    protected $dates = [];
 
     /**
      * {@inheritDoc}
-     * @return boolean
+     * @return bool
      */
-    public function initialize() {
+    public function initialize()
+    {
         parent::initialize();
-        $this->setDefaultProperties(array(
+        $this->setDefaultProperties([
             'limit' => 9999,
-        ));
+        ]);
+
+        // Build a list of dates for the last 30 days (could potentially change this to any number)
+        for ($i = 0; $i < 30; $i++) {
+            $this->dates[] = date("Ymd", strtotime('-' . $i . ' days'));
+        }
+
         return true;
     }
 
     /**
      * @param xPDOQuery $c
-     *
      * @return xPDOQuery
      */
-    public function prepareQueryBeforeCount(xPDOQuery $c) {
+    public function prepareQueryBeforeCount(xPDOQuery $c): xPDOQuery
+    {
         $c->innerJoin('sabVariation', 'Variation');
-        $c->where(array(
+        $c->where([
             'Variation.test' => $this->getProperty('test', 0),
-        ));
-
+        ]);
 
         $c->groupby('date');
         $c->groupby('var_id');
@@ -41,48 +48,40 @@ class getPickStatsGetListProcessor extends modObjectGetListProcessor {
             'amount' => 'SUM(amount)',
             'date',
         ));
+
         return $c;
     }
 
     /**
      * {@inheritdoc}
      * @param array $data
-     *
      * @return array
      */
-    public function iterate(array $data) {
-        $list = array();
+    public function iterate(array $data): array
+    {
+        $list = [];
         $list = $this->beforeIteration($list);
-
-        $interimList = array();
 
         $this->currentIndex = 0;
         /** @var xPDOObject|modAccessibleObject $object */
         foreach ($data['results'] as $object) {
             $objectArray = $this->prepareRow($object);
-            if (!empty($objectArray) && is_array($objectArray)) {
-                $date = $objectArray['date'];
-                if (!isset($interimList[$date])) {
-                    $interimList[$date] = array(
-                        'id' => $objectArray['id'],
-                        'period' => $objectArray['date'],
-                    );
+            if (!empty($objectArray)) {
+
+                // Sort into sets by variation id -> date
+                foreach ($this->dates as $date) {
+                    if (!isset($list['var_' . $objectArray['var_id']][$date])) {
+                        $list['var_' . $objectArray['var_id']][$date] = 0;
+                    }
                 }
 
-                if (!isset($interimList[$date]['var_'.$objectArray['var_id']])) {
-                    $interimList[$date]['var_'.$objectArray['var_id']] = $objectArray['amount'];
-                }
+                $list['var_' . $objectArray['var_id']][$objectArray['date']] = $objectArray['amount'];
 
                 $this->currentIndex++;
             }
         }
 
-        $interimList = array_reverse($interimList);
-
-        $list = array_merge($list, array_values($interimList));
-
-        $list = $this->afterIteration($list);
-        return $list;
+        return $this->afterIteration($list);
     }
 
     /**
@@ -90,9 +89,28 @@ class getPickStatsGetListProcessor extends modObjectGetListProcessor {
      * @param xPDOObject $object
      * @return array
      */
-    public function prepareRow(xPDOObject $object) {
-        $row = $object->toArray('', false, true);
-        return $row;
+    public function prepareRow(xPDOObject $object): array
+    {
+        return $object->toArray('', false, true);
+    }
+
+    public function outputArray(array $array, $count = false) {
+        if ($count === false) {
+            $count = count($array);
+        }
+
+        $output = json_encode([
+            'success' => true,
+            'total' => $count,
+            'results' => $array,
+            'dates' => $this->dates,
+        ], JSON_INVALID_UTF8_SUBSTITUTE);
+
+        if ($output === false) {
+            $this->modx->log(modX::LOG_LEVEL_ERROR, 'Processor failed creating output array due to JSON error '.json_last_error());
+            return json_encode(['success' => false]);
+        }
+        return $output;
     }
 }
 return 'getPickStatsGetListProcessor';

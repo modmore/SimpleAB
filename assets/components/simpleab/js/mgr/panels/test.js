@@ -65,12 +65,12 @@ SimpleAB.panel.UpdateTest = function(config) {
                             items: [{
                                 html: '<canvas id="normalized-chart-div"></canvas>',
                                 chartType: 'normalized',
-                                listeners: {
-                                    afterrender: {
-                                        fn: this.loadChart,
-                                        scope: this
-                                    }
-                                }
+                                // listeners: {
+                                //     afterrender: {
+                                //         fn: this.loadChart,
+                                //         scope: this
+                                //     }
+                                // }
                             }]
                         }]
                     },{
@@ -112,9 +112,10 @@ SimpleAB.panel.UpdateTest = function(config) {
                             border: false,
                             items: [{
                                 html: '<canvas id="conversions-chart-div"></canvas>',
+                                chartType: 'conversions',
                                 listeners: {
                                     // afterrender: {
-                                    //     fn: this.loadChart('conversions'),
+                                    //     fn: this.loadChart,
                                     //     scope: this
                                     // }
                                 }
@@ -158,12 +159,13 @@ SimpleAB.panel.UpdateTest = function(config) {
                             columnWidth: .8,
                             border: false,
                             items: [{
-                                html: '<canvas id="picks-chart-div"></canvas>',
+                                html: '<canvas id="picks-chart-div" height="200" width="400"></canvas>',
+                                chartType: 'picks',
                                 listeners: {
-                                    // afterrender: {
-                                    //     fn: this.loadChart('picks'),
-                                    //     scope: this
-                                    // }
+                                    afterrender: {
+                                        fn: this.loadChart,
+                                        scope: this
+                                    }
                                 }
                             }]
                         }]
@@ -375,8 +377,23 @@ Ext.extend(SimpleAB.panel.UpdateTest, MODx.FormPanel, {
         return it;
     },
 
+    getColor: function (index) {
+        const colors = [
+            '#4dc9f6',
+            '#f67019',
+            '#f53794',
+            '#537bc4',
+            '#acc236',
+            '#166a8f',
+            '#00a950',
+            '#58595b',
+            '#8549ba'
+        ];
+        return colors[index % colors.length];
+    },
+
     loadChart: function(tabItem) {
-        var type = tabItem.chartType;
+        let type = tabItem.chartType;
         MODx.Ajax.request({
             url: SimpleAB.config.connectorUrl,
             params: {
@@ -386,20 +403,27 @@ Ext.extend(SimpleAB.panel.UpdateTest, MODx.FormPanel, {
             listeners: {
                 'success':{
                     fn: function(r) {
-                        const ctx = document.getElementById('normalized-chart-div').getContext('2d');
+                        const ctx = document.getElementById(type + '-chart-div').getContext('2d');
+                        const datasets = [];
+                        let i = 0;
+                        for (const set in r.results) {
+                            datasets.push({
+                                label: set,
+                                data: r.results[set],
+                                borderColor: this.getColor(i),
+                                backgroundColor: this.getColor(i) + '02',
+                            });
+                            i++;
+                        }
                         const chart = new Chart(ctx, {
                             type: 'line',
+                            labels: r.dates,
                             data: {
-                                labels: ['Period'],
-                                datasets: [{
-                                    label: ['Label here'],
-                                    type: 'line',
-                                    data: r.results,
-                                    borderColor: 'rgba(0, 222, 204, 1)',
-                                    backgroundColor: 'rgba(0, 222, 204, 0.2)',
-                                }]
+                                datasets: datasets
                             },
                             options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
                                 scales: {
                                     y: {
                                         beginAtZero: true
