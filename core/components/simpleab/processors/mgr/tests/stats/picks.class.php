@@ -8,6 +8,7 @@ class getPickStatsGetListProcessor extends modObjectGetListProcessor {
     public $defaultSortField = 'date';
     public $defaultSortDirection = 'ASC';
     protected $dates = [];
+    protected $labels = [];
 
     /**
      * {@inheritDoc}
@@ -42,12 +43,13 @@ class getPickStatsGetListProcessor extends modObjectGetListProcessor {
         $c->groupby('date');
         $c->groupby('var_id');
 
-        $c->select(array(
+        $c->select([
             'id' => 'MAX(sabPick.id)',
             'var_id' => 'Variation.id',
+            'label' => 'Variation.name',
             'amount' => 'SUM(amount)',
             'date',
-        ));
+        ]);
 
         return $c;
     }
@@ -76,7 +78,7 @@ class getPickStatsGetListProcessor extends modObjectGetListProcessor {
                 }
 
                 $list['var_' . $objectArray['var_id']][$objectArray['date']] = $objectArray['amount'];
-
+                $this->labels['var_' . $objectArray['var_id']] = $objectArray['label'];
                 $this->currentIndex++;
             }
         }
@@ -104,6 +106,7 @@ class getPickStatsGetListProcessor extends modObjectGetListProcessor {
             'total' => $count,
             'results' => $array,
             'dates' => $this->dates,
+            'labels' => $this->labels,
         ], JSON_INVALID_UTF8_SUBSTITUTE);
 
         if ($output === false) {

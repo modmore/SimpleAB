@@ -405,14 +405,23 @@ Ext.extend(SimpleAB.panel.UpdateTest, MODx.FormPanel, {
                     fn: function(r) {
                         const ctx = document.getElementById(type + '-chart-div').getContext('2d');
                         const datasets = [];
+
                         let i = 0;
                         for (const set in r.results) {
+                            let setLabel = '';
+                            for (const label in r.labels) {
+                                if (label === set) {
+                                    setLabel = r.labels[label];
+                                }
+                            }
+
                             datasets.push({
-                                label: set,
+                                label: setLabel,
                                 data: r.results[set],
                                 borderColor: this.getColor(i),
                                 backgroundColor: this.getColor(i) + '02',
                             });
+
                             i++;
                         }
                         const chart = new Chart(ctx, {
