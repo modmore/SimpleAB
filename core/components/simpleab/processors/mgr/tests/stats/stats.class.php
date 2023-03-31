@@ -41,6 +41,13 @@ class StatsGetListProcessor extends modObjectGetListProcessor {
         $list = $this->beforeIteration($list);
 
         $this->currentIndex = 0;
+
+        // If we have no results, we still need to set initial values for each variation and date.
+        if (empty($data['results'])) {
+            $list = $this->setEmptyStats($list);
+            return $this->afterIteration($list);
+        }
+
         /** @var xPDOObject|modAccessibleObject $object */
         foreach ($data['results'] as $object) {
             $objectArray = $this->prepareRow($object);
@@ -61,6 +68,28 @@ class StatsGetListProcessor extends modObjectGetListProcessor {
         }
 
         return $this->afterIteration($list);
+    }
+
+    /**
+     * @param array $list
+     * @return array
+     */
+    protected function setEmptyStats(array $list): array
+    {
+        $variations = $this->modx->getCollection(sabVariation::class, [
+            'test' => (int)$this->getProperty('test'),
+        ]);
+        foreach ($variations as $id => $variation) {
+            $varId = 'var_' . $id;
+            $this->labels[$varId] = $variation->get('name');
+
+            $list[$varId] = [];
+            foreach ($this->dates as $date) {
+                $list[$varId][$date] = 0;
+            }
+        }
+
+        return $list;
     }
 
     /**
