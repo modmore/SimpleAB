@@ -13,11 +13,12 @@ class sabVariationPreviewProcessor extends modProcessor {
         $variation = (int)$this->getProperty('id');
 
         if ($resource > 0) {
-            $url = $this->modx->makeUrl($resource, '', array(
+            $url = $this->modx->makeUrl($resource, '', [], 'full');
+            return $this->success('', [
+                'url' => $url,
                 'sabTest' => $test,
                 'sabVariation' => $variation,
-            ), 'full');
-            return $this->success($url);
+            ]);
         }
 
         return $this->failure('Please select a resource.');

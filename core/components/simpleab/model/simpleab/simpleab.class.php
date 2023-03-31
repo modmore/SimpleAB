@@ -93,7 +93,7 @@ class SimpleAB {
      *
      * @return mixed
      */
-    public function pickOne (sabTest $test, array $variations = array(), array $userData = array()) {
+    public function pickOne (sabTest $test, array $variations = [], array $userData = []) {
         $testId = $test->get('id');
         $options = array_keys($variations);
 

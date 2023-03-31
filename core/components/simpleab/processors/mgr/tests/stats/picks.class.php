@@ -1,98 +1,37 @@
 <?php
+
+require_once __DIR__ . '/stats.class.php';
+
 /**
  * Gets a list of sabPick objects.
  */
-class getPickStatsGetListProcessor extends modObjectGetListProcessor {
-    public $classKey = 'sabPick';
-    public $languageTopics = array('simpleab:default');
-    public $defaultSortField = 'date';
-    public $defaultSortDirection = 'DESC';
-
-    /**
-     * {@inheritDoc}
-     * @return boolean
-     */
-    public function initialize() {
-        parent::initialize();
-        $this->setDefaultProperties(array(
-            'limit' => 9999,
-        ));
-        return true;
-    }
+class getPickStatsGetListProcessor extends StatsGetListProcessor {
+    public $classKey = sabPick::class;
 
     /**
      * @param xPDOQuery $c
-     *
      * @return xPDOQuery
      */
-    public function prepareQueryBeforeCount(xPDOQuery $c) {
+    public function prepareQueryBeforeCount(xPDOQuery $c): xPDOQuery
+    {
         $c->innerJoin('sabVariation', 'Variation');
-        $c->where(array(
+        $c->where([
             'Variation.test' => $this->getProperty('test', 0),
-        ));
-
+        ]);
 
         $c->groupby('date');
         $c->groupby('var_id');
 
-        $c->select(array(
-            'id' => 'sabPick.id',
+        $c->select([
+            'id' => 'MAX(sabPick.id)',
             'var_id' => 'Variation.id',
-            'amount',
+            'label' => 'Variation.name',
+            'amount' => 'SUM(amount)',
             'date',
-        ));
+        ]);
+
         return $c;
     }
-
-    /**
-     * {@inheritdoc}
-     * @param array $data
-     *
-     * @return array
-     */
-    public function iterate(array $data) {
-        $list = array();
-        $list = $this->beforeIteration($list);
-
-        $interimList = array();
-
-        $this->currentIndex = 0;
-        /** @var xPDOObject|modAccessibleObject $object */
-        foreach ($data['results'] as $object) {
-            $objectArray = $this->prepareRow($object);
-            if (!empty($objectArray) && is_array($objectArray)) {
-                $date = $objectArray['date'];
-                if (!isset($interimList[$date])) {
-                    $interimList[$date] = array(
-                        'id' => $objectArray['id'],
-                        'period' => $objectArray['date'],
-                    );
-                }
-
-                if (!isset($interimList[$date]['var_'.$objectArray['var_id']])) {
-                    $interimList[$date]['var_'.$objectArray['var_id']] = $objectArray['amount'];
-                }
-
-                $this->currentIndex++;
-            }
-        }
-
-        $interimList = array_reverse($interimList);
-
-        $list = array_merge($list, array_values($interimList));
-
-        $list = $this->afterIteration($list);
-        return $list;
-    }
-
-    /**
-     * Transform the xPDOObject derivative to an array;
-     * @param xPDOObject $object
-     * @return array
-     */
-    public function prepareRow(xPDOObject $object) {
-        $row = $object->toArray('', false, true);
-        return $row;
-    }
 }
+
 return 'getPickStatsGetListProcessor';

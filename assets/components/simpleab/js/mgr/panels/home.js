@@ -11,6 +11,7 @@ SimpleAB.panel.Home = function(config) {
 			,cls: 'modx-page-header'
 		},{
 			defaults: { border: false, autoHeight: true }
+			,layout: 'anchor'
 			,items: [{
 				html: '<p>' + _('simpleab.tests.desc') + '</p>'
 				,bodyCssClass: 'panel-desc'

@@ -14,6 +14,7 @@ SimpleAB.grid.Tests = function(config) {
 		,baseParams: {
             action: 'mgr/tests/getlist'
         }
+        ,actionsColumnWidth: .1
         ,emptyText: _('simpleab.error.noresults')
 		,fields: [
             { name: 'id', type: 'int' }
@@ -60,13 +61,13 @@ SimpleAB.grid.Tests = function(config) {
 			,dataIndex: 'active'
 		    ,sortable: true
 			,width: .1
-            ,renderer: MODx.grid.Grid.prototype.rendYesNo
+            ,renderer: this.rendYesNo
 		},{
 			header: _('simpleab.archived')
 			,dataIndex: 'archived'
 		    ,sortable: true
 			,width: .1
-            ,renderer: MODx.grid.Grid.prototype.rendYesNo
+            ,renderer: this.rendYesNo
 		},{
 			header: _('simpleab.variations')
 			,dataIndex: 'variations'
@@ -140,7 +141,7 @@ Ext.extend(SimpleAB.grid.Tests,MODx.grid.Grid,{
     },
 
     manageTest: function() {
-        MODx.loadPage(MODx.request.a,'action=test&id='+this.menu.record.id);
+        MODx.loadPage('test&namespace=simpleab&id=' + this.menu.record.id);
     },
 
     archiveTest: function() {

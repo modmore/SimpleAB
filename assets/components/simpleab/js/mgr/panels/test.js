@@ -1,17 +1,9 @@
-
-var chartStyles = {
-    legend: {
-        display: 'right'
-    }
-};
-
 SimpleAB.panel.UpdateTest = function(config) {
     config = config || {};
     Ext.apply(config, {
         id: 'simpleab-panel-test-update'
         ,url: SimpleAB.config.connectorUrl
         ,baseParams: { action: 'mgr/tests/update' ,id: SimpleAB.record.id }
-
         ,border: false
 		,baseCls: 'modx-formpanel'
 		,cls: 'container form-with-labels'
@@ -49,23 +41,15 @@ SimpleAB.panel.UpdateTest = function(config) {
                             columnWidth: .8,
                             border: false,
                             items: [{
-                                xtype: 'linechart',
-                                id: 'simpleab-statistics-normalized',
-                                extraStyle: chartStyles,
-                                height: 200,
-                                xField: 'period',
-                                series: SimpleAB.chartSeries,
-                                store: new Ext.data.JsonStore({
-                                    url: SimpleAB.config.connectorUrl,
-                                    baseParams: {
-                                        action: 'mgr/tests/stats/normalized',
-                                        test: SimpleAB.record.id
-                                    },
-                                    autoLoad: true,
-                                    fields: SimpleAB.chartFields,
-                                    idProperty: 'period',
-                                    root: 'results'
-                                })
+                                html: '<canvas id="normalized-chart-div" height="200" width="400"></canvas>',
+                                chartType: 'normalized',
+                                displayPercentage: true,
+                                listeners: {
+                                    afterrender: {
+                                        fn: this.loadChart,
+                                        scope: this
+                                    }
+                                }
                             }]
                         }]
                     },{
@@ -84,23 +68,14 @@ SimpleAB.panel.UpdateTest = function(config) {
                             columnWidth: .8,
                             border: false,
                             items: [{
-                                xtype: 'linechart',
-                                id: 'simpleab-statistics-conversions',
-                                extraStyle: chartStyles,
-                                height: 200,
-                                xField: 'period',
-                                series: SimpleAB.chartSeries,
-                                store: new Ext.data.JsonStore({
-                                    url: SimpleAB.config.connectorUrl,
-                                    baseParams: {
-                                        action: 'mgr/tests/stats/conversions',
-                                        test: SimpleAB.record.id
-                                    },
-                                    autoLoad: true,
-                                    fields: SimpleAB.chartFields,
-                                    idProperty: 'period',
-                                    root: 'results'
-                                })
+                                html: '<canvas id="conversions-chart-div" height="200" width="400"></canvas>',
+                                chartType: 'conversions',
+                                listeners: {
+                                    afterrender: {
+                                        fn: this.loadChart,
+                                        scope: this
+                                    }
+                                }
                             }]
                         }]
                     },{
@@ -119,23 +94,14 @@ SimpleAB.panel.UpdateTest = function(config) {
                             columnWidth: .8,
                             border: false,
                             items: [{
-                                xtype: 'linechart',
-                                id: 'simpleab-statistics-picks',
-                                extraStyle: chartStyles,
-                                height: 200,
-                                xField: 'period',
-                                series: SimpleAB.chartSeries,
-                                store: new Ext.data.JsonStore({
-                                    url: SimpleAB.config.connectorUrl,
-                                    baseParams: {
-                                        action: 'mgr/tests/stats/picks',
-                                        test: SimpleAB.record.id
-                                    },
-                                    autoLoad: true,
-                                    fields: SimpleAB.chartFields,
-                                    idProperty: 'period',
-                                    root: 'results'
-                                })
+                                html: '<canvas id="picks-chart-div" height="200" width="400"></canvas>',
+                                chartType: 'picks',
+                                listeners: {
+                                    afterrender: {
+                                        fn: this.loadChart,
+                                        scope: this
+                                    }
+                                }
                             }]
                         }]
                     }]
@@ -250,7 +216,7 @@ Ext.extend(SimpleAB.panel.UpdateTest, MODx.FormPanel, {
                         layout: 'column'
                         ,border: false
                         ,defaults: { layout: 'form' ,border: false }
-                        ,hidden: !(SimpleAB.record.type == 'modTemplate')
+                        ,hidden: !(SimpleAB.record.type === 'modTemplate')
                         ,items: [{
                             columnWidth: .5
                             ,defaults: { msgTarget: 'side' ,border: false ,anchor: '100%' }
@@ -344,6 +310,93 @@ Ext.extend(SimpleAB.panel.UpdateTest, MODx.FormPanel, {
         });
 
         return it;
-    }
+    },
+
+    getColor: function (index) {
+        const colors = [
+            '#4dc9f6',
+            '#f67019',
+            '#f53794',
+            '#537bc4',
+            '#acc236',
+            '#166a8f',
+            '#00a950',
+            '#58595b',
+            '#8549ba'
+        ];
+        return colors[index % colors.length];
+    },
+
+    loadChart: function(tabItem) {
+        let type = tabItem.chartType;
+        MODx.Ajax.request({
+            url: SimpleAB.config.connectorUrl,
+            params: {
+                action: 'mgr/tests/stats/' + type,
+                test: SimpleAB.record.id
+            },
+            listeners: {
+                'success':{
+                    fn: function(r) {
+                        const ctx = document.getElementById(type + '-chart-div').getContext('2d');
+                        const datasets = [];
+
+                        let i = 0;
+                        for (const set in r.results) {
+                            let setLabel = '';
+                            for (const label in r.labels) {
+                                if (label === set) {
+                                    setLabel = r.labels[label];
+                                }
+                            }
+
+                            // If it's an array, it's empty
+                            if (!Array.isArray(r.results)) {
+                                datasets.push({
+                                    label: setLabel,
+                                    data: r.results[set],
+                                    borderColor: this.getColor(i),
+                                    backgroundColor: this.getColor(i) + '02',
+                                });
+                            }
+
+                            i++;
+                        }
+                        const tooltipLabel = (context) => {
+                            let label = context.dataset.label + ': ' + context.parsed.y;
+                            if (tabItem.displayPercentage) {
+                                return label + '%';
+                            }
+                            return label;
+                        };
+                        const chart = new Chart(ctx, {
+                            type: 'line',
+                            labels: r.dates,
+                            data: {
+                                datasets: datasets,
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                scales: {
+                                    y: {
+                                        beginAtZero: true
+                                    }
+                                },
+                                plugins: {
+                                    tooltip: {
+                                        callbacks: {
+                                            label: tooltipLabel,
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                    },
+                    scope: this
+                }
+            }
+        });
+    },
 });
 Ext.reg('simpleab-panel-test-update', SimpleAB.panel.UpdateTest);
