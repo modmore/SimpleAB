@@ -153,7 +153,7 @@ class SimpleAB {
             'test' => $testId,
             'mode' => $mode,
             'pick' => $theOne,
-            'variation' => $variations[$theOne],
+            'variation' => $variations[$theOne] ?? null,
             'variations' => $variations,
         );
 
