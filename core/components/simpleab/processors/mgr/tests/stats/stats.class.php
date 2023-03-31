@@ -76,9 +76,12 @@ class StatsGetListProcessor extends modObjectGetListProcessor {
      */
     protected function setEmptyStats(array $list): array
     {
-        $variations = $this->modx->getCollection(sabVariation::class, [
+        $c = $this->modx->newQuery(sabVariation::class);
+        $c->where([
             'test' => (int)$this->getProperty('test'),
         ]);
+        $c->sortby('name');
+        $variations = $this->modx->getCollection(sabVariation::class, $c);
         foreach ($variations as $id => $variation) {
             $varId = 'var_' . $id;
             $this->labels[$varId] = $variation->get('name');
