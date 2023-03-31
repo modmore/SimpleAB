@@ -23,7 +23,7 @@ if (!defined('MOREPROVIDER_BUILD')) {
     /* define version */
     define('PKG_NAME','SimpleAB');
     define('PKG_NAMESPACE','simpleab');
-    define('PKG_VERSION','0.9.9');
+    define('PKG_VERSION','1.3.0');
     define('PKG_RELEASE','pl');
 
     /* load modx */
