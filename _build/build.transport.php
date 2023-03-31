@@ -122,9 +122,9 @@ else {
 }
 unset($snippets);
 
-/* Add actions */
-require_once ($sources['data'].'transport.actions.php');
-$modx->log(modX::LOG_LEVEL_INFO,'Packaged in actions');
+/* Add Menu */
+require_once ($sources['data'].'transport.menus.php');
+$modx->log(modX::LOG_LEVEL_INFO,'Packaged in menu');
 
 /* create category vehicle */
 $attr = array(
